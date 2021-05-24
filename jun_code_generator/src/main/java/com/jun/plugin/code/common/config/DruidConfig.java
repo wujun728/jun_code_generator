@@ -1,4 +1,4 @@
-package com.jun.plugin.code.generator2.config;
+package com.jun.plugin.code.common.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,11 +15,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.jun.plugin.code.generator2.datasource.DataSourceType;
-import com.jun.plugin.code.generator2.datasource.DynamicDataSource;
+import com.jun.plugin.code.common.datasource.DynamicDataSource;
+import com.jun.plugin.code.common.enums.DataSourceType;
 
 /**
  * druid 配置多数据源

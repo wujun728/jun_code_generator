@@ -1,14 +1,14 @@
-package com.jun.plugin.code.generator2.config;
-
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
+package com.jun.plugin.code.common.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jun.plugin.code.generator2.util.StringUtils;
-import com.jun.plugin.code.generator2.util.YamlUtil;
+import com.jun.plugin.code.common.util.StringUtils;
+import com.jun.plugin.code.common.util.YamlUtil;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 全局配置类

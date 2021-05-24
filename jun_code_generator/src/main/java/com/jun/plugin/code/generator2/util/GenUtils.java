@@ -1,12 +1,12 @@
 package com.jun.plugin.code.generator2.util;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang3.RegExUtils;
 
-import com.jun.plugin.code.generator2.config.GenConfig;
+import com.jun.plugin.code.common.config.GenConfig;
 import com.jun.plugin.code.generator2.domain.GenTable;
 import com.jun.plugin.code.generator2.domain.GenTableColumn;
-
-import java.util.Arrays;
 
 /**
  * 代码生成器 工具类
@@ -161,7 +161,7 @@ public class GenUtils
      */
     public static String convertClassName(String tableName)
     {
-        boolean autoRemovePre = GenConfig.getAutoRemovePre();
+        boolean autoRemovePre =Boolean.valueOf(GenConfig.getAutoRemovePre());
         String tablePrefix = GenConfig.getTablePrefix();
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix))
         {
