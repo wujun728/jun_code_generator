@@ -13,12 +13,13 @@
 	</properties>
 
 	<modules>		
-<!-- 		<module>jun_datasource</module> -->
-	<!--	<module>ssh_generator</module>
-	  <module>ssm_generator</module>
-		<module>ssm_boot_generator</module>
-		<module>jdbc_generator</module>
-		 -->
+
+	  <module>jun_code_generator</module>
+	  <module>jun_excel_to_table</module>
+	  <module>jun_maven_template</module>
+	  <module>jun_mybatis_generator</module>
+	  <module>jun_mybatisplus_generator</module>
+		  
   </modules>
 
 	<dependencies>

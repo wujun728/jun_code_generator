@@ -1,5 +1,5 @@
 server:
-  port: 8011
+  port: 8888
   servlet:
       context-path: /generator
   tomcat:
@@ -12,14 +12,20 @@ server:
     remote-ip-header: x-forward-for
     basedir: ${user.home}/tomcat/
     background-processor-delay: 30
-# MyBatis
+# MyBatis配置
 mybatis:
     # 搜索指定包别名
-    typeAliasesPackage: com.jun.plugin.code.common
+    typeAliasesPackage: com.jun.plugin.code.common,com.jun.plugin.code.generator2.**.domain
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
     configLocation: classpath:mapper/mybatis-config.xml
+# PageHelper分页插件
+pagehelper: 
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 spring:
     # 环境 dev:开发环境|test:测试环境|prod:生产环境|druid:生产环境
     profiles:

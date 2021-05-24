@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-@MapperScan({"com.jun.plugin.*.mapper","com.jun.plugin.code.common.mapper"})  
+@MapperScan({"com.jun.plugin.*.mapper","com.jun.plugin.code.common.mapper","com.jun.plugin.code.generator2.mapper"})  
 @ComponentScan(basePackages ={"com.jun.plugin" })
 public class Application {
 
