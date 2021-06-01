@@ -1,36 +1,33 @@
-package com.jun.plugin.code.generator.controller;
+package com.xxl.codegenerator.admin.controller;
 
+import com.xxl.codegenerator.admin.core.CodeGeneratorTool;
+import com.xxl.codegenerator.admin.core.model.ClassInfo;
+import com.xxl.codegenerator.admin.core.util.StringUtils;
+import com.xxl.codegenerator.admin.model.ReturnT;
+import com.xxl.codegenerator.admin.util.FreemarkerTool;
 import freemarker.template.TemplateException;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.jun.plugin.code.generator.model.ClassInfo;
-import com.jun.plugin.code.generator.model.ParamInfo;
-import com.jun.plugin.code.generator.model.ReturnT;
-import com.jun.plugin.code.generator.service.GeneratorService;
-import com.jun.plugin.code.generator.util.CodeGeneratorTool;
-import com.jun.plugin.code.generator.util.FreemarkerTool;
-import com.jun.plugin.code.meta.util.Table;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * sso server (for web)
+ *
+ * @author xuxueli 2017-08-01 21:39:47
+ */
 @Controller
 public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Resource
     private FreemarkerTool freemarkerTool;
-    
-    @Autowired
-    private GeneratorService generatorService;
 
     @RequestMapping("/")
     public String index() {
@@ -40,32 +37,30 @@ public class IndexController {
     @RequestMapping("/codeGenerate")
     @ResponseBody
     public ReturnT<Map<String, String>> codeGenerate(String tableSql) {
-    	
-    	String template_path = "template_ssm";
 
         try {
 
-            if (StringUtils.isBlank(tableSql)) {
+            if (tableSql==null || tableSql.trim().length()==0) {
                 return new ReturnT<Map<String, String>>(ReturnT.FAIL_CODE, "表结构信息不可为空");
             }
 
             // parse table
             ClassInfo classInfo = CodeGeneratorTool.processTableIntoClassInfo(tableSql);
-            Table table = CodeGeneratorTool.processTableIntoTable(tableSql);
 
             // code genarete
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("classInfo", classInfo);
-            params.put("Table", table);
 
             // result
             Map<String, String> result = new HashMap<String, String>();
-            result.put("controller_code", freemarkerTool.processString(template_path+"/controller.ftl", params));
-            result.put("service_code", freemarkerTool.processString(template_path+"/service.ftl", params));
-            result.put("service_impl_code", freemarkerTool.processString(template_path+"/service_impl.ftl", params));
-            result.put("dao_code", freemarkerTool.processString(template_path+"/dao.ftl", params));
-            result.put("mybatis_code", freemarkerTool.processString(template_path+"/mybatis.ftl", params));
-            result.put("model_code", freemarkerTool.processString(template_path+"/model.ftl", params));
+
+            result.put("controller_code", freemarkerTool.processString("code-generator/controller.ftl", params));
+            result.put("service_code", freemarkerTool.processString("code-generator/service.ftl", params));
+            result.put("service_impl_code", freemarkerTool.processString("code-generator/service_impl.ftl", params));
+
+            result.put("dao_code", freemarkerTool.processString("code-generator/dao.ftl", params));
+            result.put("mybatis_code", freemarkerTool.processString("code-generator/mybatis.ftl", params));
+            result.put("model_code", freemarkerTool.processString("code-generator/model.ftl", params));
 
             // 计算,生成代码行数
             int lineNum = 0;
@@ -75,8 +70,6 @@ public class IndexController {
                 }
             }
             logger.info("生成代码行数：{}", lineNum);
-            
-            
 
             return new ReturnT<Map<String, String>>(result);
         } catch (IOException | TemplateException e) {
