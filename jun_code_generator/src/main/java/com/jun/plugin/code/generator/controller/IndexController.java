@@ -59,20 +59,20 @@ public class IndexController {
             params.put("Table", table);
 
             // result
-//            Map<String, String> result = new HashMap<String, String>();
-//            result.put("controller_code", freemarkerTool.processString(template_path+"/controller.ftl", params));
-//            result.put("service_code", freemarkerTool.processString(template_path+"/service.ftl", params));
-//            result.put("service_impl_code", freemarkerTool.processString(template_path+"/service_impl.ftl", params));
-//            result.put("dao_code", freemarkerTool.processString(template_path+"/dao.ftl", params));
-//            result.put("mybatis_code", freemarkerTool.processString(template_path+"/mybatis.ftl", params));
-//            result.put("model_code", freemarkerTool.processString(template_path+"/model.ftl", params));
+            Map<String, String> result = new HashMap<String, String>();
+            result.put("controller_code", freemarkerTool.processString(template_path+"/controller.ftl", params));
+            result.put("service_code", freemarkerTool.processString(template_path+"/service.ftl", params));
+            result.put("service_impl_code", freemarkerTool.processString(template_path+"/service_impl.ftl", params));
+            result.put("dao_code", freemarkerTool.processString(template_path+"/dao.ftl", params));
+            result.put("mybatis_code", freemarkerTool.processString(template_path+"/mybatis.ftl", params));
+            result.put("model_code", freemarkerTool.processString(template_path+"/model.ftl", params));
 
-            ParamInfo paramInfo = new ParamInfo();
-            Map<String, Object> map  = new HashMap<String, Object>();
-            paramInfo.setOptions(map);
-            paramInfo.getOptions().put("classInfo", classInfo);
-            paramInfo.getOptions().put("tableName", classInfo == null ? System.currentTimeMillis() : classInfo.getTableName());
-            Map<String, String> result = generatorService.getResultByParams(paramInfo.getOptions());
+//            ParamInfo paramInfo = new ParamInfo();
+//            Map<String, Object> map  = new HashMap<String, Object>();
+//            paramInfo.setOptions(map);
+//            paramInfo.getOptions().put("classInfo", classInfo);
+//            paramInfo.getOptions().put("tableName", classInfo == null ? System.currentTimeMillis() : classInfo.getTableName());
+//            Map<String, String> result = generatorService.getResultByParams(paramInfo.getOptions());
             
             // 计算,生成代码行数
             int lineNum = 0;
