@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.jun.plugin.code.common.config.GenConfig;
+import com.jun.plugin.code.common.domain.GenTable;
 import com.jun.plugin.code.common.service.IGenService;
-import com.jun.plugin.code.generator2.domain.GenTable;
-import com.jun.plugin.code.generator2.service.IGenTableService;
+import com.jun.plugin.code.common.service.IGenTableService;
 @Controller
 @RequestMapping("/gen")
 public class GenController {

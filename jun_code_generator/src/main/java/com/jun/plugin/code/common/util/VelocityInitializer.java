@@ -2,11 +2,15 @@ package com.jun.plugin.code.common.util;
 
 import org.apache.velocity.app.Velocity;
 
-import com.jun.plugin.code.common.contant.Constants;
-
 import java.util.Properties;
 
-public class VelocityInitializer {
+/**
+ * VelocityEngine工厂
+ * 
+ * @author RuoYi
+ */
+public class VelocityInitializer
+{
     /**
      * 初始化vm方法
      */
@@ -16,8 +20,7 @@ public class VelocityInitializer {
         try
         {
             // 加载classpath目录下的vm文件
-            p.setProperty("file.resource.loader.class",
-                    "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+            p.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
             // 定义字符集
             p.setProperty(Velocity.ENCODING_DEFAULT, Constants.UTF8);
             p.setProperty(Velocity.OUTPUT_ENCODING, Constants.UTF8);
