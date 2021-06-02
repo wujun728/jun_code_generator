@@ -3,9 +3,13 @@ package com.jun.plugin.code.common.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
@@ -25,6 +29,12 @@ import com.jun.plugin.code.common.util.Constants;
 import com.jun.plugin.code.common.util.GenUtils;
 import com.jun.plugin.code.common.util.StringUtils;
 import com.jun.plugin.code.common.util.VelocityInitializer;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.util.CodeGeneratorTool;
+import com.jun.plugin.code.generator.core.util.FreemarkerTool;
+import com.jun.plugin.code.meta.util.Table;
+
+import freemarker.template.TemplateException;
 
 /**
  * 代码生成 服务层处理
@@ -38,6 +48,9 @@ public class GenServiceImpl implements IGenService
 
     @Autowired
     private GenMapper genMapper;
+    
+    @Resource
+    private FreemarkerTool freemarkerTool;
 
     /**
      * 查询ry数据库表信息
@@ -98,8 +111,10 @@ public class GenServiceImpl implements IGenService
 
     /**
      * 生成代码
+     * @throws TemplateException 
+     * @throws IOException 
      */
-    public void generatorCode(TableInfo table, List<ColumnInfo> columns, ZipOutputStream zip)
+    public void generatorCodeFtl(TableInfo table, List<ColumnInfo> columns, ZipOutputStream zip) throws IOException, TemplateException
     {
         // 表名转换成Java属性名
         String className = GenUtils.tableToJava(table.getTableName());
@@ -115,16 +130,30 @@ public class GenServiceImpl implements IGenService
         String packageName = Global.getPackageName();
         String moduleName = GenUtils.getModuleName(packageName);
 
-        VelocityContext context = GenUtils.getVelocityContext(table);
+        
+        // code genarete
+        String template_path = "template_v1/crud/";
+        ClassInfo classInfo = null;
+        Table tab = null;;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("classInfo", classInfo);
+        params.put("Table", table);
+        ;
+        // result
+//        VelocityContext context = GenUtils.getVelocityContext(table);
 
         // 获取模板列表
-        List<String> templates = GenUtils.getTemplates();
+//        List<String> templates = GenUtils.getTemplates();
+        List<String> templates = GenUtils.getTemplatesFtl();
         for (String template : templates)
         {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, Constants.UTF8);
-            tpl.merge(context, sw);
+//            sw.append(freemarkerTool.processString(template_path+"/controller.ftl", params));
+            sw.append(freemarkerTool.processString(template_path+template, params));
+            String filename=classInfo.getClassName()+template.replace(".ftl", ".java");
+//            Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+//            tpl.merge(context, sw);
             try
             {
                 // 添加到zip
@@ -138,5 +167,48 @@ public class GenServiceImpl implements IGenService
                 log.error("渲染模板失败，表名：" + table.getTableName(), e);
             }
         }
+    }
+    /**
+     * 生成代码
+     */
+    public void generatorCode(TableInfo table, List<ColumnInfo> columns, ZipOutputStream zip)
+    {
+    	// 表名转换成Java属性名
+    	String className = GenUtils.tableToJava(table.getTableName());
+    	table.setClassName(className);
+    	table.setClassname(StringUtils.uncapitalize(className));
+    	// 列信息
+    	table.setColumns(GenUtils.transColums(columns));
+    	// 设置主键
+    	table.setPrimaryKey(table.getColumnsLast());
+    	
+    	VelocityInitializer.initVelocity();
+    	
+    	String packageName = Global.getPackageName();
+    	String moduleName = GenUtils.getModuleName(packageName);
+    	
+    	VelocityContext context = GenUtils.getVelocityContext(table);
+    	
+    	// 获取模板列表
+        List<String> templates = GenUtils.getTemplates();
+    	for (String template : templates)
+    	{
+    		// 渲染模板
+    		StringWriter sw = new StringWriter();
+    		Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+    		tpl.merge(context, sw);
+    		try
+    		{
+    			// 添加到zip
+    			zip.putNextEntry(new ZipEntry(GenUtils.getFileName(template, table, moduleName)));
+    			IOUtils.write(sw.toString(), zip, Constants.UTF8);
+    			IOUtils.closeQuietly(sw);
+    			zip.closeEntry();
+    		}
+    		catch (IOException e)
+    		{
+    			log.error("渲染模板失败，表名：" + table.getTableName(), e);
+    		}
+    	}
     }
 }

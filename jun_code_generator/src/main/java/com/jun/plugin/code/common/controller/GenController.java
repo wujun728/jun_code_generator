@@ -21,15 +21,17 @@ import com.jun.plugin.code.common.service.IGenTableService;
 @Controller
 @RequestMapping("/gen")
 public class GenController {
+	private static final Logger logger = LoggerFactory.getLogger(GenController.class);
+	
     @Autowired
     private IGenService genService;
     /**
-     * http://192.168.199.101:8888/generator/gen/genCode/area
+     * http://localhost:8888/generator/gen/down/area
      * @param response
      * @param tableName
      * @throws IOException
      */
-    @GetMapping("/genCode/{tableName}")
+    @GetMapping("/down/{tableName}")
     public void genCode(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException
     {
         byte[] data = genService.generatorCode(tableName);
@@ -41,9 +43,6 @@ public class GenController {
         IOUtils.write(data, response.getOutputStream());
     }
     
-    
-private static final Logger logger = LoggerFactory.getLogger(GenController.class);
-	
 	@Autowired
 	private IGenTableService genTableService;
 

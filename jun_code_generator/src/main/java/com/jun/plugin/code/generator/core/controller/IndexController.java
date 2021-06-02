@@ -29,9 +29,6 @@ public class IndexController {
     @Resource
     private FreemarkerTool freemarkerTool;
     
-    @Autowired
-    private GeneratorService generatorService;
-
     @RequestMapping("/")
     public String index() {
         return "index";
