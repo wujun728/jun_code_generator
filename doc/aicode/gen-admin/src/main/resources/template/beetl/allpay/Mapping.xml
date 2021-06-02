@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${g.codePackage}.dao.${g.entityName}Dao">
+
+    <resultMap id="BaseResultMap" type="${g.codePackage}.model.${g.entityName}Model">
+        <%for(field in t.fields){%>
+        <result column="${field.fieldName}" property="${field.name}" />
+        <%}%>
+    </resultMap>
+
+    <insert id="insert" parameterType="${g.codePackage}.model.${g.entityName}Model">
+      INSERT INTO ${strutil.toUpperCase(g.tableName)} (
+        <%for(field in t.fields){%>
+        ${strutil.toUpperCase(field.fieldName)}<%if(!fieldLP.last){%>,
+        <%}}%>
+      ) VALUES (<%for(field in t.fields){%>
+        #{${field.name}}<%if(!fieldLP.last){%>,
+        <%}}%>)
+    </insert>
+
+    <update id="updateById" parameterType="${g.codePackage}.model.${g.entityName}Model">
+        UPDATE ${strutil.toUpperCase(g.tableName)}
+        <set>
+            <%for(field in t.fields){%>
+            <if test="e.${field.name} != null and e.${field.name} != '' ">
+                ${strutil.toUpperCase(field.fieldName)} = #{${field.name}},
+            </if>
+            <%}%>
+        </set>
+        WHERE ${g.idName} = #{${g.idName}}
+    </update>
+    
+    <delete id="deleteById">
+        DELETE  FROM ${strutil.toUpperCase(g.tableName)} WHERE  ${g.idName} = #{${g.idName}}
+    </delete>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        WHERE  ${g.idName} = #{${g.idName}}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        <where>
+            <include refid="select_content"/>
+        </where>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        <where>
+            <include refid="select_content"/>
+        </where>
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        <where>
+            <include refid="select_content"/>
+        </where>
+    </select>
+
+    <sql id="select_content">
+        <%for(field in t.fields){%>
+        <if test="e.${field.name} != null and e.${field.name} != '' ">
+            AND t.${strutil.toUpperCase(field.fieldName)} = #{e.${field.name}}
+        </if>
+        <%}%>
+    </sql>
+
+</mapper>

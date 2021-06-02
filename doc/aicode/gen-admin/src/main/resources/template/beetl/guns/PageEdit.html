@@ -1,0 +1,28 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="${g.lowerEntityName}Form">
+
+            <input type="hidden" id="id" value="\${${strutil.toLowerCase(g.entityName)}.id}">
+
+            <div class="row">
+                <%for(field in t.fields){%>
+                <%if(field.isShowEdit == 1){%>
+                <div class="col-sm-4">
+                    <${"#"}input id="${field.name}" name="${field.chinaName}" value="\${${strutil.toLowerCase(g.entityName)}.${field.name}}}" underline="true"/>
+                </div>
+                <%}}%>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <${"#"}button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="${g.entityName}InfoDlg.editSubmit()"/>
+                    <${"#"}button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="${g.entityName}InfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="\${ctxPath}/static/modular/biz/${strutil.toLowerCase(g.entityName)}/${strutil.toLowerCase(g.entityName)}_info.js"></script>
+@}

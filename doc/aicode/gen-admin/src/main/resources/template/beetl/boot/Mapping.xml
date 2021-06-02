@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${g.codePackage}.repository.${g.entityName}Repository">
+
+    <resultMap id="BaseResultMap" type="${g.codePackage}.model.${g.entityName}Model">
+        <%for(field in t.fields){%>
+        <result column="${strutil.toUpperCase(field.fieldName)}" property="${field.name}"/>
+        <%}%>
+    </resultMap>
+
+
+    <sql id="select_content">
+        <%for(field in t.fields){%>
+        <if test="ew.entity.${field.name} != null and ew.entity.${field.name} != '' ">
+            AND t.${strutil.toUpperCase(field.fieldName)} = #{ew.entity.${field.name}}
+        </if>
+        <%}%>
+    </sql>
+
+</mapper>

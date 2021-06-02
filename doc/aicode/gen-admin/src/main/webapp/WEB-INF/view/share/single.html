@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="keywords" content="Lemur 开源,Easypoi 代码 文档,代码生成器,开发框架 ,Lemur Gen"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="description"
+		  content="Lemur 开源,Easypoi 代码 文档,代码生成器,开发框架 ,Lemur Gen">
+	<meta name="author" content="JueYue">
+	<title>Lemur Gen</title>
+	<link href="${ctxPath}/static/share/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="${ctxPath}/static/share/css/style.css" rel="stylesheet">
+	<link href="${ctxPath}/static/share/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+		  type="text/css">
+	<link href="${ctxPath}/static/css/plugins/highlight/github.css" rel="stylesheet"/>
+	<script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>
+	<script src="${ctxPath}/static/js/bootstrap.min.js?v=3.3.6"></script>
+	<!--[if lt IE 9]>
+	<script src="${ctxPath}/static/share/js/html5shiv.js"></script>
+	<script src="${ctxPath}/static/share/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body class="single-page">
+	<div class="wrap-body">
+		<header class="main-header">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="logo">
+					<a href="/">
+						<img src="${ctxPath}/static/share/images/logo.png"/>
+					</a>
+				</div>
+				<!-- Static Header -->
+				<div class="header-text">
+					<div class="header-text-inner">
+						<h1>你的模板是别人的利器<br> LEMUR Gen</h1>
+						<p>一个通用版本的代码生成器,不单单局限于自己用,可以分享,可以浏览别人的代码
+							好的代码是可以共享,好的代码也是促进开发的!</p>
+						<a href="${ctxPath}/login" class="btn btn-header">Get Started</a>
+						<h2 style="font-style: italic"><a class="btn btn-header" href="/share/clone/${groupId!}">克隆</a></h2>
+						<h2 style="color: white">${msg!}</h2>
+					</div>
+				</div><!-- /header-text -->
+			</div>
+		</header>
+		<!-- /Section: intro -->
+		
+		<!-- /////////////////////////////////////////Content -->
+		<div id="page-content" class="container">
+			<div class="panel-group" id="accordion">
+				@for(data in list!){
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+							   href="#collapse${data.id}">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp;&nbsp;${data.templateName}
+							</a>
+						</h4>
+					</div>
+					@if (dataLP.first ) {
+						<div id="collapse${data.id}" class="panel-collapse collapse in">
+					@}else{
+						<div id="collapse${data.id}" class="panel-collapse collapse">
+					@}
+
+						<div class="panel-body">
+								<textarea style="display: none;">${data.fileModel.file}</textarea>
+								<pre style="height: 600px;"><code type="${data.fileModel.fileType!}">
+
+						</code></pre>
+						</div>
+					</div>
+				</div>
+				@}
+			</div>
+		</div>
+
+		<!-- /////////////////////////////////////////Footer -->
+		<footer>
+			<div class="bottom-footer" style="background-color: #0e2231;color: #FFFFFF">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							<p>© 2017 鲁ICP备15023514   &nbsp;<a style="color: #ffffff" href="http://gen.afterturn.cn/"
+													  target="_blank" title="模板分享">模板分享</a>
+								- Collect from <a style="color: #ffffff" href="http://www.afterturn.cn/" title="Lemru开源"
+												  target="_blank">Lemru开源</a></p>
+						</div>
+						<div class="col-md-6">
+						</div>
+						<div class="col-md-3">
+							<ul class="list-inline quicklinks">
+								<li><a style="color: #ffffff" href="#">一众科技</a></li>
+								<li><a  style="color: #ffffff" href="#">By JueYue</a></li>
+								<li><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1264442706'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1264442706%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	
+	</div><!-- .wrap-body -->
+	<script src="${ctxPath}/static/js/plugins/highlight/highlight.pack.js"></script>
+	<script>
+		$(function () {
+            $("#page-content").find(".panel-body").each(function () {
+				var code = $(this).find("textarea").val();
+				var type = $(this).find('code').attr("type");
+                $(this).find('code').html(hljs.highlight(type,code).value);
+            })
+        })
+	</script>
+</body>
+</html>

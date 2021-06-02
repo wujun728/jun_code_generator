@@ -1,0 +1,18 @@
+--queryMenuIds
+select distinct p.id FROM cf_boot_user_role ur 
+	LEFT JOIN cf_boot_role_permission rp on  ur.role_id=rp.role_id
+	LEFT JOIN cf_boot_permission p on rp.permission_id=p.id
+where p.type = 'menu' and ur.user_id = :userId
+
+--queryMenuUrls
+select distinct p.url FROM cf_boot_user_role ur 
+	LEFT JOIN cf_boot_role_permission rp on  ur.role_id=rp.role_id
+	LEFT JOIN cf_boot_permission p on rp.permission_id=p.id
+where p.type = 'menu' and ur.user_id = :userId
+
+
+--queryPermissions
+select p.perm_code FROM cf_boot_user_role ur 
+	LEFT JOIN cf_boot_role_permission rp on  ur.role_id=rp.role_id
+	LEFT JOIN cf_boot_permission p on rp.permission_id=p.id
+where ur.user_id = :userId

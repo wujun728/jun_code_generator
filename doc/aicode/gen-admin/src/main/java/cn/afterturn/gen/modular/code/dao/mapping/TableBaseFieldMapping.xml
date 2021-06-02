@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.afterturn.gen.modular.code.dao.TableBaseFieldDao">
+
+	<resultMap id="BaseResultMap" type="cn.afterturn.gen.modular.code.model.TableBaseFieldModel">
+		    <result column="id" property="id" />
+		    <result column="user_id" property="userId" />
+		    <result column="alias" property="alias" />
+		    <result column="field_id" property="fieldId" />
+		    <result column="CRT_USER_ID" property="crtUserId" />
+		    <result column="CRT_TIME" property="crtTime" />
+		    <result column="MDF_USER_ID" property="mdfUserId" />
+		    <result column="MDF_TIME" property="mdfTime" />
+	</resultMap>
+
+	
+	<select id="selectCount" resultMap="BaseResultMap">
+			select count(1) from T_CODE_TABLE_BASE_FIELD t
+		<where>
+			<include refid="select_content"/>
+		</where>
+	</select>
+	
+	<select id="selectList" resultMap="BaseResultMap">
+			select * from T_CODE_TABLE_BASE_FIELD t
+		<where>
+			<include refid="select_content"/>
+		</where>
+	</select>
+
+	<select id="selectPage" resultMap="BaseResultMap">
+			select * from T_CODE_TABLE_BASE_FIELD t
+		<where>
+			<include refid="select_content"/>
+			${ew.sqlSegment}
+		</where>
+		ORDER BY t.CRT_TIME DESC
+	</select>
+	
+	<sql id="select_content">	
+				<if test="e.id != null and e.id != '' ">
+					AND t.ID = #{e.id}
+				</if>
+				<if test="e.userId != null and e.userId != '' ">
+					AND t.USER_ID = #{e.userId}
+				</if>
+				<if test="e.alias != null and e.alias != '' ">
+					AND t.ALIAS  like '%${e.alias}%''
+				</if>
+				<if test="e.fieldId != null and e.fieldId != '' ">
+					AND t.FIELD_ID = #{e.fieldId}
+				</if>
+				<if test="e.crtUserId != null and e.crtUserId != '' ">
+					AND t.CRT_USER_ID = #{e.crtUserId}
+				</if>
+				<if test="e.crtTime != null and e.crtTime != '' ">
+					AND t.CRT_TIME = #{e.crtTime}
+				</if>
+				<if test="e.mdfUserId != null and e.mdfUserId != '' ">
+					AND t.MDF_USER_ID = #{e.mdfUserId}
+				</if>
+				<if test="e.mdfTime != null and e.mdfTime != '' ">
+					AND t.MDF_TIME = #{e.mdfTime}
+				</if>
+	</sql>
+
+</mapper>

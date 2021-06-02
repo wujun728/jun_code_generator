@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${g.codePackage}.dao.${g.entityName}Dao">
+
+    <resultMap id="BaseResultMap" type="${g.codePackage}.model.${g.entityName}Model">
+        <%for(field in t.fields){%>
+        <result column="${field.fieldName}" property="${field.name}" />
+        <%}%>
+    </resultMap>
+
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        <where>
+            <include refid="select_content"/>
+            \${w.sqlSegment}
+        </where>
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select * from ${strutil.toUpperCase(g.tableName)} t
+        <where>
+            <include refid="select_content"/>
+            \${w.sqlSegment}
+        </where>
+    </select>
+
+    <sql id="select_content">
+        <%for(field in t.fields){%>
+        <if test="e.${field.name} != null and e.${field.name} != '' ">
+            AND t.${strutil.toUpperCase(field.fieldName)} = #{e.${field.name}}
+        </if>
+        <%}%>
+    </sql>
+
+</mapper>

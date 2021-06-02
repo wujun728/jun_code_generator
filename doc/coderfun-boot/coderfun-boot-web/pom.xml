@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.coderfun.boot</groupId>
+	<artifactId>coderfun-boot-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+
+
+	<parent>
+		<groupId>coderfun</groupId>
+		<artifactId>coderfun-bom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>coderfun</groupId>
+			<artifactId>coderfun-klg-jpa</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.slyak</groupId>
+			<artifactId>spring-data-jpa-extra</artifactId>
+			<version>2.1.2.RELEASE</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/spring-data-jpa-extra-2.1.2.RELEASE.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.coderfun.boot</groupId>
+			<artifactId>coderfun-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.coderfun.boot</groupId>
+			<artifactId>coderfun-common-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.coderfun.boot</groupId>
+			<artifactId>coderfun-boot-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<!-- springmvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+		<!-- jsp 支持 -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		
+		<!-- kaptcha验证码 -->
+		<dependency>
+			<groupId>com.github.axet</groupId>
+			<artifactId>kaptcha</artifactId>
+			<version>0.0.9</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!--当目录结构发生变动，右键工程 maven->update project -->
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<!-- class文件会自动打JAR包 -->
+					<archiveClasses>false</archiveClasses>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<!-- 合并多个war -->
+					<overlays>
+						<overlay>
+							<groupId>org.coderfun.boot</groupId>
+							<artifactId>coderfun-common-web</artifactId>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,98 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="baseField">
+            <input id="id" value="${tablebasefield.id}" type="hidden">
+            <div class="row">
+                <div class="col-sm-4 b-r">
+                    <#input id="alias" name="别名" underline="true"  value="${tablebasefield.alias}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="fieldName" name="列名" underline="true"  value="${tablefield.fieldName}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="name" name="名称" underline="true"  value="${tablefield.name}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="content" name="功能" underline="true" value="${tablefield.content}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="field_type" id="type" name="类型" underline="true" value="${tablefield.type}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isKey" name="主键" underline="true" value="${tablefield.isKey}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isNull" name="为空" underline="true" value="${tablefield.isShowAdd}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowAdd" name="新增" underline="true" value="${tablefield.isShowAdd}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowEdit" name="编辑" underline="true" value="${tablefield.isShowEdit}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowDetail" name="详情" underline="true" value="${tablefield.isShowDetail}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowList" name="列表" underline="true" value="${tablefield.isShowList}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isImport" name="导入" underline="true" value="${tablefield.isImport}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isExport" name="导出" underline="true" value="${tablefield.isExport}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isQuery" name="查询" underline="true" value="${tablefield.isQuery}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="query_mode" id="queryMode" name="类型" underline="true" value="${tablefield.queryMode}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="show_type" id="showType" name="显示" underline="true" value="${tablefield.showType}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="orderNum" name="排序" underline="true" value="${tablefield.orderNum}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="dictName" name="字典名称" underline="true" value="${tablefield.dictName}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="dict_type" id="dictType" name="字典类型" underline="true" value="${tablefield.dictType}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="viewVerification" name="前端校验" underline="true"  value="${verifyfield.viewVerification}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="serverVerification" name="后端校验" underline="true"  value="${verifyfield.serverVerification}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="notNull" name="允许空" underline="true"  value="${verifyfield.notNull}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="minNum" name="最小值" underline="true"  value="${verifyfield.minNum}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="maxNum" name="最大值" underline="true"  value="${verifyfield.maxNum}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="regex" name="正则" underline="true"  value="${verifyfield.regex}" />
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="regex_type" id="regexType" name="常用类型" underline="true"  value="${verifyfield.regexType}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="TableBaseFieldInfoDlg.editSubmit()" />
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="TableBaseFieldInfoDlg.close()" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/code/tablebasefield/tablebasefield_info.js"></script>
+@}

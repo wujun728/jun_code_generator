@@ -1,0 +1,67 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <input type="hidden" id="id" value="${template.id}">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="templateName" name="模板名称" underline="true" value="${template.templateName}" readonly="readonly"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input id="templateDesc" name="描述" underline="true" value="${template.templateDesc}" readonly="readonly"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input id="fileName" name="文件名称" underline="true" value="${template.fileName}" readonly="readonly"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input id="templatePath" name="路径" underline="true" value="${template.templatePath}" readonly="readonly"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input id="localPath" name="本地路径" underline="true" value="${template.localPath}" readonly="readonly"/>
+                </div>
+                <div class="col-sm-6">
+                    <#select id="groupId" name="组" underline="true" value="${template.groupId}" disabled="disabled">
+                        @ for(g in groups!){
+                        <option value="${g.id}">${g.name}</option>
+                        @}
+                    </#select>
+                </div>
+                <div class="col-sm-6">
+                    <#select id="templateType" name="类型" underline="true" value="${template.templateType}" disabled="disabled">
+                        <option value="beetl">beetl</option>
+                        <option value="freeMarker">freeMarker</option>
+                    </#select>
+                </div>
+                <div class="col-sm-6">
+                    <#select id="fileType" name="语言" underline="true" value="${file.fileType!}" disabled="disabled">
+                        <option value="C">C</option>
+                        <option value="C#">C#</option>
+                        <option value="C++">C++</option>
+                        <option value="GO">GO</option>
+                        <option value="Java">Java</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="Html">Html</option>
+                        <option value="Xml">Xml</option>
+                        <option value="Objective-C">Objective-C</option>
+                        <option value="PHP">PHP</option>
+                        <option value="Python">Python</option>
+                        <option value="SQL">SQL</option>
+                    </#select>
+                </div>
+                <div class="col-sm-12">
+                    <textarea id="file" name="file" class="form-control" style="display:none"
+                              rows="15"  readonly="readonly">${file.file!}</textarea>
+                    <pre  id="codeFile" style="height: 310px;"  readonly="readonly">
+                        <code class="${file.fileType!}">
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/code/template/template_info.js"></script>
+@}

@@ -1,0 +1,97 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="baseField">
+            <div class="row">
+                <div class="col-sm-4 b-r">
+                    <#input id="alias" name="别名" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="fieldName" name="列名" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="name" name="名称" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="content" name="功能" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="field_type" id="type" name="类型" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isKey" name="主键" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isNull" name="为空" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowAdd" name="新增" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowEdit" name="编辑" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowDetail" name="详情" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isShowList" name="列表" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isImport" name="导入" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isExport" name="导出" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="isQuery" name="查询" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="query_mode" id="queryMode" name="类型" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="show_type" id="showType" name="显示" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="orderNum" name="排序" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="dictName" name="字典名称" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="dict_type" id="dictType" name="字典类型" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="viewVerification" name="前端校验" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="serverVerification" name="后端校验" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="yes_no" id="notNull" name="允许空" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="minNum" name="最小值" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="maxNum" name="最大值" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#input id="regex" name="正则" underline="true"/>
+                </div>
+                <div class="col-sm-4 b-r">
+                    <#dict key="regex_type" id="regexType" name="常用类型" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="TableBaseFieldInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="TableBaseFieldInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/code/tablebasefield/tablebasefield_info.js"></script>
+@}

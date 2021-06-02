@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!-- shiro-redis configuration [start] -->
+	<!-- shiro redisManager -->
+	<bean id="redisManager" class="org.crazycake.shiro.RedisManager">
+	    <property name="host" value="${redis.host}"/>
+	   	<property name="password" value="${redis.password:#{null}}"/>
+	    <!-- optional properties
+	    <property name="timeout" value="10000"/>
+	    <property name="database" value="1"/>
+	    <property name="jedisPoolConfig" ref="jedisPoolConfig"/>
+	    <property name="count" value="100"/>
+	    -->
+	</bean>
+	
+	<!-- Redis-based session configuration -->
+	<bean id="redisSessionDAO" class="org.crazycake.shiro.RedisSessionDAO">
+	    <property name="redisManager" ref="redisManager" />
+	    <!-- optional properties
+	    <property name="expire" value="-2"/>
+	    <property name="keyPrefix" value="shiro:session:" />
+	    -->
+	</bean>
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+	    <property name="sessionDAO" ref="redisSessionDAO" />
+	     <!-- 设置默认超时时间 
+    	<property name="globalSessionTimeout" value="1800000"/>
+    	-->
+	</bean>
+	
+	<!-- Redis-based cache configuration -->
+	<bean id="cacheManager" class="org.crazycake.shiro.RedisCacheManager">
+	    <property name="redisManager" ref="redisManager" />
+	    <!-- optional properties
+	    <property name="expire" value="1800"/>
+	    <property name="keyPrefix" value="shiro:cache:" />
+	    <property name="principalIdFieldName" value="id" />
+	    -->
+	</bean>	
+	
+	<!-- securityManager -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+	    <property name="sessionManager" ref="sessionManager" />
+	    <property name="cacheManager" ref="cacheManager" />
+	    <!-- other configurations -->
+	    <property name="realm" ref="userAuthRealm"/>
+	    <property name="rememberMeManager.cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('a7lysQ9bWt7hclqXmJNoPg==')}" />
+	</bean>
+	
+	<!-- shiro-redis configuration [end] -->
+
+ 	<!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="org.coderfun.boot.core.shiro.SimplePasswordMatcher">
+        <property name="hashAlgorithmName" value="${shiro.password.algorithmName}"/>
+        <property name="hashIterations" value="${shiro.password.hashIterations}"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+	<bean id="userAuthRealm" class="org.coderfun.boot.core.shiro.UserAuthRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+	</bean>
+
+
+    <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->  
+    <!-- Web应用中,Shiro可控制的Web请求必须经过Shiro主过滤器的拦截,Shiro对基于Spring的Web应用提供了完美的支持 -->  
+    <bean id="pageAccessFilter" class="org.coderfun.boot.core.shiro.PageAccessFilter"></bean>
+    <bean id="ajaxAuthenticationFilter" class="org.coderfun.boot.core.shiro.AjaxAuthenticationFilter"></bean>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+        <property name="securityManager" ref="securityManager"/>  
+        <property name="loginUrl" value="${admin.path}/login"/>
+        <property name="unauthorizedUrl" value="/admin/pages/error/401.jsp"/>
+        
+       	<property name="filters">
+            <map>
+                <entry key="pageAccess" value-ref="pageAccessFilter" />
+                <entry key="ajaxAuthc" value-ref="ajaxAuthenticationFilter"></entry>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /static/** = anon
+                /admin/pages/error/** = anon
+                ${admin.path}/login = anon
+                /admin/action/boot/userAccess/login = anon
+                /admin/action/boot/userAccess/testPassword = anon
+                
+                /admin/**/**.jsp =ajaxAuthc,pageAccess
+                /admin/** = ajaxAuthc
+
+            </value>
+        </property>
+    </bean>
+    
+
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>

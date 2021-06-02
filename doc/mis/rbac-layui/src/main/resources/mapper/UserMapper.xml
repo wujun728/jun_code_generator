@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.yt4j.layuirbac.dao.UserDao">
+
+    <resultMap type="cn.yt4j.layuirbac.model.User" id="UserMap">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="realName" column="real_name" />
+        <result property="phone" column="phone" />
+        <result property="roleId" column="role_id" />
+        <result property="roleName" column="role_name"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="getById" resultMap="UserMap">
+        select
+          a.id, a.username, a.password, a.real_name, a.phone, a.role_id,b.role_name,b.role_code, a.create_time, a.update_time
+        from `user` a
+        inner join role b on a.role_id =b.id
+        where a.id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="list" resultMap="UserMap">
+        select
+        a.id, a.username, a.password, a.real_name, a.phone, a.role_id,b.role_name,b.role_code, a.create_time, a.update_time
+        from `user` a
+        inner join role b on a.role_id =b.id
+        <where>
+            <if test="id != null">
+                and a.id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and a.username like concat('%',#{username},'%')
+            </if>
+            <if test="password != null and password != ''">
+                and a.`password` = #{password}
+            </if>
+            <if test="realName != null and realName != ''">
+                and a.real_name = #{realName}
+            </if>
+            <if test="phone != null and phone != ''">
+                and a.phone = #{phone}
+            </if>
+            <if test="roleId != null">
+                and a.role_id = #{roleId}
+            </if>
+            <if test="createTime != null">
+                and a.create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and a.update_time = #{updateTime}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+    <select id="getByUsername" resultMap="UserMap">
+         select
+          a.id, a.username, a.password, a.real_name, a.phone, a.role_id,b.role_name,b.role_code, a.create_time, a.update_time
+        from `user` a
+        inner join role b on a.role_id =b.id
+        where a.username=#{username}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into `user`(username, password, real_name, phone, role_id, create_time, update_time)
+        values (#{username}, #{password}, #{realName}, #{phone}, #{roleId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+</mapper>

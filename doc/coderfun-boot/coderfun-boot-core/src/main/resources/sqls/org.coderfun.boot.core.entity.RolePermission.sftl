@@ -1,0 +1,2 @@
+--findPermissionIdsByRoleId
+SELECT permission_id FROM cf_boot_role_permission WHERE role_id=:roleId

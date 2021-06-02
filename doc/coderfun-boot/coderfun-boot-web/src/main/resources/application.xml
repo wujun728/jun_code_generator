@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd 
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/data/jpa
+    					http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+    					http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- aop注解支持-->
+    <aop:aspectj-autoproxy />
+	
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	
+	<!-- properties -->
+	<context:property-placeholder location="classpath:application.properties,classpath:boot-settings.properties"
+		ignore-unresolvable="true" />						
+		
+	<context:component-scan
+		base-package="org.coderfun.boot.*,org.coderfun.common.*">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+
+	<!-- settings start -->
+	<bean id="settingsProperties" class="klg.common.utils.AppProperties">
+		<constructor-arg name="fileName" value="boot-settings.properties"/>
+	</bean>
+	
+	<bean class="org.coderfun.boot.core.BootSettings">
+		<constructor-arg name="appProperties" ref="settingsProperties"></constructor-arg>
+	</bean>
+	<!-- settings end -->
+
+	
+	<!-- 数据字典AOP，数据字典序列化JSON文件供前端访问 -->
+	<bean class="org.coderfun.boot.aop.DictReaderAspect"></bean>
+	
+	
+	<!-- dic oss 配置 -->
+
+	<bean id="defaultOssClient" class="com.aliyun.oss.OSSClient">
+		<constructor-arg name="endpoint" value="${aliyunOSS.endpoint}" />
+		<constructor-arg name="accessKeyId" value="${aliyunOSS.accessKeyId}" />
+		<constructor-arg name="secretAccessKey" value="${aliyunOSS.secretAccessKey}" />
+	</bean>
+
+	<bean id="dictOSSConfig" class="org.coderfun.common.AliyunOSSConfig">
+		<property name="ossClient" ref="defaultOssClient" />
+		<property name="bucket" value="${aliyunOSS.bucket}" />
+		<property name="urlPrefix" value="${aliyunOSS.urlPrefix}" />
+	</bean>
+	<!-- dic oss end-->
+	
+	<!-- 异常处理 -->
+	<bean id="exceptionConvertHandler" class="org.coderfun.common.exception.ExceptionConvertHandler">
+		<constructor-arg>
+			<list>
+				<bean class="org.coderfun.common.exception.DefaultExceptionConverter"/>
+				<bean class="org.coderfun.boot.core.exception.BootExceptionConverter"/>
+			</list>
+		</constructor-arg>
+	</bean>
+							
+	<import resource="spring-jpa.xml"/>		
+	<import resource="spring-shiro.xml"/>			
+</beans>

@@ -1,0 +1,2 @@
+--findRoleIdsByUserId
+select role_id from cf_boot_user_role where user_id = :userId

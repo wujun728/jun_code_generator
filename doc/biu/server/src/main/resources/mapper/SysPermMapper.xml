@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.dao.SysPermMapper">
+
+    <select id="getPermsByUserId" resultType="SysPerm">
+        SELECT p.pname,p.pval FROM sys_perm p, sys_role_perm rp, sys_user_role ur
+        WHERE p.pval = rp.perm_val AND ur.role_id = rp.role_id
+        AND ur.user_id = #{userId}
+    </select>
+
+    <select id="getPermsByRoleId" resultType="SysPerm">
+        SELECT p.pval,p.ptype,p.leaf FROM sys_perm p, sys_role_perm rp
+        WHERE p.pval = rp.perm_val AND rp.role_id = #{roleId}
+    </select>
+
+    <insert id="saveOrUpdate">
+        INSERT INTO sys_perm (pval,parent,pname,ptype,leaf,created) VALUES
+        <foreach collection="perms" item="p" separator=",">
+            (#{p.pval},#{p.parent},#{p.pname},#{p.ptype},#{p.leaf},#{p.created})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        pname = VALUES(pname), parent = VALUES(parent), ptype = VALUES(ptype), leaf = VALUES(leaf), updated = now()
+    </insert>
+
+
+
+</mapper>

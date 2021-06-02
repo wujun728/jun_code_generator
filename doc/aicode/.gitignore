@@ -1,0 +1,15 @@
+/target
+/.settings
+.classpath
+.project
+*.iml
+# Package Files #
+.settings/
+target/
+deploy.bat
+
+/pom_bak.xml
+/deploy_sing.bat
+/build/
+/bin/
+.idea/
