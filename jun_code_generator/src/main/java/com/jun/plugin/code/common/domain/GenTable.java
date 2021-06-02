@@ -2,6 +2,7 @@ package com.jun.plugin.code.common.domain;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.jun.plugin.code.common.entity.BaseEntity;
 import com.jun.plugin.code.common.util.GenConstants;
 import com.jun.plugin.code.common.util.StringUtils;
 

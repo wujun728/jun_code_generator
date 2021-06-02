@@ -1,4 +1,4 @@
-package com.jun.plugin.code.generator.model;
+package com.jun.plugin.code.generator.core.model;
 
 import java.util.List;
 

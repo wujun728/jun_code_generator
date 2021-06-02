@@ -3,6 +3,7 @@ package com.jun.plugin.code.common.domain;
 
 import javax.validation.constraints.NotBlank;
 
+import com.jun.plugin.code.common.entity.BaseEntity;
 import com.jun.plugin.code.common.util.StringUtils;
 
 /**

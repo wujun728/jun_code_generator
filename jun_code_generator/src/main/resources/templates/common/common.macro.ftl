@@ -56,7 +56,7 @@
     <nav class="navbar navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="${request.contextPath}/" class="navbar-brand"><b>JUN Code Generator</b></a>
+                <a href="${request.contextPath}/" class="navbar-brand"><b>Jun Code Generator</b></a>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -65,7 +65,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
-                        <a target="_blank" href="https://github.com/wujun728/jun_code_generator/">官方文档</a>
+                        <a target="_blank" href="https://nb666.net/">官方文档</a>
                         <#--<a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <span class="hidden-xs">表结构</span>
                         </a>
@@ -85,10 +85,10 @@
 <#macro commonFooter >
 <footer class="main-footer">
     <div class="container">
-        Powered by <b>JUN Code Generator</b> v0.0.1
+        Powered by <b>Jun Code Generator</b> v1.0.0
         <div class="pull-right hidden-xs">
             <strong>Copyright &copy; 2018-${.now?string('yyyy')} &nbsp;
-                <a href="https://code.nb666.net/" target="_blank" >nb666</a>
+                <a href="https://www.nb666.net/" target="_blank" >nb666</a>
                 <a href="https://github.com/wujun728/jun_code_generator" target="_blank" >github</a>
             </strong><!-- All rights reserved. -->
         </div>

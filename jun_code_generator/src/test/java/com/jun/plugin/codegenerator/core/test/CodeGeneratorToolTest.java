@@ -6,9 +6,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.jun.plugin.code.generator.model.ClassInfo;
-import com.jun.plugin.code.generator.util.CodeGeneratorTool;
-import com.jun.plugin.code.generator.util.FreemarkerTool;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.util.CodeGeneratorTool;
+import com.jun.plugin.code.generator.core.util.FreemarkerTool;
 
 import freemarker.template.TemplateException;
 
@@ -51,8 +51,8 @@ public class CodeGeneratorToolTest {
         params.put("classInfo", classInfo);
         
         Map<String, String> result = new HashMap<String, String>();
-        String template_path = "template_v1";
-        result.put("controller_code", freemarkerTool.processString(template_path+"/crud/controller.ftl", params));
+        String template_path = "template_v1/crud";
+        result.put("controller_code", freemarkerTool.processString(template_path+"/controller.ftl", params));
 
     }
 

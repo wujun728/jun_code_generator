@@ -1,4 +1,4 @@
-package com.jun.plugin.code.generator.util;
+package com.jun.plugin.code.generator.core.util;
 
 public class CodeGenerateException extends RuntimeException {
     private static final long serialVersionUID = 42L;

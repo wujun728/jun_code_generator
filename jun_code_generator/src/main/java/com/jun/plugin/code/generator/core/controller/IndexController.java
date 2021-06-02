@@ -1,4 +1,4 @@
-package com.jun.plugin.code.generator.controller;
+package com.jun.plugin.code.generator.core.controller;
 
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jun.plugin.code.generator.model.ClassInfo;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.util.CodeGeneratorTool;
+import com.jun.plugin.code.generator.core.util.FreemarkerTool;
+import com.jun.plugin.code.generator.core.util.ReturnT;
 import com.jun.plugin.code.generator.model.ParamInfo;
-import com.jun.plugin.code.generator.model.ReturnT;
 import com.jun.plugin.code.generator.service.GeneratorService;
-import com.jun.plugin.code.generator.util.CodeGeneratorTool;
-import com.jun.plugin.code.generator.util.FreemarkerTool;
 import com.jun.plugin.code.meta.util.Table;
 
 import javax.annotation.Resource;
@@ -41,7 +41,7 @@ public class IndexController {
     @ResponseBody
     public ReturnT<Map<String, String>> codeGenerate(String tableSql) {
     	
-    	String template_path = "template_ssm";
+    	String template_path = "template_v1/crud";
 
         try {
 

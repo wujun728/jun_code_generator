@@ -1,9 +1,9 @@
-package com.jun.plugin.code.generator.util;
+package com.jun.plugin.code.generator.core.util;
 
 
 import java.io.IOException;
 
-import com.jun.plugin.code.generator.model.ClassInfo;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
 import com.jun.plugin.code.meta.util.Table;
 
 public class CodeGeneratorTool {

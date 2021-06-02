@@ -1,5 +1,12 @@
 package com.jun.plugin.code.common.service.impl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -10,21 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jun.plugin.code.common.config.Global;
-import com.jun.plugin.code.common.contant.Constants;
 import com.jun.plugin.code.common.entity.ColumnInfo;
 import com.jun.plugin.code.common.entity.TableInfo;
 import com.jun.plugin.code.common.mapper.GenMapper;
 import com.jun.plugin.code.common.service.IGenService;
+import com.jun.plugin.code.common.util.Constants;
 import com.jun.plugin.code.common.util.GenUtils;
 import com.jun.plugin.code.common.util.StringUtils;
 import com.jun.plugin.code.common.util.VelocityInitializer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * 代码生成 服务层处理

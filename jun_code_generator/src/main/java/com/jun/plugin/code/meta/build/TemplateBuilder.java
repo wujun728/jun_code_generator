@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.jun.plugin.code.generator.model.FieldInfo;
+import com.jun.plugin.code.generator.core.model.FieldInfo;
 import com.jun.plugin.code.meta.swagger.SwaggerMethod;
 import com.jun.plugin.code.meta.swagger.SwaggerModel;
 import com.jun.plugin.code.meta.swagger.SwaggerModelProperties;

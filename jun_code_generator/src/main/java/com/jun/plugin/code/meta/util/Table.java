@@ -4,7 +4,7 @@ package com.jun.plugin.code.meta.util;
 
 import java.util.List;
 
-import com.jun.plugin.code.generator.model.FieldInfo;
+import com.jun.plugin.code.generator.core.model.FieldInfo;
 
 import lombok.Data;
 @Data

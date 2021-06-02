@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jun.plugin.code.generator.model.ClassInfo;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.util.TableParseUtil;
 import com.jun.plugin.code.generator.model.ParamInfo;
 import com.jun.plugin.code.generator.model.ReturnInfo;
 import com.jun.plugin.code.generator.service.GeneratorService;
 import com.jun.plugin.code.generator.util.MapUtil;
-import com.jun.plugin.code.generator.util.TableParseUtil;
 import com.jun.plugin.code.generator.util.ValueUtil;
 
 import lombok.extern.slf4j.Slf4j;

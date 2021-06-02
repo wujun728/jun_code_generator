@@ -1,4 +1,4 @@
-package com.jun.plugin.code.generator.util;
+package com.jun.plugin.code.generator.core.util;
 
 
 import java.io.IOException;
@@ -39,9 +39,10 @@ import com.alibaba.druid.util.JdbcConstants;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jun.plugin.code.generator.model.ClassInfo;
-import com.jun.plugin.code.generator.model.FieldInfo;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.model.FieldInfo;
 import com.jun.plugin.code.generator.model.ParamInfo;
+import com.jun.plugin.code.generator.util.MapUtil;
 import com.jun.plugin.code.meta.util.Column;
 import com.jun.plugin.code.meta.util.Table;
 

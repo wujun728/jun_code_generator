@@ -12,7 +12,6 @@ import org.apache.velocity.VelocityContext;
 
 import com.jun.plugin.code.common.config.GenConfig;
 import com.jun.plugin.code.common.config.Global;
-import com.jun.plugin.code.common.contant.Constants;
 import com.jun.plugin.code.common.domain.GenTable;
 import com.jun.plugin.code.common.domain.GenTableColumn;
 import com.jun.plugin.code.common.entity.ColumnInfo;
