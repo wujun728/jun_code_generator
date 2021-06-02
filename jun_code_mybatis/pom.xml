@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jun.plugin</groupId>
-    <artifactId>jun_mybatis_generator</artifactId>
+    <artifactId>jun_code_mybatis</artifactId>
     <version>1.0</version>
 
     <dependencies>
