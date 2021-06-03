@@ -16,15 +16,19 @@ import com.jun.plugin.code.common.domain.GenTable;
 import com.jun.plugin.code.common.domain.GenTableColumn;
 import com.jun.plugin.code.common.entity.ColumnInfo;
 import com.jun.plugin.code.common.entity.TableInfo;
+import com.jun.plugin.code.generator.core.model.ClassInfo;
+import com.jun.plugin.code.generator.core.model.FieldInfo;
+import com.jun.plugin.code.meta.util.Column;
+import com.jun.plugin.code.meta.util.Table;
 
 /**
  * 代码生成器 工具类
  * 
- * @author wcy
+ * @author Wujun
  */
 public class GenUtils {
 	/** 项目空间路径 */
-	private static final String PROJECT_PATH = "main/java/com/wcy";
+	private static final String PROJECT_PATH = "main/java/com/test";
 
 	/** mybatis空间路径 */
 	private static final String MYBATIS_PATH = "main/resources/mybatis";
@@ -110,6 +114,59 @@ public class GenUtils {
 				"templates/template_v1/crud/mybatis.ftl", "templates/template_v1/crud/service.ftl",
 				"templates/template_v1/crud/service_impl.ftl");
 		return templates;
+	}
+
+	public static ClassInfo getClassInfo(TableInfo table) {
+		ClassInfo c = new ClassInfo();
+		c.setClassName(table.getClassName());
+		c.setClassComment(table.getTableComment());
+		c.setTableName(table.getTableName());
+		List<FieldInfo> fieldList = Lists.newArrayList();
+		List<ColumnInfo> columnList = table.getColumns();
+		columnList.forEach(item -> {
+			FieldInfo f = new FieldInfo();
+			f.setColumnName(item.getColumnName());
+			f.setFieldClass(item.getAttrType());// 获取字段类类型
+			f.setFieldComment(item.getColumnComment());
+			f.setFieldLength(null);// 获取字段长度
+			f.setFieldName(item.getAttrName());
+			fieldList.add(f);
+		});
+		c.setFieldList(fieldList);
+		return c;
+	}
+
+	public static Table getTableInfo(TableInfo table) {
+		Table t = new Table();
+		t.setClassName(table.getClassName());
+		t.setClassComment(table.getTableComment());
+		t.setTableName(table.getTableName());
+		t.setClassNameLower(table.getClassname());
+		t.setRemarks(table.getRemark());
+		t.setSqlName(table.getTableName());
+		List<Column> column = Lists.newArrayList();
+		List<ColumnInfo> columnList = table.getColumns();
+		columnList.forEach(item -> {
+			Column c = new Column();
+			c.setColumn(item.getColumnName());
+			c.setColumnName(item.getColumnName());
+			c.setDesc(item.getColumnComment());
+			c.setFieldClass(item.getAttrType());
+			c.setFieldComment(item.getColumnComment());
+			c.setFieldName(item.getAttrName());
+			c.setId(false);
+			c.setIdentity(null);
+			c.setLength(null);
+			c.setName(item.getAttrname());
+			c.setNullable(null);
+			c.setSimpleType(null);
+			c.setType(item.getAttrType());
+			c.setUpperName(item.getAttrName());
+			column.add(c);
+		});
+		t.setColumnList(column);
+		return t;
+
 	}
 
 	/**
