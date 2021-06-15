@@ -1,6 +1,28 @@
 补充TODO待办清单
 
 总体待办：
+	doc
+	aicode\
+	biu\
+	coderfun-bom\
+	coderfun-boot\
+	coderfun-member\
+	codeutil\
+	common\
+	dp-generator\
+	fieldmeta\
+	generatetabledesign2\
+	klg-j2ee-dataacess-demo\
+	klg-jpa\
+	mis\
+	simple-fast-generator\
+	template-ssje\
+	xutils\
+	xxl-deep\
+	zfb-mall\
+	预约miniapp\
+	gen.sql
+	
 NOTE20210311
 	jun_2021\
 	jun_framework\
@@ -71,12 +93,7 @@ Jun_ssm
 	spring_ssm_cluster\ 干掉，代码ssm
 	spring_ssm_easyui\ 外部跑起来，代码ssm
 	spring_wind\    合并到ssm framework
- 
- 
-
- 
- 
- 
+  
 jun_product-----
 	123\
 	BlogHtTemplate\ 迁移到jun_frontend/jun_layui
