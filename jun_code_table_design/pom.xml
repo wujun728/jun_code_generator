@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jun.plugin</groupId>
-    <artifactId>jun_excel_to_table</artifactId>
+    <artifactId>jun_code_table_design</artifactId>
     <version>1.0</version>
 
     <properties>
