@@ -1,5 +1,18 @@
 # SqlGeneratorExcel
 
+easypoi vs easyexcel vs poi
+easypoi导入Excel最佳实践 - WeJan1 - 博客园
+https://www.cnblogs.com/vcmq/p/12149673.html
+
+利用阿里研发的easyexcel导入导出excel，避免OOM，并对excel加密保护_qq_40184563的博客-CSDN博客
+https://blog.csdn.net/qq_40184563/article/details/102687723
+
+解决javapoi海量数据导出内存溢出问题_一个摩羯座的程序猿-CSDN博客
+https://blog.csdn.net/yiwangjiushixingfu/article/details/80258148
+
+poi导致内存泄露分析_jackllvv的博客-CSDN博客
+https://blog.csdn.net/asdasd3418/article/details/84850670
+
 #### 介绍
 数据库文档生成工具，根据数据库存在的表 反解析成Excel数据库文档
 
