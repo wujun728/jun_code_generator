@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jun.plugin.project.modulename.mapper.BizNovelMapper">
+
+    <select id="getBizNovelById" resultType="com.jun.plugin.project.modulename.domain.BizNovel">
+        select
+                id as id,
+                type as type,
+                url as url,
+                title as title,
+                content as content,
+                content_detail as contentDetail,
+                uptime as uptime,
+                createtime as createtime,
+                fileid as fileid
+        from biz_novel
+        <trim prefix="where" prefixOverrides="and | or">
+                   <if test="id != null">
+                       and id=#{id}
+                   </if>
+        </trim>
+    </select>
+
+    <select id="listBizNovel" resultType="com.jun.plugin.project.modulename.domain.BizNovel" parameterType="java.util.Map">
+        select
+                 id as id,
+                 type as type,
+                 url as url,
+                 title as title,
+                 content as content,
+                 content_detail as contentDetail,
+                 uptime as uptime,
+                 createtime as createtime,
+                 fileid as fileid
+        from biz_novel
+        <trim prefix="where" prefixOverrides="and | or">
+                <if test="id != null ">
+                    and id=#{id}
+                </if>
+                <if test="type != null and type!=''">
+                    and type=#{type}
+                </if>
+                <if test="url != null and url!=''">
+                    and url=#{url}
+                </if>
+                <if test="title != null and title!=''">
+                    and title=#{title}
+                </if>
+                <if test="content != null and content!=''">
+                    and content=#{content}
+                </if>
+                <if test="contentDetail != null and contentDetail!=''">
+                    and content_detail=#{contentDetail}
+                </if>
+                <if test="uptime != null and uptime!=''">
+                    and uptime=#{uptime}
+                </if>
+                <if test="createtime != null ">
+                    and createtime=#{createtime}
+                </if>
+                <if test="fileid != null ">
+                    and fileid=#{fileid}
+                </if>
+        </trim>
+    </select>
+
+    <select id="pageBizNovel" resultType="com.jun.plugin.project.modulename.domain.BizNovel" parameterType="java.util.Map">
+        select
+                 id as id,
+                 type as type,
+                 url as url,
+                 title as title,
+                 content as content,
+                 content_detail as contentDetail,
+                 uptime as uptime,
+                 createtime as createtime,
+                 fileid as fileid
+        from biz_novel
+        <trim prefix="where" prefixOverrides="and | or">
+                <if test="id != null ">
+                    and id=#{id}
+                </if>
+                <if test="type != null and type!=''">
+                    and type=#{type}
+                </if>
+                <if test="url != null and url!=''">
+                    and url=#{url}
+                </if>
+                <if test="title != null and title!=''">
+                    and title=#{title}
+                </if>
+                <if test="content != null and content!=''">
+                    and content=#{content}
+                </if>
+                <if test="contentDetail != null and contentDetail!=''">
+                    and content_detail=#{contentDetail}
+                </if>
+                <if test="uptime != null and uptime!=''">
+                    and uptime=#{uptime}
+                </if>
+                <if test="createtime != null ">
+                    and createtime=#{createtime}
+                </if>
+                <if test="fileid != null ">
+                    and fileid=#{fileid}
+                </if>
+        </trim>
+    </select>
+
+    <insert id="addBizNovel" parameterType="com.jun.plugin.project.modulename.domain.BizNovel">
+        insert into biz_novel(
+                id,
+                type,
+                url,
+                title,
+                content,
+                content_detail,
+                uptime,
+                createtime,
+                fileid)
+        values(
+                #{id},
+                #{type},
+                #{url},
+                #{title},
+                #{content},
+                #{contentDetail},
+                #{uptime},
+                #{createtime},
+                #{fileid})
+    </insert>
+
+    <update id="updateBizNovel" parameterType="com.jun.plugin.project.modulename.domain.BizNovel">
+        update biz_novel
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+                        <if test="type != null and type!=''">
+                            type=#{type},
+                        </if>
+                        <if test="url != null and url!=''">
+                            url=#{url},
+                        </if>
+                        <if test="title != null and title!=''">
+                            title=#{title},
+                        </if>
+                        <if test="content != null and content!=''">
+                            content=#{content},
+                        </if>
+                        <if test="contentDetail != null and contentDetail!=''">
+                            content_detail=#{contentDetail},
+                        </if>
+                        <if test="uptime != null and uptime!=''">
+                            uptime=#{uptime},
+                        </if>
+                        <if test="createtime != null ">
+                            createtime=#{createtime},
+                        </if>
+                        <if test="fileid != null ">
+                            fileid=#{fileid},
+                        </if>
+        </trim>
+    </update>
+
+    <update id="removeBizNovelById">
+        update biz_novel set status = -1
+        <trim prefix="where" prefixOverrides="and | or">
+                   <if test="id != null">
+                       and id=#{id}
+                   </if>
+        </trim>
+    </update>
+
+    <delete id="deleteBizNovelById" >
+        delete from biz_novel
+        <trim prefix="where" prefixOverrides="and | or">
+                   <if test="id != null">
+                       and id=#{id}
+                   </if>
+        </trim>
+    </delete>
+</mapper>

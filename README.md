@@ -4,10 +4,6 @@
 
 Jun_code_generator
 doc\ 
-	  
-	
-	dp-generator\   合并到ssm里面，not-boot
-	  
 	simple-fast-generator\   合并到code_mplus
 	
 jun_code_generator\

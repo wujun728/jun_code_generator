@@ -45,7 +45,7 @@ class SpringApplicationTests {
         gc.setFileOverride(false); // 默认 false ,是否覆盖已生成文件
         gc.setOpen(false); //默认true ,是否打开输出目录
         gc.setEnableCache(false); // 默认false,是否开启二级缓存
-        gc.setAuthor("zhb"); // 作者
+        gc.setAuthor("jun"); // 作者
         gc.setSwagger2(true); //默认false
         gc.setBaseResultMap(true); // 默认false
         gc.setDateType(DateType.TIME_PACK); // 时间策略 默认TIME_PACK
@@ -72,8 +72,8 @@ class SpringApplicationTests {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("website.abin.project");
-        pc.setModuleName("student"); //此处是所属模块名称
+        pc.setParent("com.jun.plugin.project");
+        pc.setModuleName("modulename"); //此处是所属模块名称
         pc.setEntity("domain"); //默认entity,controller,service,service.impl,mapper,mapper.xml
         pc.setXml("");
         generator.setPackageInfo(pc);
@@ -125,7 +125,7 @@ class SpringApplicationTests {
         sc.setEntitySerialVersionUID(true); //默认true
         sc.setEntityColumnConstant(true); //默认false
 //      sc.setTablePrefix("com_"); // 生成的实体类去除表前缀
-        sc.setInclude("student"); // 表名，用，隔开  需要生产
+        sc.setInclude("biz_novel"); // 表名，用，隔开  需要生产
 //      sc.setExclude(""); // 不需要生成  二选一
         sc.setEntityTableFieldAnnotationEnable(true); // 默认false 注释
         sc.setControllerMappingHyphenStyle(false); //默认false

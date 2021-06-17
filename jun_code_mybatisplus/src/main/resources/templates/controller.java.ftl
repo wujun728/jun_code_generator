@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.*;
 import java.util.*;
-import website.abin.common.ResultBean;
+import com.jun.plugin.code_generator.common.ResultBean;
 import  ${package.Service}.${table.serviceName};
 import  ${package.Entity}.${table.entityName};
 <#if superControllerClassPackage??>
