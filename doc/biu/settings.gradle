@@ -1,4 +1,0 @@
-rootProject.name = 'biu'
-include 'server'
-include 'browser'
-

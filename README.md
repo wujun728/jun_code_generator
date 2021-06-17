@@ -3,24 +3,13 @@
 #### 基础篇(工具)：代码生成器（jun_code_generator）
 
 Jun_code_generator
-doc\
-	aicode\   先构建基于boot的jun_ssm_common包,login页面合并到demo里面
-	biu\ ---合并到ssm_boot里面
-	coderfun-bom\   ***     集成到ssh里面2
-	coderfun-boot\   *** 集成到ssh里面2
-	coderfun-member\   ***   集成到ssh里面2
-	codeutil\ 模板合并到 jun_maven_template
-	common\ 合并到jun_ssh_common里面
+doc\ 
+	  
+	
 	dp-generator\   合并到ssm里面，not-boot
-	fieldmeta\     *** 集成到ssh里面1
-	generatetabledesign2\   干掉
-	klg-j2ee-dataacess-demo\   ***   集成到ssh里面2
-	klg-jpa\   ***   集成到ssh里面2
-	mis\   干掉
+	  
 	simple-fast-generator\   合并到code_mplus
-	template-ssje\    ***   合并到ssh里面
-	xutils\    *** 集成到ssh里面1 
- 
+	
 jun_code_generator\
 	github.com/alibaba/easyexcel
 	集成easyexcel读取文件的功能noModelRead
