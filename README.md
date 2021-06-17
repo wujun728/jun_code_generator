@@ -2,6 +2,253 @@
 
 #### 基础篇(工具)：代码生成器（jun_code_generator）
 
+Jun_code_generator
+doc\
+	aicode\   先构建基于boot的jun_ssm_common包,login页面合并到demo里面
+	biu\ ---合并到ssm_boot里面
+	coderfun-bom\   ***     集成到ssh里面2
+	coderfun-boot\   *** 集成到ssh里面2
+	coderfun-member\   ***   集成到ssh里面2
+	codeutil\ 模板合并到 jun_maven_template
+	common\ 合并到jun_ssh_common里面
+	dp-generator\   合并到ssm里面，not-boot
+	fieldmeta\     *** 集成到ssh里面1
+	generatetabledesign2\   干掉
+	klg-j2ee-dataacess-demo\   ***   集成到ssh里面2
+	klg-jpa\   ***   集成到ssh里面2
+	mis\   干掉
+	simple-fast-generator\   合并到code_mplus
+	template-ssje\    ***   合并到ssh里面
+	xutils\    *** 集成到ssh里面1 
+ 
+jun_code_generator\
+	github.com/alibaba/easyexcel
+	集成easyexcel读取文件的功能noModelRead
+jun_code_mybatis\
+jun_code_mybatisplus\  
+jun_code_table_design\
+	SqlGeneratorExcel   整合导入导出，替换为easyexcel
+
+
+/**
+* field info
+*/
+@Data
+public class FieldInfo {
+ 
+    private String columnName;//列名 name
+    private String fieldComment;//列备注 desc
+    private String columnType; ////字段类型
+    private String columnSize;//字段长度
+    private String nullable;//是否必填
+    private String isPrimaryKey;//是否是主键  id
+    private String isAutoincrement;//是否自增  YES自增，NO：非自增 identity
+   
+    private String fieldName;//类属性名称
+    private String fieldNameFirstUpper;//首字母大写属性名字 upperName
+    private String fieldType; ////类属性类型 type
+    private String fieldSimpleType; //属性类型 simpleType
+    private String fieldJavaTypeClass; //属性类型 simpleType
+   
+}
+ 
+@Data
+public class ClassInfo {
+ 
+    private String tableName;//表名
+    private String className;//类名小写
+    private String ClassName;//类名大写
+    private String classNameLower;//类名小写
+    private String sqlName;// sqlName
+    private String tableRemarks;// 备注remarks
+    private List<FieldInfo> fieldList;
+    private List<Column> columnList;
+ 
+}
+ 
+ 
+
+https://github.com/alibaba/easyexcel
+ 
+https://blog.csdn.net/qq_35219282/article/details/108593454
+ 
+ 
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/CellDataDemoHeadDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/CellDataReadDemoData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/ConverterData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/ConverterDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/CustomStringStringConverter.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/DemoDAO.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/DemoData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/DemoDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/DemoExceptionListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/DemoHeadDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/ExceptionDemoData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/IndexOrNameData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/IndexOrNameDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/tableModelDataListener.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/ReadTest.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/TableData.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/TableDataListener2.java
+/easyexcel/src/test/java/com/alibaba/easyexcel/test/table/TableTest.java
+ 
+public class TableTest {
+ 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TableTest.class);
+ 
+    /**
+     * 不创建对象的读
+     */
+    @Test
+    public void noModelRead() {
+        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "table_designer.xlsx";
+//        String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
+        // 这里 只要，然后读取第一个sheet 同步读取会自动finish
+        EasyExcel.read(fileName, new TableDataListener2()).sheet().doRead();
+    }
+}
+ 
+ 
+ 
+ 
+ 
+package com.alibaba.easyexcel.test.table;
+ 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+ 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+ 
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.metadata.Cell;
+import com.alibaba.fastjson.JSON;
+ 
+/**
+* 直接用map接收数据
+*
+* @author Jiaju Zhuang
+*/
+public class TableDataListener2 extends AnalysisEventListener<Map<Integer, String>> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TableDataListener2.class);
+    /**
+     * 每隔5条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
+     */
+    private static final int BATCH_COUNT = 5;
+    List<Map<Integer, String>> list = new ArrayList<Map<Integer, String>>();
+ 
+    @Override
+    public void invoke(Map<Integer, String> data, AnalysisContext context) {
+        LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
+System.out.println(" 行："+context.readRowHolder().getRowIndex());
+System.out.println(" 对象："+data);
+System.out.println("Map 结构："+context.readRowHolder().getCellMap());
+       
+        int sheetNo = context.readSheetHolder().getSheetNo();
+        if (sheetNo == 0) {
+            // XXXX表
+//            GoodsReserve goodsReserve = new GoodsReserve();
+            // 获取行的索引
+            int index = context.readRowHolder().getRowIndex();
+            // 获取该行的map数据
+            Map<Integer, Cell> map = context.readRowHolder().getCellMap();
+            // excel最后一行备注信息
+            String remark = "备注：以上为数据填写区域，各项单元格必填。";
+            // 取指定行列的值
+            if (index == 1) {
+                // 取所属辖区和填表日期
+                String area = context.readRowHolder().getCellMap().get(1).toString();
+                // 提取省市区
+                area = area.replaceAll("省（直辖市、自治区）",",").replaceAll("市（州、盟）",",").replaceAll("县（市、区、旗）","").replaceAll(" ","");
+                // 取填表日期
+                String tableDate = context.readRowHolder().getCellMap().get(4).toString().replaceAll("填表日期：","").replaceAll(" ","");
+System.out.println(" 内容1："+area+"=="+tableDate);
+//                warReserve.setArea(area);
+//                warReserve.setTableDate(tableDate);
+            }else if (index == 3) {
+                // 取仓库名称, 储备库类型, 编号, 详细地址, 管理单位
+                String storeName = context.readRowHolder().getCellMap().get(0).toString();
+                String storeType = context.readRowHolder().getCellMap().get(1).toString();
+                String number = context.readRowHolder().getCellMap().get(2).toString();
+                String address = context.readRowHolder().getCellMap().get(3).toString();
+                String managementUnit = context.readRowHolder().getCellMap().get(4).toString();
+System.out.println(" 内容2："+storeName+"=="+storeType+"=="+number+"=="+address+"=="+managementUnit);
+//                warReserve.setStoreName(storeName);
+//                warReserve.setStoreType(storeType);
+//                warReserve.setNumber(number);
+//                warReserve.setAddress(address);
+//                warReserve.setManagementUnit(managementUnit);
+            }else if (index == 6) {
+                // 取经度, 纬度, 负责人姓名，负责人电话
+                String longitude = context.readRowHolder().getCellMap().get(0).toString();
+                String latitude = context.readRowHolder().getCellMap().get(1).toString();
+                String name = context.readRowHolder().getCellMap().get(2).toString();
+                String phone = context.readRowHolder().getCellMap().get(3).toString();
+System.out.println(" 内容3："+longitude+"=="+latitude+"=="+name+"=="+phone);
+//                warReserve.setLongitude(longitude);
+//                warReserve.setLatitude(latitude);
+//                warReserve.setName(name);
+//                warReserve.setPhone(phone);
+            }else if (index >= 9 && !map.get(0).toString().equals(remark)) {
+                // 取主要储备物资中名称, 型号, 数量, 计量单位
+                String goodsName = context.readRowHolder().getCellMap().get(0).toString();
+                String goodsModel = context.readRowHolder().getCellMap().get(2).toString();
+                String goodsNumber = context.readRowHolder().getCellMap().get(3).toString();
+                String goodsUnit = context.readRowHolder().getCellMap().get(4).toString();
+System.out.println(" 内容4："+goodsName+"=="+goodsModel+"=="+goodsNumber+"=="+goodsUnit);
+//                goodsReserve.setGoodsName(goodsName);
+//                goodsReserve.setGoodsModel(goodsModel);
+//                goodsReserve.setGoodsNumber(goodsNumber);
+//                goodsReserve.setGoodsUnit(goodsUnit);
+//                list.add(goodsReserve);
+            }
+//            else if (map!=null&&map.get(0).toString().equals(remark)){
+//                System.out.println(remark);
+//            }
+            
+        }
+//        
+
+
+
+
+
+adminlte
+https://github.com/huanggeshuai/ssmwithTab
+资产管理-C#-Easyui
+https://github.com/qq283335746/Asset
+设备管理
+https://github.com/h-yazhe/device-manager
+ 
+https://github.com/moshowgame/SpringBootCodeGenerator
+https://github.com/SpringCloud/spring-cloud-codegen
+http://github.com/thinkgem/jeesite_autocode
+ 
+Readme.md template
+https://github.com/SpringCloud/spring-cloud-codegen
+ 
+plugin
+https://github.com/RudeCrab/rude-java/tree/master/project-practice
+ 
+ 
+干掉，放到plugin里面
+https://github.com/wujun728/jun_frontend_ui
+ 
+boot
+https://github.com/yangzongzhuan/RuoYi
+ 
+Boot
+https://github.com/wujun728/jun_springboot 
+合并到jun_ssm,并重命名
+ 
+https://github.com/wangyushuai/inspinia_admin_java_ssm
+ 
+
+
+
+
 
 ---jun_code_generator
 123\

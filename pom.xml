@@ -13,14 +13,11 @@
 	</properties>
 
 	<modules>		
-
-	  <module>jun_code_generator</module>
-	  <module>jun_excel_to_table</module>
-	  <module>jun_maven_template</module>
-	  <module>jun_mybatis_generator</module>
-	  <module>jun_mybatisplus_generator</module>
-		  
-  </modules>
+		<module>jun_code_generator</module>
+		<module>jun_code_mybatis</module>
+		<module>jun_code_mybatisplus</module>
+		<module>jun_code_table_design</module>
+  	</modules>
 
 	<dependencies>
 		<dependency>
