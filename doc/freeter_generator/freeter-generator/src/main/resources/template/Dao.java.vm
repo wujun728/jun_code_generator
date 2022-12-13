@@ -1,0 +1,33 @@
+package ${package}.${moduleName}.dao;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import java.util.List;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+
+import org.apache.ibatis.annotations.Param;
+import ${package}.${moduleName}.entity.vo.${className}VO;
+import ${package}.${moduleName}.entity.view.${className}View;
+
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Dao extends BaseMapper<${className}Entity> {
+	
+	List<${className}VO> selectListVO(@Param("ew") Wrapper<${className}Entity> wrapper);
+	
+	${className}VO selectVO(@Param("ew") Wrapper<${className}Entity> wrapper);
+	
+	
+	List<${className}View> selectListView(@Param("ew") Wrapper<${className}Entity> wrapper);
+
+	List<${className}View> selectListView(Pagination page,@Param("ew") Wrapper<${className}Entity> wrapper);
+	
+	${className}View selectView(@Param("ew") Wrapper<${className}Entity> wrapper);
+}

@@ -1,0 +1,66 @@
+package ${package}.${moduleName}.entity.vo;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.util.Date;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+ 
+
+/**
+ * ${comments}
+ * 手机端接口返回实体辅助类 
+ * （主要作用去除一些不必要的字段）
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@ApiModel(value = "${className}VO")
+public class ${className}VO  implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	 #foreach ($column in $columns)
+	#if($column.columnName != $pk.columnName && $column.attrname != 'updateBy' && $column.attrname != 'createBy' && $column.attrname != 'updateTime' && $column.attrname != 'createTime' && $column.attrname != 'sort')
+	
+	/**
+	 * $column.comments
+	 */
+	#if($column.attrType == 'Date')
+	
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat #end
+
+	@ApiModelProperty(value = "${column.comments}") 
+	private $column.attrType $column.attrname;
+#end
+#end
+#foreach ($column in $columns)
+	#if($column.columnName != $pk.columnName && $column.attrname != 'updateBy' && $column.attrname != 'createBy' && $column.attrname != 'updateTime' && $column.attrname != 'createTime' && $column.attrname != 'sort')
+	
+	
+	/**
+	 * 设置：${column.comments}
+	 */
+	 
+	public void set${column.attrName}($column.attrType $column.attrname) {
+		this.$column.attrname = $column.attrname;
+	}
+	
+	/**
+	 * 获取：${column.comments}
+	 */
+	public $column.attrType get${column.attrName}() {
+		return $column.attrname;
+	}
+	#end 
+	#end
+	
+}

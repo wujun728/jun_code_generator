@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeasy.dictionary.dao.DictionaryDAO">
+    <resultMap id="DictionaryResultMap" type="com.jeasy.dictionary.entity.DictionaryEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="value" property="value" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="typeName" property="typeName" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="TINYINT"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="pcode" property="pcode" jdbcType="VARCHAR"/>
+        <result column="createAt" property="createAt" jdbcType="BIGINT"/>
+        <result column="createBy" property="createBy" jdbcType="BIGINT"/>
+        <result column="createName" property="createName" jdbcType="VARCHAR"/>
+        <result column="updateAt" property="updateAt" jdbcType="BIGINT"/>
+        <result column="updateBy" property="updateBy" jdbcType="BIGINT"/>
+        <result column="updateName" property="updateName" jdbcType="VARCHAR"/>
+        <result column="isDel" property="isDel" jdbcType="TINYINT"/>
+        <result column="isTest" property="isTest" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="select_column_list">SELECT `id`,`name`,`code`,`value`,`type`,`sort`,`pid`,`pcode`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`</sql>
+    <sql id="select_not_del">AND isDel = 0</sql>
+    <sql id="order_by_sql">ORDER BY id DESC</sql>
+    <sql id="insert_into_sql">INSERT INTO `bd_dictionary` (`name`,`code`,`value`,`type`,`sort`,`pid`,`pcode`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`)</sql>
+    <sql id="delete_from_sql">UPDATE `bd_dictionary`</sql>
+    <sql id="update_table_sql">UPDATE `bd_dictionary`</sql>
+    <sql id="select_count_sql">SELECT COUNT(1) FROM `bd_dictionary`</sql>
+    <sql id="from_sql">FROM `bd_dictionary`</sql>
+    <sql id="insert_table_sql">INSERT INTO `bd_dictionary`</sql>
+    <sql id="limit_1_sql">LIMIT 1</sql>
+
+    <insert id="insertBatchAllColumn" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <include refid="insert_into_sql"/>
+        <trim prefix="VALUES" suffixOverrides=",">
+            <if test="list != null">
+                <foreach collection="list" item="item" index="index" separator=",">
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        #{item.name,jdbcType=VARCHAR},
+                        #{item.code,jdbcType=VARCHAR},
+                        #{item.value,jdbcType=INTEGER},
+                        #{item.type,jdbcType=VARCHAR},
+                        #{item.sort,jdbcType=TINYINT},
+                        #{item.pid,jdbcType=BIGINT},
+                        #{item.pcode,jdbcType=VARCHAR},
+                        #{item.createAt,jdbcType=BIGINT},
+                        #{item.createBy,jdbcType=BIGINT},
+                        #{item.createName,jdbcType=VARCHAR},
+                        #{item.updateAt,jdbcType=BIGINT},
+                        #{item.updateBy,jdbcType=BIGINT},
+                        #{item.updateName,jdbcType=VARCHAR},
+                        #{item.isDel,jdbcType=TINYINT},
+                        #{item.isTest,jdbcType=TINYINT},
+                    </trim>
+                </foreach>
+            </if>
+        </trim>
+    </insert>
+</mapper>

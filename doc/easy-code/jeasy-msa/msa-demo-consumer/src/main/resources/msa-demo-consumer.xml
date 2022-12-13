@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	   http://code.alibabatech.com/schema/dubbo
+	   http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!--
+        当前应用信息配置
+    -->
+    <dubbo:application name="msa-demo-consumer" owner="easy-code" organization="easy-code"/>
+
+    <!--
+        多注册中心配置，竖号分隔表示同时连接多个不同注册中心，同一注册中心的多个集群地址用逗号分隔
+    -->
+    <dubbo:registry protocol="zookeeper" address="10.100.19.207:2181,10.100.19.208:2181,10.100.19.209:2181"/>
+
+    <dubbo:monitor address="10.100.19.104:20884"/>
+
+    <bean class="com.jeasy.DemoAction" init-method="start">
+        <property name="bidService" ref="bidService"/>
+        <property name="anotherUserRestService" ref="anotherUserRestService"/>
+    </bean>
+</beans>

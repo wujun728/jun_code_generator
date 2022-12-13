@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 集中配置属性文件 -->
+    <context:property-placeholder location="classpath:*.properties" order="0" ignore-resource-not-found="false"/>
+
+    <!-- 开启组件扫描 -->
+    <!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+    <context:component-scan base-package="com.jeasy.validate"/>
+
+    <bean id="validator" class="com.jeasy.validate.Validator">
+        <property name="handlerMap">
+            <map>
+                <entry key="ValidateDigit" value-ref="validateDigitHandler"/>
+                <entry key="ValidateInt" value-ref="validateIntHandler"/>
+                <entry key="ValidateLong" value-ref="validateLongHandler"/>
+                <entry key="ValidateNotEmpty" value-ref="validateNotEmptyHandler"/>
+                <entry key="ValidateNotNull" value-ref="validateNotNullHandler"/>
+                <entry key="ValidatePattern" value-ref="validatePatternHandler"/>
+                <entry key="ValidateLength" value-ref="validateLengthHandler"/>
+                <entry key="ValidateStringIn" value-ref="validateStringInHandler"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 配置 JSR303 Bean Validator 定义 -->
+    <bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <!-- SpringContextHolder 工具配置 -->
+    <bean class="com.jeasy.common.spring.SpringContextHolder"/>
+</beans>

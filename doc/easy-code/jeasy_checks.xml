@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Checks that a package-info.java file exists for each package.     -->
+    <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage -->
+    <!--<module name="JavadocPackage"/>-->
+    <!-- 检验每个包是否存在package.html文件-->
+    <!-- See http://checkstyle.sf.net/config_javadoc.html#PackageHtml -->
+    <!--
+    <module name="PackageHtml"/>
+    -->
+    <!-- Checks whether files end with a new line.                        -->
+    <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
+    <!--
+        检查文件是否以一个新行结束
+    -->
+    <module name="NewlineAtEndOfFile"/>
+    <!-- Checks that property files contain the same keys.         -->
+    <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
+    <!--
+        检查**.properties配置文件 是否有没有设值的key
+    -->
+    <module name="Translation"/>
+
+    <!--<module name="FileLength">-->
+        <!--<metadata name="net.sf.eclipsecs.core.comment" value="文件长度不超过3000行"/>-->
+        <!--<property name="severity" value="error"/>-->
+        <!--<property name="max" value="3000"/>-->
+        <!--<message key="maxLen.file" value="当前文件长度 {0,number,integer} lines (文件长度不超过{1,number,integer}行)."/>-->
+    <!--</module>-->
+
+    <!-- Checks for whitespace -->
+    <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+    <!--
+        检查文件中是否含有'\t'
+    -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <!-- Miscellaneous other checks. -->
+    <!-- See http://checkstyle.sf.net/config_misc.html -->
+    <!--<module name="RegexpSingleline">-->
+        <!--<property name="format" value="\s+$"/>-->
+        <!--<property name="minimum" value="0"/>-->
+        <!--<property name="maximum" value="0"/>-->
+        <!--<property name="message" value="Line has trailing spaces."/>-->
+    <!--</module>-->
+    <module name="TreeWalker">
+
+        <!-- 不许使用switch,"a++"这样可读性很差的代码 -->
+        <!--<module name="IllegalToken"/>-->
+
+        <!--<module name="IllegalTokenText">-->
+            <!--<property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>-->
+            <!--<property name="format" value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>-->
+            <!--<property name="message" value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>-->
+        <!--</module>-->
+
+        <!--
+            检查类变量的注释
+            scope: 检查变量的范围，例如：public只能检查public修饰的变量，private可以检查所有的变量
+        -->
+        <!--<module name="JavadocVariable">-->
+            <!--<property name="scope" value="private"/>-->
+        <!--</module>-->
+
+        <!--  Validates Javadoc comments to help ensure they are well formed. The following checks are performed:
+                * Ensures the first sentence ends with proper punctuation (That is a period, question mark, or exclamation mark, by default). Javadoc automatically places the first sentence in the method summary table and index. With out proper punctuation the Javadoc may be malformed. All items eligible for the {@inheritDoc} tag are exempt from this requirement.
+                * Check text for Javadoc statements that do not have any description. This includes both completely empty Javadoc, and Javadoc with only tags such as @param and @return.
+                * Check text for incomplete HTML tags. Verifies that HTML tags have corresponding end tags and issues an "Unclosed HTML tag found:" error if not. An "Extra HTML tag found:" error is issued if an end tag is found without a previous open tag.
+                * Check that a package Javadoc comment is well-formed (as described above) and NOT missing from any package-info.java files.
+                * Check for allowed HTML tags. The list of allowed HTML tags is "a", "abbr", "acronym", "address", "area", "b", "bdo", "big", "blockquote", "br", "caption", "cite", "code", "colgroup", "del", "div", "dfn", "dl", "em", "fieldset", "h1" to "h6", "hr", "i", "img", "ins", "kbd", "li", "ol", "p", "pre", "q", "samp", "small", "span", "strong", "sub", "sup", "table", "tbody", "td", "tfoot", "th", "thread", "tr", "tt", "ul".
+            These checks were patterned after the checks made by the DocCheck doclet available from Sun. -->
+        <!--<module name="JavadocStyle"/>-->
+
+        <!-- Checks for Naming Conventions.                  -->
+        <!-- See http://checkstyle.sf.net/config_naming.html -->
+        <!-- Each of these naming modules validates identifiers for particular code elements. Valid identifiers for a naming module are specified by its  format property. The value of format is a  regular expression for valid identifiers. -->
+        <!-- parameters -->
+        <module name="ParameterName">
+            <property name="format" value="(^[a-z][a-zA-Z0-9_]{0,64}$)"/>
+        </module>
+
+        <!-- Checks for Headers                                -->
+        <!-- See http://checkstyle.sf.net/config_header.html   -->
+        <!-- <module name="Header">                            -->
+        <!-- The follow property value demonstrates the ability     -->
+        <!-- to have access to ANT properties. In this case it uses -->
+        <!-- the ${basedir} property to allow Checkstyle to be run  -->
+        <!-- from any directory within a project. See property      -->
+        <!-- expansion,                                             -->
+        <!-- http://checkstyle.sf.net/config.html#properties        -->
+        <!-- <property                                              -->
+        <!--     name="headerFile"                                  -->
+        <!--     value="${basedir}/java.header"/>                   -->
+        <!-- </module> -->
+        <!-- Following interprets the header file as regular expressions. -->
+        <!-- <module name="RegexpHeader"/>                                -->
+
+        <!-- Checks for imports                              -->
+        <!-- See http://checkstyle.sf.net/config_import.html -->
+        <!--
+            必须导入类的完整路径，即不能使用*导入所需的类
+        -->
+        <!--<module name="AvoidStarImport"/>-->
+        <!--
+            检查是否从非法的包中导入了类 illegalPkgs: 定义非法的包名称
+            defaults to sun.* packages
+        -->
+        <module name="IllegalImport"/>
+        <!--
+            检查是否导入了不必显示导入的类
+        -->
+        <module name="RedundantImport"/>
+
+        <!-- 导入排序 -->
+        <!-- groups:分组,哪些是一组的 -->
+        <!-- ordered:同一个组内是否排序,true排序,确省为true -->
+        <!-- separated:各个组之间是否需要用空行分隔,确省为false -->
+        <!-- caseSensitive:是否是大小写敏感的,确省是 -->
+        <!--
+        <module name="ImportOrder">
+        <property name="groups" value="java,javax"/>
+        <property name="ordered" value="true"/>
+        <property name="separated" value="true"/>
+        <property name="caseSensitive" value="true"/>
+        </module>
+        -->
+
+        <!-- Checks for whitespace -->
+        <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+        <!--
+            检查for iterator语句是否使用空格
+            option: 定义初始化语句是否使用空格，例如：space表示使用空格，则for(Iterator iterator = List.iterator(); iterator.hasNext(); iterator.next())就是形式合理的，否则就是形式不合理的
+        -->
+        <module name="EmptyForIteratorPad"/>
+
+        <module name="EmptyForInitializerPad"/>
+
+        <!--
+            检查方法参数的格式
+            allowLineBreaks: 参数是否允许在不同行
+            option: 在参数和括号、参数和标识符之间是否包含空格
+        -->
+        <module name="MethodParamPad">
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+        <!--
+            Checks that there is no whitespace after a token. More specifically, it checks that it is not followed by whitespace, or (if linebreaks are allowed) all characters on the line after are whitespace. To forbid linebreaks after a token, set property allowLineBreaks to  false.
+        -->
+        <!--<module name="NoWhitespaceAfter"/>-->
+        <!--
+            Checks that there is no whitespace before a token. More specifically, it checks that it is not preceded with whitespace, or (if linebreaks are allowed) all characters on the line before are whitespace. To allow linebreaks before a token, set property allowLineBreaks to  true.
+        -->
+        <!--<module name="NoWhitespaceBefore"/>-->
+        <!--
+            检查运算符是否在应在同一行
+            option: 定义运算符的位置，eol在同一行，nl在下一行
+            tokens: 定义检查的类型
+        -->
+        <module name="OperatorWrap"/>
+        <!--
+            检查左小括号'('后边和右小括号')'前边是否有空格
+            option: space表示有空格，nospace表示没有空格
+            tokens: 定义检查的类型
+        -->
+        <module name="ParenPad"/>
+        <!--
+            Checks the policy on the padding of parentheses for typecasts. That is, whether a space is required after a left parenthesis and before a right parenthesis, or such spaces are forbidden.
+            在类型转换时，不允许左圆括号右边有空格，也不允许与右圆括号左边有空格
+        -->
+        <module name="TypecastParenPad"/>
+        <!--
+            检查类型后是否包含空格 Checks that a token is followed by whitespace.
+            tokens: 检查的类型
+        -->
+        <module name="WhitespaceAfter"/>
+        <!--
+            Checks that a token is surrounded by whitespace. Empty constructor and method bodies (blocks) of the form
+            public MyClass() {}      // empty constructor
+            public void func() {}    // empty method
+            may optionally be exempted from the policy using the allowEmptyMethods and allowEmptyConstructors properties.
+            allowEmptyConstructors default value is false
+            allowEmptyMethods default value is false
+        -->
+        <module name="WhitespaceAround"/>
+
+        <!-- Modifier Checks                                    -->
+        <!-- See http://checkstyle.sf.net/config_modifiers.html -->
+        <!--
+            ModifierOrder 检查修饰符的顺序，默认是 public,protected,private,abstract,static,final,transient,volatile,synchronized,native,strictfp
+        -->
+        <module name="ModifierOrder"/>
+        <!--
+            检查是否有多余的修饰符，例如：接口中的方法不必使用public、abstract修饰
+            tokens: 检查的类型
+        -->
+        <module name="RedundantModifier"/>
+
+        <!---
+            字符串比较必须使用 equals()
+        -->
+        <module name="StringLiteralEquality"/>
+
+        <!-- Checks for blocks. You know, those {}'s         -->
+        <!-- See http://checkstyle.sf.net/config_blocks.html -->
+        <!--
+            检查是否有嵌套的代码块
+            allowInSwitchCase: 定义是否允许switch case中使用嵌套的代码块
+        -->
+        <module name="AvoidNestedBlocks"/>
+        <!--
+            检查是否有空代码块
+            option: 定义代码块中应该包含的内容，例如：stmt表示语句
+            tokens: 检查的类型
+        -->
+        <module name="EmptyBlock"/>
+
+        <!--
+            Checks the placement of right curly braces ('}') for  else, try, and catch tokens. The policy to verify is specified using property  option.
+            option: 右大括号是否单独一行显示
+            tokens: 定义检查的类型
+        -->
+        <module name="RightCurly">
+            <property name="option" value="alone"/>
+            <property name="tokens" value="LITERAL_ELSE, METHOD_DEF"/>
+        </module>
+
+        <!-- Checks for common coding problems               -->
+        <!-- See http://checkstyle.sf.net/config_coding.html -->
+        <!--
+            检查是否在同一行初始化， 例如：private int Age = nGe==1 ? 100 : 0; 就应该避免
+            Detects inline conditionals. An example inline conditional is this:
+            String a = getParameter("a");
+            String b = (a==null || a.length<1) ? null : a.substring(1);
+            Rationale: Some developers find inline conditionals hard to read, so their company's coding standards forbids them.
+        -->
+        <module name="AvoidInlineConditionals"/>
+        <!--  The "double-checked locking" idiom (DCL) tries to avoid the runtime cost of synchronization. An example that uses the DCL idiom is this:
+                public class MySingleton
+                {
+                    private static theInstance = null;
+                    private MySingleton() {}
+                    public MySingleton getInstance() {
+                        if ( theInstance == null ) { // synchronize only if necessary
+                            synchronized( MySingleton.class ) {
+                                if ( theInstance == null ) {
+                                    theInstance = new MySingleton();
+                                }
+                            }
+                        }
+                    }
+                }
+                The problem with the DCL idiom in Java is that it just does not work correctly. Using it introduces bugs that are extremely hard to track down and reproduce. The "Double-Checked Locking is Broken" Declaration has an in depth explanation of the exact problem which has to do with the semantics of the Java memory model.
+                The DoubleCheckedLocking check will find source code where a test is wrapped in a synchronized block that is wrapped in the same test, like in the example above. -->
+        <!--<module name="DoubleCheckedLocking"/>    &lt;!&ndash; MY FAVOURITE &ndash;&gt;-->
+        <!--
+            Detects empty statements (standalone ;).
+        -->
+        <module name="EmptyStatement"/>
+        <!--
+            检查在重写了equals方法后是否重写了hashCode方法
+        -->
+        <module name="EqualsHashCode"/>
+        <!--
+            Checks that a local variable or a parameter does not shadow a field that is defined in the same class.
+        -->
+        <module name="HiddenField"/>
+        <!--
+            Checks for illegal instantiations where a factory method is preferred.
+            Rationale: Depending on the project, for some classes it might be preferable to create instances through factory methods rather than calling the constructor.
+            A simple example is the java.lang.Boolean class. In order to save memory and CPU cycles, it is preferable to use the predefined constants TRUE and FALSE. Constructor invocations should be replaced by calls to Boolean.valueOf().
+            Some extremely performance sensitive projects may require the use of factory methods for other classes as well, to enforce the usage of number caches or object pools.
+        -->
+        <module name="IllegalInstantiation">
+            <property name="classes" value="java.lang.Boolean"/>
+        </module>
+        <!--
+            不许内部赋值 Checks for assignments in subexpressions, such as in String s = Integer.toString(i = 2);.
+            Rationale: With the exception of for iterators, all assignments should occur in their own toplevel statement to increase readability. With inner assignments like the above it is difficult to see all places where a variable is set.
+        -->
+        <module name="InnerAssignment"/>
+        <!--
+            Checks that switch statement has "default" clause.
+            检查switch语句是否有‘default’从句
+            Rationale: It's usually a good idea to introduce a default case in every switch statement. Even if the developer is sure that all currently possible cases are covered, this should be expressed in the default branch, e.g. by using an assertion. This way the code is protected aginst later changes, e.g. introduction of new types in an enumeration type.
+        -->
+        <module name="MissingSwitchDefault"/>
+        <!--
+            检查switch中case后是否加入了跳出语句，例如：return、break、throw、continue
+        -->
+        <module name="FallThrough"/>
+        <!--
+            Checks for redundant exceptions declared in throws clause such as duplicates, unchecked exceptions or subclasses of another declared exception.
+            检查是否抛出了多余的异常
+        -->
+        <!--<module name="RedundantThrows">-->
+            <!--<property name="logLoadErrors" value="true"/>-->
+            <!--<property name="suppressLoadErrors" value="true"/>-->
+        <!--</module>-->
+        <!-- 循环控制变量不能被修改 -->
+        <module name="ModifiedControlVariable"/>
+        <!--
+            Checks for overly complicated boolean expressions. Currently finds code like  if (b == true), b || true, !false, etc.
+            检查boolean值是否冗余的地方
+            Rationale: Complex boolean logic makes code hard to understand and maintain.
+        -->
+        <module name="SimplifyBooleanExpression"/>
+
+        <!-- Checks for class design                         -->
+        <!-- See http://checkstyle.sf.net/config_design.html -->
+        <!--  Checks that classes are designed for extension. More specifically, it enforces a programming style where superclasses provide empty "hooks" that can be implemented by subclasses.
+            检查子类是否非法破坏了父类或接口的限制条件
+            The exact rule is that nonprivate, nonstatic methods of classes that can be subclassed must either be
+                * abstract or
+                * final or
+                * have an empty implementation
+            Rationale: This API design style protects superclasses against beeing broken by subclasses. The downside is that subclasses are limited in their flexibility, in particular they cannot prevent execution of code in the superclass, but that also means that subclasses cannot corrupt the state of the superclass by forgetting to call the super method. -->
+        <module name="DesignForExtension"/>
+        <!--
+            Checks that a class which has only private constructors is declared as final.
+            只有私有构造器的类必须声明为final
+        -->
+        <module name="FinalClass"/>
+        <!--
+            Make sure that utility classes (classes that contain only static methods or fields in their API) do not have a public constructor.
+            确保Utils类（只提供static方法和属性的类）没有public构造器。
+            Rationale: Instantiating utility classes does not make sense. Hence the constructors should either be private or (if you want to allow subclassing) protected. A common mistake is forgetting to hide the default constructor.
+            If you make the constructor protected you may want to consider the following constructor implementation technique to disallow instantiating subclasses:
+            public class StringUtils // not final to allow subclassing
+            {
+                protected StringUtils() {
+                    throw new UnsupportedOperationException(); // prevents calls from subclass
+                }
+                public static int count(char c, String s) {
+                    // ...
+               }
+           }-->
+        <module name="HideUtilityClassConstructor"/>
+        <!--
+            Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types.
+            不允许interface像java.ioSerializable一样只作为标记，不包含任何methods和constants。
+            According to Bloch, an interface should describe a type. It is therefore inappropriate to define an interface that does not contain any methods but only constants. The Standard class javax.swing.SwingConstants is an example of a class that would be flagged by this check.
+            The check can be configured to also disallow marker interfaces like java.io.Serializable, that do not contain methods or constants at all.
+        -->
+        <module name="InterfaceIsType"/>
+        <!--
+            Checks visibility of class members. Only static final members may be public; other class members must be private unless property protectedAllowed or packageAllowed is set.
+            检查class成员属性可见性。只有static final 修饰的成员是可以public的。其他的成员属性必需是private的，除非属性protectedAllowed或者packageAllowed设置了true.
+            Public members are not flagged if the name matches the public member regular expression (contains "^serialVersionUID$" by default).
+            Note: Checkstyle 2 used to include "^f[A-Z][a-zA-Z0-9]*$" in the default pattern to allow CMP for EJB 1.1 with the default settings. With EJB 2.0 it is not longer necessary to have public access for persistent fields, hence the default has been changed.
+            Rationale: Enforce encapsulation.
+            强制封装
+        -->
+        <module name="VisibilityModifier"/>
+
+        <!--
+            根据 Sun 编码规范， class 或 interface 中的顺序如下： 1.class 声明。首先是 public,
+            然后是protected , 然后是 package level （不包括access modifier ） 最后是private .
+            (多个class放在一个java文件中的情况） 2.变量声明。 首先是 public, 然后是protected然后是 package
+            level （不包括access modifier ） 最后是private . (多个class放在一个java文件中的情况）
+            3.构造函数 4.方法
+        -->
+        <module name="DeclarationOrder"/>
+        <!-- 不许对方法的参数赋值 -->
+        <module name="ParameterAssignment"/>
+        <!-- 确保某个class 在被使用时都已经被初始化成默认值(对象是null,数字和字符是0,boolean 变量是false.) -->
+        <module name="ExplicitInitialization"/>
+        <!-- 不许有同样内容的String -->
+        <module name="MultipleStringLiterals"/>
+        <!-- 每一行只能定义一个变量 -->
+        <module name="MultipleVariableDeclarations"/>
+        <!-- 不必要的圆括号 -->
+        <module name="UnnecessaryParentheses"/>
+
+        <!-- Miscellaneous other checks.                   -->
+        <!-- See http://checkstyle.sf.net/config_misc.html -->
+        <!--
+            Checks the style of array type definitions. Some like Java-style: public static void main(String[] args) and some like C-style: public static void main(String args[])
+            检查再定义数组时，采用java风格还是c风格，例如：int[] num是java风格，int num[]是c风格。默认是java风格
+        -->
+        <module name="ArrayTypeStyle"/>
+        <!--
+            Check that method/constructor/catch block parameters are final. Interface and abstract methods are not checked - the final keyword does not make sense for interface and abstract method parameters as there is no code that could modify the parameter.
+            检查method/constructor/catch块中的参数是否是final修饰的。
+            Rationale: Changing the value of parameters during the execution of the method's algorithm can be confusing and should be avoided. A great way to let the Java compiler prevent this coding style is to declare parameters final. -->
+        <module name="FinalParameters"/>
+        <!--
+            Checks that long constants are defined with an upper ell. That is ' L' and not 'l'. This is in accordance to the Java Language Specification,  Section 3.10.1.
+            检查是否在long类型是否定义了大写的L.字母小写l和数字1（一）很相似。
+            looks a lot like 1.
+        -->
+        <module name="UpperEll"/>
+
+        <module name="MissingOverride">
+            <metadata name="net.sf.eclipsecs.core.comment" value="需要＠override注解"/>
+            <property name="severity" value="info"/>
+            <property name="id" value="001"/>
+        </module>
+        <!--
+            检查方法的javadoc的注释
+            scope: 可以检查的方法的范围，例如：public只能检查public修饰的方法，private可以检查所有的方法
+            allowMissingParamTags: 是否忽略对参数注释的检查
+            allowMissingThrowsTags: 是否忽略对throws注释的检查
+            allowMissingReturnTag: 是否忽略对return注释的检查
+        -->
+        <module name="JavadocMethod">
+            <property name="scope" value="private"/>
+            <property name="allowMissingParamTags" value="false"/>
+            <property name="allowMissingThrowsTags" value="false"/>
+            <property name="allowMissingReturnTag" value="false"/>
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+            <property name="allowThrowsTagsForSubclasses" value="true"/>
+            <!--允许get set 方法没有注释-->
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+        </module>
+
+        <!-- 不许使用main方法 -->
+        <module name="UncommentedMain"/>
+
+        <!-- 一般性的代码问题,不好的习惯等,可以多 -->
+        <!-- 文件中使用了System.out.print等-->
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="System\.out\.print"/>
+            <property name="message" value="bad practice of use System.out.print"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="System\.exit"/>
+            <property name="message" value="bad practice of use System.exit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <property name="format" value="printStackTrace"/>
+            <property name="message" value="bad practice of use printStackTrace"/>
+        </module>
+
+        <!-- 各种量度 -->
+        <!-- 布尔表达式的复杂度，不超过3 -->
+        <module name="BooleanExpressionComplexity"/>
+        <!-- 类数据的抽象耦合，不超过7 -->
+        <module name="ClassDataAbstractionCoupling"/>
+        <!-- 类的分散复杂度，不超过20 -->
+        <module name="ClassFanOutComplexity"/>
+        <!-- 函数的分支复杂度，不超过10 -->
+        <module name="CyclomaticComplexity"/>
+        <!-- NPath复杂度，不超过200 -->
+        <module name="NPathComplexity"/>
+
+        <!-- 检查是否导入的包没有使用-->
+        <module name="UnusedImports">
+            <property name="severity" value="info"/>
+            <message key="import.unused" value="没用的import - {0}."/>
+        </module>
+        <module name="ConstantName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="常量需要大写下划线连接."/>
+            <property name="severity" value="warning"/>
+            <property name="format" value="(^[A-Z0-9_]{0,64}$)"/>
+            <message key="name.invalidPattern" value="Name ''{0}'' must match pattern ''{1}''.常量需要大写下划线连接．"/>
+        </module>
+        <module name="LocalVariableName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="小写开头"/>
+            <property name="severity" value="info"/>
+        </module>
+        <module name="MemberName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="成员变量须以驼峰命名,如:myField"/>
+            <property name="severity" value="info"/>
+            <property name="format" value="(^[a-z][a-z0-9][a-zA-Z0-9]{0,64}$)"/>
+        </module>
+        <!--
+            检查类和接口的javadoc 默认不检查author 和version tags
+            authorFormat: 检查author标签的格式
+            versionFormat: 检查version标签的格式
+            scope: 可以检查的类的范围，例如：public只能检查public修饰的类，private可以检查所有的类
+            excludeScope: 不能检查的类的范围，例如：public，public的类将不被检查，但访问权限小于public的类仍然会检查，其他的权限以此类推
+            tokens: 该属性适用的类型，例如：CLASS_DEF,INTERFACE_DEF
+        -->
+        <!--<module name="JavadocType">-->
+            <!--<property name="authorFormat" value="\S"/>-->
+            <!--<property name="scope" value="protected"/>-->
+            <!--<property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>-->
+        <!--</module>-->
+        <module name="LineLength">
+            <property name="severity" value="warning"/>
+            <property name="max" value="120"/>
+            <message key="maxLineLen" value="一行不超过 {0,number,integer}个字符 (现在是 {1,number,integer}个)."/>
+        </module>
+        <module name="MethodLength">
+            <metadata name="net.sf.eclipsecs.core.comment" value="方法行数不能太冗长"/>
+            <property name="severity" value="warning"/>
+            <property name="max" value="120"/>
+            <message key="maxLen.method" value="方法行数不能太冗长．Method length is {0,number,integer} lines (max allowed is {1,number,integer})."/>
+        </module>
+        <!-- 匿名类的最大行数,缺省为20 -->
+        <module name="AnonInnerLength">
+            <property name="max" value="60"/>
+        </module>
+        <module name="ParameterNumber">
+            <metadata name="net.sf.eclipsecs.core.comment" value="方法参数太多，请重构．"/>
+            <property name="severity" value="warning"/>
+            <message key="maxParam" value="方法参数太多，请重构．最多允许{0,number,integer}个参数 (found {1,number,integer})."/>
+        </module>
+        <module name="Indentation">
+            <metadata name="net.sf.eclipsecs.core.comment" value="用４个空格代替tab"/>
+            <property name="severity" value="info"/>
+        </module>
+        <module name="NestedIfDepth">
+            <metadata name="net.sf.eclipsecs.core.comment" value="最多４层嵌套"/>
+            <property name="severity" value="warning"/>
+            <property name="max" value="4"/>
+        </module>
+        <!-- 限制return代码段的数量 -->
+        <module name="ReturnCount">
+            <property name="max" value="5"/>
+            <property name="format" value="^$"/>
+        </module>
+        <!-- 确保一个类有package声明 -->
+        <module name="PackageDeclaration"/>
+        <!-- clone方法必须调用了super.clone() -->
+        <module name="SuperClone"/>
+        <!-- finalize 必须调用了super.finalize() -->
+        <module name="SuperFinalize"/>
+        <!-- 不能catch java.lang.Exception -->
+        <module name="IllegalCatch">
+            <property name="illegalClassNames" value="java.lang.Exception"/>
+        </module>
+
+        <!--
+            try-catch 嵌套语句个数 最多2层
+        -->
+        <module name="NestedTryDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="TodoComment">
+            <metadata name="net.sf.eclipsecs.core.comment" value="去掉自动生成的TODO．保留自己的TODO"/>
+            <property name="format" value="TODO Auto"/>
+        </module>
+        <module name="MethodName">
+            <property name="format" value="(^[a-z][a-zA-Z0-9]{0,64}$)"/>
+            <property name="severity" value="info"/>
+        </module>
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+        <!-- static, non-final fields -->
+        <module name="StaticVariableName"/>
+        <module name="TypeName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="类名接口名都是大写开头"/>
+            <property name="format" value="(^[A-Z][a-zA-Z0-9]{0,64}$)"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="LocalFinalVariableName"/>
+        <module name="MethodTypeParameterName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="泛型参数"/>
+            <property name="format" value="^[A-Z][a-zA-Z]*$"/>
+            <message key="name.invalidPattern" value="泛型参数''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <module name="ClassTypeParameterName">
+            <metadata name="net.sf.eclipsecs.core.comment" value="泛型参数"/>
+            <property name="format" value="^[A-Z][a-zA-Z]*$"/>
+            <message key="name.invalidPattern" value="泛型参数 '{0}'' must match pattern ''{1}''."/>
+        </module>
+        <!--
+            option: 定义左大括号'{'显示位置，eol在同一行显示，nl在下一行显示
+            maxLineLength: 大括号'{'所在行行最多容纳的字符数
+            tokens: 该属性适用的类型，例：CLASS_DEF,INTERFACE_DEF,METHOD_DEF,CTOR_DEF
+        -->
+        <module name="LeftCurly">
+            <metadata name="net.sf.eclipsecs.core.comment" value="左括号放在行末"/>
+        </module>
+        <!--
+            NeedBraces 检查是否应该使用括号的地方没有加括号
+            tokens: 定义检查的类型
+         -->
+        <module name="NeedBraces">
+            <metadata name="net.sf.eclipsecs.core.comment" value="即使一行也加｛｝"/>
+            <property name="severity" value="info"/>
+            <message key="needBraces" value="''{0}'' 必须使用 '''{}'''s."/>
+        </module>
+        <module name="EqualsAvoidNull">
+            <metadata name="net.sf.eclipsecs.core.comment" value="equals 避免空指针"/>
+            <property name="severity" value="info"/>
+            <message key="equals.avoid.null" value="字符串表达式，避免出现空指针"/>
+        </module>
+        <module name="MagicNumber">
+            <metadata name="net.sf.eclipsecs.core.comment" value="magic number 避免费解的代码"/>
+            <property name="tokens" value="NUM_DOUBLE, NUM_INT"/>
+            <property name="severity" value="info"/>
+            <property name="ignoreNumbers" value="-1, 0, 1, 2, 3,360,100"/>
+            <message key="magic.number" value="''{0}'' is a magic number.这些数字容易让人费解，建议预定义　如: final int radius = {0};"/>
+        </module>
+        <!--
+            Checks for overly complicated boolean return statements. For example the following code
+            检查是否存在过度复杂的boolean返回值
+            if (valid())
+                return false;
+            else
+                return true;
+            could be written as
+            return !valid();
+            The Idea for this Check has been shamelessly stolen from the equivalent PMD rule.
+        -->
+        <module name="SimplifyBooleanReturn">
+            <metadata name="net.sf.eclipsecs.core.comment" value="存在过度复杂的boolean返回值"/>
+            <message key="simplify.boolreturn" value="Conditional logic can be removed.存在过度复杂的boolean返回值."/>
+        </module>
+        <module name="OuterTypeFilename">
+            <metadata name="net.sf.eclipsecs.core.comment" value="最外面的类名和文件名一致"/>
+        </module>
+    </module>
+</module>

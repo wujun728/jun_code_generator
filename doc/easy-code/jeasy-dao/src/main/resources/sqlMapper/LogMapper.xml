@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeasy.log.dao.LogDAO">
+    <resultMap id="LogResultMap" type="com.jeasy.log.entity.LogEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tableName" property="tableName" jdbcType="VARCHAR"/>
+        <result column="recordId" property="recordId" jdbcType="BIGINT"/>
+        <result column="fieldName" property="fieldName" jdbcType="VARCHAR"/>
+        <result column="logTypeVal" property="logTypeVal" jdbcType="INTEGER"/>
+        <result column="logTypeCode" property="logTypeCode" jdbcType="VARCHAR"/>
+        <result column="optTypeVal" property="optTypeVal" jdbcType="INTEGER"/>
+        <result column="optTypeCode" property="optTypeCode" jdbcType="VARCHAR"/>
+        <result column="optDesc" property="optDesc" jdbcType="VARCHAR"/>
+        <result column="beforeValue" property="beforeValue" jdbcType="VARCHAR"/>
+        <result column="afterValue" property="afterValue" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="createAt" property="createAt" jdbcType="BIGINT"/>
+        <result column="createBy" property="createBy" jdbcType="BIGINT"/>
+        <result column="createName" property="createName" jdbcType="VARCHAR"/>
+        <result column="updateAt" property="updateAt" jdbcType="BIGINT"/>
+        <result column="updateBy" property="updateBy" jdbcType="BIGINT"/>
+        <result column="updateName" property="updateName" jdbcType="VARCHAR"/>
+        <result column="isDel" property="isDel" jdbcType="TINYINT"/>
+        <result column="isTest" property="isTest" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="select_column_list">SELECT `id`,`tableName`,`recordId`,`fieldName`,`logTypeVal`,`logTypeCode`,`optTypeVal`,`optTypeCode`,`optDesc`,`beforeValue`,`afterValue`,`remark`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`</sql>
+    <sql id="select_not_del">AND isDel = 0</sql>
+    <sql id="order_by_sql">ORDER BY id DESC</sql>
+    <sql id="insert_into_sql">INSERT INTO `bd_log` (`tableName`,`recordId`,`fieldName`,`logTypeVal`,`logTypeCode`,`optTypeVal`,`optTypeCode`,`optDesc`,`beforeValue`,`afterValue`,`remark`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`)</sql>
+    <sql id="delete_from_sql">UPDATE `bd_log`</sql>
+    <sql id="update_table_sql">UPDATE `bd_log`</sql>
+    <sql id="select_count_sql">SELECT COUNT(1) FROM `bd_log`</sql>
+    <sql id="from_sql">FROM `bd_log`</sql>
+    <sql id="insert_table_sql">INSERT INTO `bd_log`</sql>
+    <sql id="limit_1_sql">LIMIT 1</sql>
+
+    <insert id="insertBatchAllColumn" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <include refid="insert_into_sql"/>
+        <trim prefix="VALUES" suffixOverrides=",">
+            <if test="list != null">
+                <foreach collection="list" item="item" index="index" separator=",">
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        #{item.tableName,jdbcType=VARCHAR},
+                        #{item.recordId,jdbcType=BIGINT},
+                        #{item.fieldName,jdbcType=VARCHAR},
+                        #{item.logTypeVal,jdbcType=INTEGER},
+                        #{item.logTypeCode,jdbcType=VARCHAR},
+                        #{item.optTypeVal,jdbcType=INTEGER},
+                        #{item.optTypeCode,jdbcType=VARCHAR},
+                        #{item.optDesc,jdbcType=VARCHAR},
+                        #{item.beforeValue,jdbcType=VARCHAR},
+                        #{item.afterValue,jdbcType=VARCHAR},
+                        #{item.remark,jdbcType=VARCHAR},
+                        #{item.createAt,jdbcType=BIGINT},
+                        #{item.createBy,jdbcType=BIGINT},
+                        #{item.createName,jdbcType=VARCHAR},
+                        #{item.updateAt,jdbcType=BIGINT},
+                        #{item.updateBy,jdbcType=BIGINT},
+                        #{item.updateName,jdbcType=VARCHAR},
+                        #{item.isDel,jdbcType=TINYINT},
+                        #{item.isTest,jdbcType=TINYINT},
+                    </trim>
+                </foreach>
+            </if>
+        </trim>
+    </insert>
+</mapper>

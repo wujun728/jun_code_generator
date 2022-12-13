@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeasy.fileattach.dao.FileAttachDAO">
+    <resultMap id="FileAttachResultMap" type="com.jeasy.fileattach.entity.FileAttachEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tableName" property="tableName" jdbcType="VARCHAR"/>
+        <result column="recordId" property="recordId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="iconUrl" property="iconUrl" jdbcType="VARCHAR"/>
+        <result column="previewUrl" property="previewUrl" jdbcType="VARCHAR"/>
+        <result column="createAt" property="createAt" jdbcType="BIGINT"/>
+        <result column="createBy" property="createBy" jdbcType="BIGINT"/>
+        <result column="createName" property="createName" jdbcType="VARCHAR"/>
+        <result column="updateAt" property="updateAt" jdbcType="BIGINT"/>
+        <result column="updateBy" property="updateBy" jdbcType="BIGINT"/>
+        <result column="updateName" property="updateName" jdbcType="VARCHAR"/>
+        <result column="isDel" property="isDel" jdbcType="TINYINT"/>
+        <result column="isTest" property="isTest" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="select_column_list">SELECT `id`,`tableName`,`recordId`,`name`,`url`,`iconUrl`,`previewUrl`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`</sql>
+    <sql id="select_not_del">AND isDel = 0</sql>
+    <sql id="order_by_sql">ORDER BY id DESC</sql>
+    <sql id="insert_into_sql">INSERT INTO `bd_file_attach` (`tableName`,`recordId`,`name`,`url`,`iconUrl`,`previewUrl`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`)</sql>
+    <sql id="delete_from_sql">UPDATE `bd_file_attach`</sql>
+    <sql id="update_table_sql">UPDATE `bd_file_attach`</sql>
+    <sql id="select_count_sql">SELECT COUNT(1) FROM `bd_file_attach`</sql>
+    <sql id="from_sql">FROM `bd_file_attach`</sql>
+    <sql id="insert_table_sql">INSERT INTO `bd_file_attach`</sql>
+    <sql id="limit_1_sql">LIMIT 1</sql>
+
+    <insert id="insertBatchAllColumn" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <include refid="insert_into_sql"/>
+        <trim prefix="VALUES" suffixOverrides=",">
+            <if test="list != null">
+                <foreach collection="list" item="item" index="index" separator=",">
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        #{item.tableName,jdbcType=VARCHAR},
+                        #{item.recordId,jdbcType=BIGINT},
+                        #{item.name,jdbcType=VARCHAR},
+                        #{item.url,jdbcType=VARCHAR},
+                        #{item.iconUrl,jdbcType=VARCHAR},
+                        #{item.previewUrl,jdbcType=VARCHAR},
+                        #{item.createAt,jdbcType=BIGINT},
+                        #{item.createBy,jdbcType=BIGINT},
+                        #{item.createName,jdbcType=VARCHAR},
+                        #{item.updateAt,jdbcType=BIGINT},
+                        #{item.updateBy,jdbcType=BIGINT},
+                        #{item.updateName,jdbcType=VARCHAR},
+                        #{item.isDel,jdbcType=TINYINT},
+                        #{item.isTest,jdbcType=TINYINT},
+                    </trim>
+                </foreach>
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	   http://www.springframework.org/schema/cache
+	   http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <!-- 扫描 cache包 -->
+    <context:component-scan base-package="com.jeasy.cache"/>
+
+    <!--引入基础配置 -->
+    <import resource="classpath*:redis/spring-redis.xml"/>
+
+    <bean id="cacheManager" class="com.jeasy.common.cache.GlobalCacheManager">
+        <property name="transactionAware" value="true"/>
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="shiro-kickout-session"/>
+                    <constructor-arg value="${kickout.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="3600"/>
+                </bean>
+
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="authorizationCache"/>
+                    <constructor-arg value="${authorization.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="3600"/>
+                </bean>
+
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="authenticationCache"/>
+                    <constructor-arg value="${authentication.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="3600"/>
+                </bean>
+
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="activeSessionCache"/>
+                    <constructor-arg value="${activeSession.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="3600"/>
+                </bean>
+
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="oneMinute"/>
+                    <constructor-arg value="${oneMinute.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="60"/>
+                </bean>
+
+                <!-- 默认缓存 -->
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="default"/>
+                    <constructor-arg value="${default.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="3600"/>
+                </bean>
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="halfHour"/>
+                    <constructor-arg value="${halfHour.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="1800"/>
+                </bean>
+                <!-- 天级别的缓存 -->
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="day"/>
+                    <constructor-arg value="${day.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="86400"/>
+                </bean>
+
+                <!-- 星期级别的缓存 -->
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="week"/>
+                    <constructor-arg value="${week.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="604800"/>
+                </bean>
+
+                <!-- 月级别的缓存 -->
+                <bean class="org.springframework.data.redis.cache.RedisCache">
+                    <constructor-arg value="month"/>
+                    <constructor-arg value="${month.prefix}"/>
+                    <constructor-arg ref="redisCustomTemplateWithJdkRedisSearializer"/>
+                    <constructor-arg value="2592000"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="stringKeyGenerator" class="com.jeasy.common.cache.StringKeyGenerator"/>
+
+    <!-- cache注解，和spring-ehcache.xml中的只能使用一个 -->
+    <cache:annotation-driven cache-manager="cacheManager" key-generator="stringKeyGenerator" proxy-target-class="true"/>
+</beans>

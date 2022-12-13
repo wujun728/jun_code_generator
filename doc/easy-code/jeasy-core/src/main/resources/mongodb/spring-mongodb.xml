@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/mongo
+	   http://www.springframework.org/schema/data/mongo/spring-mongo-1.7.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <!--属性文件 -->
+    <context:property-placeholder location="classpath*:mongodb/mongodb.properties"/>
+
+    <mongo:mongo id="mongo" replica-set="${mongo.url}">
+        <mongo:options connections-per-host="${mongo.connectionsPerHost}"
+                       threads-allowed-to-block-for-connection-multiplier="15"
+                       connect-timeout="${mongo.connectTimeout}" max-wait-time="${mongo.maxWaitTime}"
+                       auto-connect-retry="${mongo.autoConnectRetry}" socket-keep-alive="${mongo.socketKeepAlive}"
+                       socket-timeout="${mongo.socketTimeout}" slave-ok="${mongo.slaveOk}"
+                       write-number="1" write-timeout="0" write-fsync="true"/>
+    </mongo:mongo>
+
+    <mongo:db-factory id="mongoDbFactory" dbname="${mongo.dbname}" mongo-ref="mongo" username="${mongo.username}"
+                      password="${mongo.password}"/>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+
+    <!-- spring data,repositories 配置 ,使用时，要额外声明这个repositories位置 -->
+    <mongo:repositories base-package="com.jeasy.mongodb.dao" />
+</beans>

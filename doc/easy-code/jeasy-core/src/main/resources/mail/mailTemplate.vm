@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>邮件模板测试</title>
+</head>
+  <body>
+            <p class="mailContent">${to}：您好!</p>
+            <p class="mailContent">主题：${subject}</p>
+			<p class="mailFooter">此邮件为测试邮件，请勿直接回复。</p>
+            <p class="mailFooter">发送人：${from}</p>
+</body>
+</html>

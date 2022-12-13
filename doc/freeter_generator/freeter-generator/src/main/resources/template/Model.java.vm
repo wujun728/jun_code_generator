@@ -1,0 +1,67 @@
+package ${package}.${moduleName}.entity.model;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotations.TableName;
+import java.util.Date;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+ 
+
+/**
+ * ${comments}
+ * 接收传参的实体类  
+ *（实际开发中配合移动端接口开发手动去掉些没用的字段， 后端一般用entity就够用了） 
+ * 取自ModelAndView 的model名称
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@ApiModel(value = "${className}Model")
+public class ${className}Model  implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	 #foreach ($column in $columns)
+	#if($column.columnName != $pk.columnName && $column.attrname != 'updateBy' && $column.attrname != 'createBy' && $column.attrname != 'updateTime' && $column.attrname != 'createTime' && $column.attrname != 'sort')
+	
+	/**
+	 * $column.comments
+	 */
+	#if($column.attrType == 'Date')
+	
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat #end
+
+	@ApiModelProperty(value = "${column.comments}") 
+	private $column.attrType $column.attrname;
+#end
+#end
+#foreach ($column in $columns)
+	#if($column.columnName != $pk.columnName && $column.attrname != 'updateBy' && $column.attrname != 'createBy' && $column.attrname != 'updateTime' && $column.attrname != 'createTime' && $column.attrname != 'sort')
+	
+	
+	/**
+	 * 设置：${column.comments}
+	 */
+	 
+	public void set${column.attrName}($column.attrType $column.attrname) {
+		this.$column.attrname = $column.attrname;
+	}
+	
+	/**
+	 * 获取：${column.comments}
+	 */
+	public $column.attrType get${column.attrName}() {
+		return $column.attrname;
+	}
+	#end 
+	#end
+	
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <!-- 扫描 zookeeper包 -->
+    <context:component-scan base-package="com.jeasy.zookeeper"/>
+
+    <!--属性文件 -->
+    <context:property-placeholder location="classpath*:/zookeeper/zookeeper.properties"/>
+
+    <!-- 使用zookeeper节点监听，通知，功能时，要添加这个bean -->
+    <bean id="zookeeperService" class="com.jeasy.common.zookeeper.ZooKeeperService">
+        <constructor-arg>
+            <value>${zk.servers}</value>
+        </constructor-arg>
+    </bean>
+</beans>

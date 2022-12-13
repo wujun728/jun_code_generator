@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <!-- 扫描 cache包 -->
+    <context:component-scan base-package="com.jeasy.cache"/>
+
+    <!--属性文件 -->
+    <context:property-placeholder location="classpath*:cache/memcached.properties"/>
+
+    <!-- 商品Key缓存客户端配置 -->
+    <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
+        <property name="servers" value="${memcached.url}"/>
+        <property name="protocol" value="TEXT"/>
+        <property name="transcoder">
+            <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
+                <property name="compressionThreshold" value="1024"/>
+            </bean>
+        </property>
+        <property name="opTimeout" value="3000"/>
+        <property name="timeoutExceptionThreshold" value="19980"/>
+        <property name="hashAlg">
+            <value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
+        </property>
+        <property name="locatorType" value="CONSISTENT"/>
+        <property name="failureMode" value="Redistribute"/>
+        <!-- <property name="failureMode" value="Retry"/> -->
+        <property name="useNagleAlgorithm" value="false"/>
+    </bean>
+
+    <bean id="cacheManager" class="com.jeasy.common.cache.GlobalCacheManager">
+        <property name="transactionAware" value="true"/>
+        <property name="caches">
+            <set>
+                <!-- 默认缓存 -->
+                <bean class="com.jeasy.common.cache.memcached.MemcachedCache">
+                    <property name="name" value="default"/>
+                    <property name="memcachedClient" ref="memcachedClient"/>
+                    <!-- 1小时 -->
+                    <property name="expiredDuration" value="3600"/>
+                </bean>
+
+                <!-- 小时级别的缓存 -->
+                <bean class="com.jeasy.common.cache.memcached.MemcachedCache">
+                    <property name="name" value="hour"/>
+                    <property name="memcachedClient" ref="memcachedClient"/>
+                    <!-- 3小时 -->
+                    <property name="expiredDuration" value="10800"/>
+                </bean>
+
+                <!-- 天级别的缓存 -->
+                <bean class="com.jeasy.common.cache.memcached.MemcachedCache">
+                    <property name="name" value="day"/>
+                    <property name="memcachedClient" ref="memcachedClient"/>
+                    <!-- 1天 -->
+                    <property name="expiredDuration" value="86400"/>
+                </bean>
+
+                <!-- 星期级别的缓存 -->
+                <bean class="com.jeasy.common.cache.memcached.MemcachedCache">
+                    <property name="name" value="week"/>
+                    <property name="memcachedClient" ref="memcachedClient"/>
+                    <!-- 5天 -->
+                    <property name="expiredDuration" value="432000"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="stringKeyGenerator" class="com.jeasy.common.cache.StringKeyGenerator"/>
+
+    <!-- cache注解，和spring-ehcache.xml中的只能使用一个 -->
+    <cache:annotation-driven cache-manager="cacheManager" key-generator="stringKeyGenerator" proxy-target-class="true"/>
+</beans>

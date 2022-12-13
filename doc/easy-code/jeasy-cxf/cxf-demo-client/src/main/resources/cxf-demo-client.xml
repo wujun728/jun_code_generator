@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <jaxws:client id="helloWorld_ed" serviceClass="com.jeasy.cxf.service.HelloService"
+                  address="http://localhost:8080/ws/helloWorld_ed">
+        <!--
+        <jaxws:inInterceptors>
+             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+             <bean class="com.benben.Interceptor.SampleInterceptor"/>
+        </jaxws:inInterceptors>
+        -->
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+            <!--ClientLoginInterceptor没有默认构造函数，所以这里需要constructor-arg把username和password注入到ClientLoginInterceptor-->
+            <bean class="com.jeasy.cxf.interceptor.ClientLoginInterceptor">
+                <constructor-arg name="username" value="admin"/>
+                <constructor-arg name="password" value="admin"/>
+            </bean>
+        </jaxws:outInterceptors>
+    </jaxws:client>
+    <jaxws:client id="helloWorld_jw" serviceClass="com.jeasy.cxf.service.HelloService"
+                  address="http://localhost:8080/ws/helloWorld_jw">
+        <!--
+        <jaxws:inInterceptors>
+             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+             <bean class="com.benben.Interceptor.SampleInterceptor"/>
+        </jaxws:inInterceptors>
+        -->
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+            <!--ClientLoginInterceptor没有默认构造函数，所以这里需要constructor-arg把username和password注入到ClientLoginInterceptor-->
+            <bean class="com.jeasy.cxf.interceptor.ClientLoginInterceptor">
+                <constructor-arg name="username" value="admin"/>
+                <constructor-arg name="password" value="admin"/>
+            </bean>
+        </jaxws:outInterceptors>
+    </jaxws:client>
+
+    <bean id="helloWorld" class="com.jeasy.cxf.service.HelloService" factory-bean="helloWorldFactory"
+          factory-method="create"/>
+
+    <bean id="helloWorldFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+        <property name="serviceClass" value="com.jeasy.cxf.service.HelloService"/>
+        <property name="address" value="http://localhost:8080/ws/helloWorld"/>
+        <property name="outInterceptors">
+            <list>
+                <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+                <!--ClientLoginInterceptor没有默认构造函数，所以这里需要constructor-arg把username和password注入到ClientLoginInterceptor-->
+                <bean class="com.jeasy.cxf.interceptor.ClientLoginInterceptor">
+                    <constructor-arg name="username" value="admin"/>
+                    <constructor-arg name="password" value="admin"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>

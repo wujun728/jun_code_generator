@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/rabbit
+	   http://www.springframework.org/schema/rabbit/spring-rabbit-1.4.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/task
+	   http://www.springframework.org/schema/task/spring-task.xsd"
+       default-lazy-init="true">
+
+    <description>RabbitMQ示例 接收消息 配置</description>
+
+    <!--引入基础配置 -->
+    <import resource="classpath*:rabbitmq-demo-api.xml"/>
+
+    <!-- 扫描rabbitmq包 -->
+    <context:component-scan base-package="com.jeasy.rabbitmq"/>
+
+    <!--
+        声明一个队列
+        durable:是否持久化
+        exclusive: 仅创建者可以使用的私有队列，断开后自动删除
+        auto_delete: 当所有消费客户端连接断开后，是否自动删除队列
+    -->
+    <rabbit:queue id="queue.test.1" name="queue.test.1"
+                  auto-declare="true" declared-by="rabbitAdmin" auto-delete="false"
+                  exclusive="false" durable="true"/>
+    <rabbit:queue id="queue.test.2" name="queue.test.2"
+                  auto-declare="true" declared-by="rabbitAdmin" auto-delete="false"
+                  exclusive="false" durable="true"/>
+    <rabbit:queue id="queue.test.3" name="queue.test.3"
+                  auto-declare="true" declared-by="rabbitAdmin" auto-delete="false"
+                  exclusive="false" durable="true"/>
+
+    <!--
+        定义一个exchange
+        rabbit:direct-exchange：定义exchange模式为direct，意思就是消息与一个特定的路由键完全匹配，才会转发。
+        rabbit:binding：设置消息queue匹配的key
+    -->
+    <rabbit:direct-exchange name="consumer.exchange" durable="true" auto-delete="false">
+        <rabbit:bindings>
+            <rabbit:binding queue="queue.test.1" key="queue.test.1"/>
+            <rabbit:binding queue="queue.test.2" key="queue.test.2"/>
+            <rabbit:binding queue="queue.test.3" key="queue.test.3"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <!--
+        详见博客地址：
+        http://emacsist.github.io/2015/12/14/Spring-%E4%B8%8E-RabbitMQ-%E7%BB%93%E5%90%88%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/
+        表示固定的线程池:<task:executor id="myExecutor" pool-size="20"/>
+        keep-alive:
+            单位是秒.这个主要在pool-size为弹性的时候才有效.
+        pool-size
+            如果只是写一个数字，那就表示是固定的。如果是N-M，表示最少会保持N条活动线程池，然后最大可以扩展到M条线程.
+            然后根据keep-alive来销毁不活动的线程.如果设置为N-M的形式，那就一定要设置queue-capacity这个属性.
+        queue-capacity
+             表示队列容量大小.如果pool-size为可变的，那么这个属性就一定要设置.
+        rejection-policy
+            当队列满时，进行的策略.它是一个java.util.concurrent.RejectedExecutionHandler类型.
+            一共有:
+                ABORT（缺省）：抛出TaskRejectedException异常，然后不执行
+                DISCARD：不执行，也不抛出异常
+                DISCARD_OLDEST：丢弃queue中最旧的那个任务
+                CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
+                建议设置为CALLER_RUNS.
+    -->
+    <task:executor id="myExecutor" pool-size="20-100" keep-alive="600" queue-capacity="2000"
+                   rejection-policy="CALLER_RUNS"/>
+
+    <!--
+        接收消息监听器
+        acknowledge="auto",接收到消息后，服务端会直接删掉，不管消息在客户端有没有处理成功;
+        acknowledge="manual",服务端会在客户端处理完毕后，反馈处理成功消息后删掉消息;
+
+        初始消费者线程数 concurrency="3"
+        预取数量（一次从RabbitMQ Server上取到的数据数量），prefetch="10"
+
+        error-handler="MessageErrorHandler"
+        一个错误处理策略的引用，来处理在监听器执行过程中的没有捕获到的异常。默认值是ConditionalRejectingErrorHandler。
+
+        task-executor="myExecutor"
+        这个属性表示，在执行listener时，使用的线程行为。默认为SimpleAsyncTaskExecutor，即每执行一个listener，都创建一条新的线程。
+
+        concurrency="10"
+        这个表示每个listener创建多少个消费者（会创建多少个进程来消费）所以，如果想要多线程执行，就要配置concurrency，因为默认情况下，它是1.
+        如果还配置了task-executor，就要特别注意task-executor要有足够的线程来满足执行.建议配置这个为>1，
+        因为如果只有一个进程的话，会阻塞后面的消息队列。但如果有多个消费者的话，那一个进程的阻塞，并不会导致其他进程的阻塞.
+    -->
+    <rabbit:listener-container id="listener.test.1"
+                               acknowledge="auto" concurrency="3" transaction-size="10"
+                               prefetch="10" max-concurrency="5" auto-startup="true" advice-chain="adviceChain"
+                               auto-declare="true" connection-factory="rabbitConnectionFactory">
+        <rabbit:listener queues="queue.test.1" ref="rabbitmqConsumerTest" method="handTest1Msg"/>
+    </rabbit:listener-container>
+
+    <rabbit:listener-container id="listener.test.2"
+                               acknowledge="auto" concurrency="3" transaction-size="10"
+                               prefetch="10" max-concurrency="5" auto-startup="true" advice-chain="adviceChain"
+                               auto-declare="true" connection-factory="rabbitConnectionFactory">
+        <rabbit:listener queues="queue.test.2" ref="rabbitmqConsumerTest" method="handTest2Msg"/>
+    </rabbit:listener-container>
+
+    <rabbit:listener-container id="listener.test.3"
+                               acknowledge="auto" concurrency="3" transaction-size="10"
+                               prefetch="10" max-concurrency="5" auto-startup="true" advice-chain="adviceChain"
+                               auto-declare="true" connection-factory="rabbitConnectionFactory">
+        <rabbit:listener queues="queue.test.3" ref="rabbitmqConsumerTest" method="handTest3Msg"/>
+    </rabbit:listener-container>
+</beans>

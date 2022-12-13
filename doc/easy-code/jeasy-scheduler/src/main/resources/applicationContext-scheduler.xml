@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+    <context:property-placeholder location="classpath:scheduler.properties" order="0" ignore-resource-not-found="false"/>
+    -->
+
+    <!-- 扫描 task包 -->
+    <context:component-scan base-package="com.jeasy.*.task"/>
+
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数 -->
+        <property name="corePoolSize" value="${task.core_pool_size}"/>
+        <!-- 最大线程数 -->
+        <property name="maxPoolSize" value="${task.max_pool_size}"/>
+        <!-- 队列最大长度 -->
+        <property name="queueCapacity" value="${task.queue_capacity}"/>
+        <!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+        <property name="keepAliveSeconds" value="${task.keep_alive_seconds}"/>
+    </bean>
+
+    <bean id="zkScheduleManager" class="com.jeasy.scheduler.ZkScheduleManager" init-method="init">
+        <property name="zkConfig">
+            <map>
+                <entry key="zkConnectString" value="${scheduler.zkConnectString}"/>
+                <entry key="rootPath" value="${scheduler.rootPath}"/>
+                <entry key="zkSessionTimeout" value="${scheduler.zkSessionTimeout}"/>
+                <entry key="userName" value="${scheduler.userName}"/>
+                <entry key="password" value="${scheduler.password}"/>
+                <entry key="autoRegisterTask" value="${scheduler.autoRegisterTask}"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 注解式 -->
+    <task:annotation-driven scheduler="zkScheduleManager" executor="taskExecutor" proxy-target-class="true"/>
+
+    <!-- 配置式 -->
+    <bean id="springTask" class="com.jeasy.scheduler.task.SpringTask"/>
+    <task:scheduled-tasks scheduler="zkScheduleManager">
+        <task:scheduled ref="springTask" method="cronTest" fixed-rate="5000"/>
+    </task:scheduled-tasks>
+    <!-- END -->
+
+    <!-- Quartz式 -->
+    <bean id="quartzTask" class="com.jeasy.scheduler.task.QuartzTask"/>
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="jobtask" class="com.jeasy.scheduler.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="quartzTask"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="cronTest"/>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobtask"/>
+        <!-- cron表达式 -->
+        <property name="cronExpression" value="0/3 * * * * ?"/>
+    </bean>
+    <!-- 总管理类 如果将lazy-init='false' 那么容器启动就会执行调度程序  -->
+    <bean id="startQuartz" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="doTime"/>
+            </list>
+        </property>
+    </bean>
+    <!-- END -->
+</beans>

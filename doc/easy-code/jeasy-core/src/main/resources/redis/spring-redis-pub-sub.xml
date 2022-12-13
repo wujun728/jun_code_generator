@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:redis="http://www.springframework.org/schema/redis"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/redis
+       http://www.springframework.org/schema/redis/spring-redis-1.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <description>redis 发布 定阅 示例</description>
+
+    <!-- 扫描 redis包 -->
+    <context:component-scan base-package="com.jeasy.redis"/>
+
+    <!--引入基础配置 -->
+    <import resource="classpath*:redis/spring-redis.xml"/>
+
+    <bean id="listener" class="com.jeasy.redis.RedisMessageListenerService"/>
+
+    <redis:listener-container connection-factory="jedisConnectionFactory">
+        <!-- the method attribute can be skipped as the default method name is "handleMessage" -->
+        <!-- topic代表监听的通道，是一个正规匹配 -->
+        <redis:listener ref="listener" method="handleMessage" topic="*"/>
+    </redis:listener-container>
+</beans>

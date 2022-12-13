@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:master-slave="http://shardingsphere.io/schema/shardingsphere/masterslave"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://shardingsphere.io/schema/shardingsphere/masterslave
+       http://shardingsphere.io/schema/shardingsphere/masterslave/master-slave.xsd">
+
+    <!-- 默认数据源 -->
+    <bean id="ds_main_m0" class="com.jeasy.base.datasource.FixedDruidDataSource" init-method="init"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${ds_main_m0.jdbc.url}"/>
+        <property name="username" value="${ds_main_m0.jdbc.username}"/>
+        <property name="password" value="${ds_main_m0.jdbc.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="5"/>
+        <!-- 连接池激活的最大数据库连接总数。设为0表示无限制 -->
+        <property name="maxActive" value="20"/>
+        <!-- 最大建立连接等待时间，单位为 ms，如果超过此时间将接到异常。设为-1表示无限制 -->
+        <property name="maxWait" value="60000"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置连接池中连接可空闲的时间(针对连接池中的连接对象.空闲超过这个时间则断开，直到连接池中的连接数到minIdle为止)，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+        <!-- 建议配置为true，不影响性能，并且保证安全性 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小(Oracle或mysql5.5及以上使用) -->
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 超时时间：单位为秒。180秒=3分钟 -->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 配置监控统计拦截的filters -->
+        <!--<property name="filters" value="stat,log4j,wall"/>-->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="slf4j-filter"/>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ds_main_m0_s0" class="com.jeasy.base.datasource.FixedDruidDataSource" init-method="init"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${ds_main_m0_s0.jdbc.url}"/>
+        <property name="username" value="${ds_main_m0_s0.jdbc.username}"/>
+        <property name="password" value="${ds_main_m0_s0.jdbc.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="5"/>
+        <!-- 连接池激活的最大数据库连接总数。设为0表示无限制 -->
+        <property name="maxActive" value="20"/>
+        <!-- 最大建立连接等待时间，单位为 ms，如果超过此时间将接到异常。设为-1表示无限制 -->
+        <property name="maxWait" value="60000"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置连接池中连接可空闲的时间(针对连接池中的连接对象.空闲超过这个时间则断开，直到连接池中的连接数到minIdle为止)，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+        <!-- 建议配置为true，不影响性能，并且保证安全性 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小(Oracle或mysql5.5及以上使用) -->
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 超时时间：单位为秒。180秒=3分钟 -->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 配置监控统计拦截的filters -->
+        <!--<property name="filters" value="stat,log4j,wall"/>-->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="slf4j-filter"/>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 其他数据源 -->
+    <bean id="ds_xxx_m0" class="com.jeasy.base.datasource.FixedDruidDataSource" init-method="init"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${ds_xxx_m0.jdbc.url}"/>
+        <property name="username" value="${ds_xxx_m0.jdbc.username}"/>
+        <property name="password" value="${ds_xxx_m0.jdbc.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="5"/>
+        <!-- 连接池激活的最大数据库连接总数。设为0表示无限制 -->
+        <property name="maxActive" value="20"/>
+        <!-- 最大建立连接等待时间，单位为 ms，如果超过此时间将接到异常。设为-1表示无限制 -->
+        <property name="maxWait" value="60000"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置连接池中连接可空闲的时间(针对连接池中的连接对象.空闲超过这个时间则断开，直到连接池中的连接数到minIdle为止)，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!-- 用来检测连接是否有效的sql，要求是一个查询语句 -->
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+        <!-- 建议配置为true，不影响性能，并且保证安全性 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能，建议仅在DEV使用 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小(Oracle或mysql5.5及以上使用) -->
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <!-- 超过时间限制是否回收 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 超时时间：单位为秒。180秒=3分钟 -->
+        <property name="removeAbandonedTimeout" value="180"/>
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 配置监控统计拦截的filters -->
+        <!--<property name="filters" value="stat,log4j,wall"/>-->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="slf4j-filter"/>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="dbType" value="mysql"/>
+    </bean>
+
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="10000"/>
+        <property name="logSlowSql" value="true"/>
+        <property name="mergeSql" value="true"/>
+    </bean>
+
+    <bean id="slf4j-filter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+        <property name="statementExecutableSqlLogEnable" value="true"/>
+    </bean>
+
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"/>
+
+    <aop:config proxy-target-class="true">
+        <aop:advisor pointcut="execution(public * com.jeasy..dao.*.*(..))" advice-ref="druid-stat-interceptor"/>
+        <aop:advisor pointcut="execution(public * com.jeasy..manager.*.*(..))" advice-ref="druid-stat-interceptor"/>
+        <aop:advisor pointcut="execution(public * com.jeasy..service.*.*(..))" advice-ref="druid-stat-interceptor"/>
+    </aop:config>
+
+    <master-slave:data-source id="ds_main" master-data-source-name="ds_main_m0" slave-data-source-names="ds_main_m0_s0"/>
+
+    <bean id="dataSource" class="com.jeasy.base.datasource.ThreadLocalRoutingDataSource">
+        <property name="defaultTargetDataSource" ref="ds_main"/>
+        <property name="targetDataSources">
+            <map>
+                <entry key="ds_main" value-ref="ds_main"/>
+                <entry key="ds_xxx_m0" value-ref="ds_xxx_m0"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <!-- 配置数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描 Xml 文件位置 -->
+        <property name="mapperLocations" value="classpath:sqlMapper/*Mapper.xml"/>
+        <!--<property name="configLocation" value="classpath:sqlMapConfig.xml"/>-->
+        <!-- 配置包别名: 自动取对应包中不包括包名的简单类名作为包括包名的别名 -->
+        <!--<property name="typeAliasesPackage" value="com.jeasy.*.entity"/>-->
+
+        <!-- 插件配置 -->
+        <property name="plugins">
+            <array>
+                <!-- 分页插件配置 -->
+                <bean id="paginationInterceptor"
+                      class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
+                    <!-- 指定数据库方言 -->
+                    <property name="dialectType" value="mysql"/>
+                </bean>
+                <!-- SQL 执行分析拦截器 stopProceed 发现全表执行 delete update 是否停止运行 不建议生产环境配置 -->
+                <!--<bean id="sqlExplainInterceptor"-->
+                <!--class="com.baomidou.mybatisplus.extension.plugins.SqlExplainInterceptor"/>-->
+                <!--&lt;!&ndash; 乐观锁插件 &ndash;&gt;-->
+                <!--<bean id="optimisticLockerInterceptor"-->
+                <!--class="com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor"/>-->
+                <!--&lt;!&ndash; 性能拦截器，兼打印sql，不建议生产环境配置 &ndash;&gt;-->
+                <!--<bean id="performanceInterceptor"-->
+                <!--class="com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor">-->
+                <!--<property name="maxTime" value="100"/>-->
+                <!--&lt;!&ndash; SQL是否格式化 默认false &ndash;&gt;-->
+                <!--<property name="format" value="true"/>-->
+                <!--</bean>-->
+            </array>
+        </property>
+
+        <!-- MP 全局配置注入 -->
+        <property name="globalConfig" ref="globalConfig"/>
+        <!-- 配置 Mybatis 配置文件（可无） -->
+        <property name="configuration" ref="mybatisConfig"/>
+    </bean>
+
+    <bean id="mybatisConfig" class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+        <property name="useGeneratedKeys" value="true"/>
+        <property name="defaultExecutorType" value="REUSE"/>
+        <property name="lazyLoadingEnabled" value="true"/>
+        <property name="defaultStatementTimeout" value="2500"/>
+        <property name="mapUnderscoreToCamelCase" value="false"/>
+        <!-- 部分数据库不识别默认的NULL类型（比如oracle，需要配置该属性） -->
+        <property name="jdbcTypeForNull">
+            <util:constant static-field="org.apache.ibatis.type.JdbcType.NULL"/>
+        </property>
+    </bean>
+
+    <!-- 定义 MP 全局策略 -->
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+        <property name="banner" value="false"/>
+        <property name="dbConfig" ref="dbConfig"/>
+    </bean>
+    <bean id="dbConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig">
+        <!-- 主键策略配置 -->
+        <!-- 可选参数
+            AUTO->`0`("数据库ID自增")
+            INPUT->`1`(用户输入ID")
+            ID_WORKER->`2`("全局唯一ID")
+            UUID->`3`("全局唯一ID")
+        -->
+        <property name="idType" value="AUTO"/>
+
+        <!-- 逻辑删除  -->
+        <property name="logicDeleteValue" value="1"/>
+        <property name="logicNotDeleteValue" value="0"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.jeasy.*.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- Monitor BeanPostProcessor -->
+    <!--<bean id="daoTimeCostLoggerProcessor" class="com.jeasy.base.dao.aspect.TimeCostDaoProcessor">-->
+    <!--<property name="interceptor">-->
+    <!--<bean class="com.jeasy.base.dao.aspect.TimeCostDaoInterceptor" />-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!-- 切面配置：DAO层方法执行日志 -->
+    <bean class="com.jeasy.base.mybatis.aspect.DaoCostLogAspect"/>
+</beans>

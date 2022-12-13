@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">
+
+    <!-- 扫描 cache包 -->
+    <context:component-scan base-package="com.jeasy.cache"/>
+
+    <bean id="cacheManager" class="com.jeasy.common.cache.GlobalCacheManager">
+        <property name="transactionAware" value="true"/>
+        <property name="caches">
+            <set>
+                <!-- 默认缓存 -->
+                <bean class="com.jeasy.common.cache.j2cache.TwoLevelCache">
+                    <property name="name" value="default"/>
+                </bean>
+
+                <!-- 小时级别的缓存 -->
+                <bean class="com.jeasy.common.cache.j2cache.TwoLevelCache">
+                    <property name="name" value="hour"/>
+                </bean>
+
+                <!-- 天级别的缓存 -->
+                <bean class="com.jeasy.common.cache.j2cache.TwoLevelCache">
+                    <property name="name" value="day"/>
+                </bean>
+
+                <!-- 星期级别的缓存 -->
+                <bean class="com.jeasy.common.cache.j2cache.TwoLevelCache">
+                    <property name="name" value="week"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="stringKeyGenerator" class="com.jeasy.common.cache.StringKeyGenerator"/>
+
+    <!-- cache注解，和spring-redis.xml中的只能使用一个 -->
+    <cache:annotation-driven cache-manager="cacheManager" key-generator="stringKeyGenerator" proxy-target-class="true"/>
+</beans>

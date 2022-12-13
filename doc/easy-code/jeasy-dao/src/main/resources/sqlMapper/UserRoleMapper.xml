@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeasy.userrole.dao.UserRoleDAO">
+    <resultMap id="UserRoleResultMap" type="com.jeasy.userrole.entity.UserRoleEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+        <result column="userCode" property="userCode" jdbcType="VARCHAR"/>
+        <result column="roleId" property="roleId" jdbcType="BIGINT"/>
+        <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
+        <result column="roleCode" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="createAt" property="createAt" jdbcType="BIGINT"/>
+        <result column="createBy" property="createBy" jdbcType="BIGINT"/>
+        <result column="createName" property="createName" jdbcType="VARCHAR"/>
+        <result column="updateAt" property="updateAt" jdbcType="BIGINT"/>
+        <result column="updateBy" property="updateBy" jdbcType="BIGINT"/>
+        <result column="updateName" property="updateName" jdbcType="VARCHAR"/>
+        <result column="isDel" property="isDel" jdbcType="TINYINT"/>
+        <result column="isTest" property="isTest" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="select_column_list">SELECT `id`,`userId`,`userName`,`userCode`,`roleId`,`roleName`,`roleCode`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`</sql>
+    <sql id="select_not_del">AND isDel = 0</sql>
+    <sql id="order_by_sql">ORDER BY id DESC</sql>
+    <sql id="insert_into_sql">INSERT INTO `su_user_role` (`userId`,`userName`,`userCode`,`roleId`,`roleName`,`roleCode`,`createAt`,`createBy`,`createName`,`updateAt`,`updateBy`,`updateName`,`isDel`,`isTest`)</sql>
+    <sql id="delete_from_sql">UPDATE `su_user_role`</sql>
+    <sql id="update_table_sql">UPDATE `su_user_role`</sql>
+    <sql id="select_count_sql">SELECT COUNT(1) FROM `su_user_role`</sql>
+    <sql id="from_sql">FROM `su_user_role`</sql>
+    <sql id="insert_table_sql">INSERT INTO `su_user_role`</sql>
+    <sql id="limit_1_sql">LIMIT 1</sql>
+
+    <insert id="insertBatchAllColumn" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <include refid="insert_into_sql"/>
+        <trim prefix="VALUES" suffixOverrides=",">
+            <if test="list != null">
+                <foreach collection="list" item="item" index="index" separator=",">
+                    <trim prefix="(" suffix=")" suffixOverrides=",">
+                        #{item.userId,jdbcType=BIGINT},
+                        #{item.userName,jdbcType=VARCHAR},
+                        #{item.userCode,jdbcType=VARCHAR},
+                        #{item.roleId,jdbcType=BIGINT},
+                        #{item.roleName,jdbcType=VARCHAR},
+                        #{item.roleCode,jdbcType=VARCHAR},
+                        #{item.createAt,jdbcType=BIGINT},
+                        #{item.createBy,jdbcType=BIGINT},
+                        #{item.createName,jdbcType=VARCHAR},
+                        #{item.updateAt,jdbcType=BIGINT},
+                        #{item.updateBy,jdbcType=BIGINT},
+                        #{item.updateName,jdbcType=VARCHAR},
+                        #{item.isDel,jdbcType=TINYINT},
+                        #{item.isTest,jdbcType=TINYINT},
+                    </trim>
+                </foreach>
+            </if>
+        </trim>
+    </insert>
+</mapper>

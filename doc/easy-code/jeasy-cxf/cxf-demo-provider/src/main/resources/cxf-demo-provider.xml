@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- 相当于使用endpoint进行服务发布 -->
+    <jaxws:endpoint address="/helloWorld_ed" implementor="com.jeasy.cxf.service.impl.HelloServiceImpl">
+        <!-- 配置IN拦截器 -->
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <bean class="com.jeasy.cxf.interceptor.AuthInterceptor"/>
+        </jaxws:inInterceptors>
+        <!-- 配置OUT拦截器
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </jaxws:outInterceptors>
+        -->
+    </jaxws:endpoint>
+    <!-- 另一种发布方式，相当于使用JaxWsServerFactoryBean进行服务发布 -->
+    <jaxws:server address="/helloWorld_jw" serviceClass="com.jeasy.cxf.service.impl.HelloServiceImpl">
+        <!-- 配置IN拦截器 -->
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <bean class="com.jeasy.cxf.interceptor.AuthInterceptor"/>
+        </jaxws:inInterceptors>
+        <!-- 配置OUT拦截器
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </jaxws:outInterceptors>
+        -->
+    </jaxws:server>
+    <jaxws:server address="/helloWorld" serviceClass="com.jeasy.cxf.service.impl.HelloServiceImpl">
+        <!-- 配置IN拦截器 -->
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <bean class="com.jeasy.cxf.interceptor.AuthInterceptor"/>
+        </jaxws:inInterceptors>
+        <!-- 配置OUT拦截器
+        <jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </jaxws:outInterceptors>
+        -->
+    </jaxws:server>
+</beans>
