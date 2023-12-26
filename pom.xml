@@ -17,9 +17,9 @@
 	
 	
 	<modules>
-		<module>jun_code_freemarker</module>
+<!--		<module>jun_code_freemarker</module>-->
+		<module>jun_code_admin</module>
 		<module>jun_excel_table2sql</module>
-		<module>Shiro-Action</module>
 
 	</modules>
 
