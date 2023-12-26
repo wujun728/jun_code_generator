@@ -21,7 +21,7 @@
 		<module>jun_code_freemarker</module>
 		<module>jun_excel_table2sql</module>
 		<module>jun_code_velocity</module>
-		<module>jun_freemarker_generator</module>
+		<module>jun_mybatis_generator</module>
 
 	</modules>
 
