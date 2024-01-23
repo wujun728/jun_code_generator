@@ -1,6 +1,6 @@
 # 端口
 server:
-  port: 9999
+  port: 9001
   compression:
     enabled: true
     min-response-size: 1KB
@@ -29,7 +29,9 @@ spring:
     suffix: .ftl
     charset: UTF-8
     request-context-attribute: request
-    settings.number_format: 0.##########
+#    settings.number_format: 0.##########
+    settings:
+      number_format: 0.##########
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
