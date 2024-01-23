@@ -1,5 +1,8 @@
 package com.jun.plugin.codegenerator.admin.controller;
 
+import com.jun.plugin.common.Result;
+import com.jun.plugin.common.generator.ClassInfo;
+import com.jun.plugin.common.generator.util.FreemarkerTool;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jun.plugin.codegenerator.admin.core.CodeGeneratorTool;
-import com.jun.plugin.codegenerator.core.model.ClassInfo;
 import com.jun.plugin.codegenerator.admin.core.util.StringUtils;
-import com.jun.plugin.codegenerator.admin.model.ReturnT;
-import com.jun.plugin.codegenerator.admin.util.FreemarkerTool;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -40,12 +40,12 @@ public class IndexController {
 
     @RequestMapping("/codeGenerate")
     @ResponseBody
-    public ReturnT<Map<String, String>> codeGenerate(String tableSql) {
+    public Result codeGenerate(String tableSql) {
 
         try {
 
             if (tableSql==null || tableSql.trim().length()==0) {
-                return new ReturnT<Map<String, String>>(ReturnT.FAIL_CODE, "表结构信息不可为空");
+                return new Result(500, "表结构信息不可为空");
             }
 
             // parse table
@@ -82,10 +82,10 @@ public class IndexController {
             }
             logger.info("生成代码行数：{}", lineNum);
 
-            return new ReturnT<Map<String, String>>(result);
+            return  Result.ok(result);
         } catch (IOException | TemplateException e) {
             logger.error(e.getMessage(), e);
-            return new ReturnT<Map<String, String>>(ReturnT.FAIL_CODE, "表结构解析失败");
+            return new Result(500, "表结构解析失败");
         }
 
     }

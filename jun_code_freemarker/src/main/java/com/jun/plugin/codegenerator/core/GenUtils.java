@@ -23,10 +23,10 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.jun.plugin.codegenerator.core.model.ClassInfo;
-import com.jun.plugin.codegenerator.core.model.FieldInfo;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.jun.plugin.common.generator.ClassInfo;
+import com.jun.plugin.common.generator.FieldInfo;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
@@ -65,7 +65,7 @@ public class GenUtils {
 
     
 
-    public static List<String> getFilePaths(List<String> templates,ClassInfo classInfo) {
+    public static List<String> getFilePaths(List<String> templates, ClassInfo classInfo) {
         List<String> filePaths = new ArrayList<>();
 		for(String template : templates){
 			String path_tmep = FileNameUtil.getName(template).replace(".ftl","");

@@ -1,6 +1,7 @@
 package com.jun.plugin.codegenerator.core2.model;
 
 
+import com.jun.plugin.common.generator.FieldInfo;
 import lombok.Data;
 
 import java.util.List;

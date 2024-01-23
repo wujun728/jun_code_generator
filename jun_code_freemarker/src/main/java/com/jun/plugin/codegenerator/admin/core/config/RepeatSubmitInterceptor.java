@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bjc.lcp.system.common.utils.DataResult;
+import com.jun.plugin.common.Result;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -31,8 +31,8 @@ public abstract class RepeatSubmitInterceptor extends HandlerInterceptorAdapter
             {
                 if (this.isRepeatSubmit(request))
                 {
-                    DataResult dataResult = DataResult.fail("不允许重复提交，请稍后再试");
-                    renderString(response, JSONObject.toJSONString(dataResult));
+                    Result result = Result.fail("不允许重复提交，请稍后再试");
+                    renderString(response, JSONObject.toJSONString(result));
                     return false;
                 }
             }

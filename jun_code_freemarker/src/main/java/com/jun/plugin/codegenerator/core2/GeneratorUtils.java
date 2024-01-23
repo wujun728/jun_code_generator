@@ -1,9 +1,9 @@
 package com.jun.plugin.codegenerator.core2;
 
 import com.jun.plugin.codegenerator.core2.model.Column;
-import com.jun.plugin.codegenerator.core2.model.FieldInfo;
 import com.jun.plugin.codegenerator.core2.model.ModelInfo;
 import com.jun.plugin.codegenerator.core2.model.Table;
+import com.jun.plugin.common.generator.FieldInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.util.StringUtils;
