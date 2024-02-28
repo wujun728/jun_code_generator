@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 </#if>
 /**
-* @description ${classInfo.classComment}
+* @description ${classInfo.classComment}  2.0模板
 * @author ${authorName}
 * @date ${.now?string('yyyy-MM-dd')}
 */
