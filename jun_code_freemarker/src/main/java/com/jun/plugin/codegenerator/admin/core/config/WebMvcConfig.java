@@ -51,9 +51,10 @@ public class WebMvcConfig extends WebMvcConfigurationSupport/* implements WebMvc
 		/** 本地文件上传路径 */
 //        registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**").addResourceLocations("file:" + Global.getProfile() + "/");
 
-		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/","classpath:/static2/","classpath:/templates/","classpath:/templates2/","classpath:/views/");
+		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/","classpath:/static2/","classpath:/static3/",
+				"classpath:/templates/","classpath:/templates2/","classpath:/views/");
 //		registry.addResourceHandler("/**").addResourceLocations("classpath:/templates/");
-		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/","classpath:/static2/");
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/","classpath:/static2/","classpath:/static3/");
 		registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
