@@ -3,17 +3,22 @@ package com.jun.plugin;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
+@MapperScan({"com.jun.plugin.**.mapper","com.jun.plugin.online.dao","com.jun.plugin.generate.modular.mapper"})
+//@ComponentScan(basePackages = { "com.jun.plugin.common","com.jun.plugin.rest" ,"com.jun.plugin.generate"})
 public class SpringCodeGeneratorApplication  extends SpringBootServletInitializer  {
 
 	public static void main(String[] args) throws Exception {
@@ -34,7 +39,6 @@ public class SpringCodeGeneratorApplication  extends SpringBootServletInitialize
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(this.getClass());
 	}
-    
+
 
 }
-

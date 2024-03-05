@@ -1,6 +1,6 @@
 # 端口
 server:
-  port: 9001
+  port: 8082
   compression:
     enabled: true
     min-response-size: 1KB

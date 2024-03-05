@@ -118,7 +118,7 @@ $(function () {
             },
             dataType : "json",
             success : function(data){
-                if (data.code == 200) {
+                if (data.code == 200 || data.code == 0) {
 
                     // set value
                     controller_ide.setValue(data.data.controller_code);
