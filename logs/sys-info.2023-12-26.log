@@ -1,0 +1,15 @@
+14:24:56.211 [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,21] - HV000001: Hibernate Validator 6.0.21.Final
+14:24:56.357 [restartedMain] INFO  c.j.p.WebApplication - [logStarting,55] - Starting WebApplication on DESKTOP-BFKA690 with PID 11872 (D:\workspace\github\jun_code_generator\jun_code_velocity\target\classes started by Administrator in D:\workspace\github\jun_code_generator)
+14:24:56.362 [restartedMain] INFO  c.j.p.WebApplication - [logStartupProfileInfo,655] - The following profiles are active: sqlite
+14:25:00.594 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Initializing ProtocolHandler ["http-nio-8888"]
+14:25:00.595 [restartedMain] INFO  o.a.c.c.StandardService - [log,173] - Starting service [Tomcat]
+14:25:00.596 [restartedMain] INFO  o.a.c.c.StandardEngine - [log,173] - Starting Servlet engine: [Apache Tomcat/9.0.41]
+14:25:00.740 [restartedMain] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring embedded WebApplicationContext
+14:25:02.668 [restartedMain] INFO  o.a.c.h.Http11NioProtocol - [log,173] - Starting ProtocolHandler ["http-nio-8888"]
+14:25:02.707 [restartedMain] INFO  c.j.p.WebApplication - [logStarted,61] - Started WebApplication in 7.84 seconds (JVM running for 12.914)
+14:25:04.989 [http-nio-8888-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+14:25:29.059 [http-nio-8888-exec-7] INFO  c.a.d.p.DruidDataSource - [init,985] - {dataSource-1} inited
+14:25:35.861 [http-nio-8888-exec-9] INFO  c.j.p.f.d.DynamicDataSourceContextHolder - [setDataSourceType,26] - 切换到SLAVE2数据源
+14:25:35.873 [http-nio-8888-exec-9] INFO  c.a.d.p.DruidDataSource - [init,985] - {dataSource-2} inited
+14:25:38.707 [http-nio-8888-exec-8] INFO  c.j.p.f.d.DynamicDataSourceContextHolder - [setDataSourceType,26] - 切换到SLAVE2数据源
+14:25:38.739 [http-nio-8888-exec-8] INFO  c.j.p.f.d.DynamicDataSourceContextHolder - [setDataSourceType,26] - 切换到SLAVE2数据源
