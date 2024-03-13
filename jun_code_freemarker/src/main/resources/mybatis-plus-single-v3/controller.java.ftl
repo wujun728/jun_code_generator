@@ -35,10 +35,10 @@ import java.util.Map;
 * @author ${authorName}
 * @date ${.now?string('yyyy-MM-dd')}
 */
-@Api(tags = "${classInfo.classComment}-管理")
+@Api(tags = "${classInfo.classComment}")
 @Slf4j
 @RestController
-@RequestMapping("/${classInfo.className?uncap_first}")
+@RequestMapping({"/","/api"})
 public class ${classInfo.className}Controller {
 
     @Resource
@@ -48,7 +48,7 @@ public class ${classInfo.className}Controller {
     private ${classInfo.className}Mapper ${classInfo.className?uncap_first}Mapper;
     
     @ApiOperation(value = "${classInfo.classComment}-新增")
-    @PostMapping("/add")
+    @PostMapping("/${classInfo.className?uncap_first}/add")
     //@RequiresPermissions("${classInfo.className?uncap_first}:add")
     public Result add(@Validated(${classInfo.className}Vo.Create.class) @RequestBody ${classInfo.className}Vo vo) {
     	${classInfo.className}Dto dto = new ${classInfo.className}Dto();
@@ -81,7 +81,7 @@ public class ${classInfo.className}Controller {
     }
     
     @ApiOperation(value = "${classInfo.classComment}-删除")
-    @DeleteMapping("/remove")
+    @DeleteMapping("/${classInfo.className?uncap_first}/remove")
     //@RequiresPermissions("${classInfo.className?uncap_first}:remove")
     public Result delete(@Validated(${classInfo.className}Vo.Delete.class) @RequestBody ${classInfo.className}Vo vo) {
     	${classInfo.className}Dto dto = new ${classInfo.className}Dto();
@@ -107,7 +107,7 @@ public class ${classInfo.className}Controller {
     }
 
     @ApiOperation(value = "${classInfo.classComment}-删除")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/${classInfo.className?uncap_first}/delete")
     //@RequiresPermissions("${classInfo.className?uncap_first}:delete")
     public Result delete(@RequestBody @ApiParam(value = "id集合") List<String> ids) {
         return Result.success(${classInfo.className?uncap_first}Service.removeByIds(ids));
@@ -115,7 +115,7 @@ public class ${classInfo.className}Controller {
 
 
     @ApiOperation(value = "${classInfo.classComment}-更新")
-    @PutMapping("/update")
+    @PutMapping("/${classInfo.className?uncap_first}/update")
     //@RequiresPermissions("${classInfo.className?uncap_first}:update")
     public Result update(@Validated(${classInfo.className}Vo.Update.class) @RequestBody ${classInfo.className}Vo vo) {
     	${classInfo.className}Dto dto = new ${classInfo.className}Dto();
@@ -149,7 +149,7 @@ public class ${classInfo.className}Controller {
 
 
     @ApiOperation(value = "${classInfo.classComment}-查询单条")
-    @RequestMapping(value = "/getOne",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/${classInfo.className?uncap_first}/getOne",method = {RequestMethod.GET,RequestMethod.POST})
     //@RequiresPermissions("${classInfo.className?uncap_first}:getOne")
     public Result getOne(@RequestBody ${classInfo.className}Vo vo) {
     	${classInfo.className}Dto dto = new ${classInfo.className}Dto();
@@ -179,7 +179,7 @@ public class ${classInfo.className}Controller {
 
 
     @ApiOperation(value = "${classInfo.classComment}-查询列表分页数据")
-    @RequestMapping(value = "/listByPage",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/${classInfo.className?uncap_first}/listByPage",method = {RequestMethod.GET,RequestMethod.POST})
     //@RequiresPermissions("${classInfo.className?uncap_first}:listByPage")
     public Result listByPage(@RequestBody ${classInfo.className}Vo ${classInfo.className?uncap_first}) {
         Page page = new Page(${classInfo.className?uncap_first}.getPage(), ${classInfo.className?uncap_first}.getLimit());
@@ -204,7 +204,7 @@ public class ${classInfo.className}Controller {
     }
     
     @ApiOperation(value = "${classInfo.classComment}-查询全部列表数据")
-    @RequestMapping(value = "/list",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/${classInfo.className?uncap_first}/list",method = {RequestMethod.GET,RequestMethod.POST})
     //@RequiresPermissions("${classInfo.className?uncap_first}:list")
     public Result findListByPage(@RequestBody ${classInfo.className}Vo ${classInfo.className?uncap_first}) {
         LambdaQueryWrapper<${classInfo.className}Entity> queryWrapper = Wrappers.lambdaQuery();

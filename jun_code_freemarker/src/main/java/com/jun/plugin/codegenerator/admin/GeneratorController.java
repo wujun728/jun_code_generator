@@ -1,4 +1,4 @@
-package com.jun.plugin.generate.controller;//package com.jun.plugin.common.generator.controller;
+package com.jun.plugin.codegenerator.admin;//package com.jun.plugin.common.generator.controller;
 //
 //import com.jun.plugin.common.Result;
 //import com.jun.plugin.common.generator.ClassInfo;

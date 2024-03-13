@@ -61,11 +61,11 @@
 			<artifactId>jun-common</artifactId>
 			<version>1.0.12</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>com.jun.plugin</groupId>
 			<artifactId>jun-generator-spring-boot-starter</artifactId>
 			<version>1.0.10</version>
-		</dependency>
+		</dependency>-->
 
 		<!-- starter-web：spring-webmvc + autoconfigure + logback + yaml + tomcat -->
 		<dependency>
