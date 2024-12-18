@@ -22,9 +22,14 @@ classes
 .settings
 .factorypath
 doc2
+*bak
 log
 logs
 target
+
+node_modules
+
+node_modules/
 
 # Idea
 .idea
