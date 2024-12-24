@@ -19,6 +19,7 @@
 		<module>jun-code-generator</module>
 		<module>jun_code_generator_deep</module>
         <module>jun_test</module>
+        <module>jun-code-spring-boot-starter</module>
 
 
     </modules>
