@@ -10,18 +10,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-	<modules> 
-
-		<module>jun-code-generator</module>
-		<module>jun_code_generator_deep</module>
-        <module>jun_test</module>
+	<modules>  
+<!--        <module>jun-code-velocity</module>-->
+        <module>jun-code-freemarker</module>
         <module>jun-code-spring-boot-starter</module>
-
-
     </modules>
 
 	<dependencies>
@@ -45,7 +39,7 @@
 	</dependencies>
 
 
-	<profiles>
+	<!--<profiles>
 		<profile>
 			<id>jdk-1.8</id>
 			<activation>
@@ -58,10 +52,10 @@
 				<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
 			</properties>
 		</profile>
-	</profiles>
+	</profiles>-->
 
 
-	<build>
+	<!--<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -73,5 +67,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build>-->
 </project>
