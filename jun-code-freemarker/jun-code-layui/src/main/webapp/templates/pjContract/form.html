@@ -1,0 +1,191 @@
+<form id="addOrUpdateForm" lay-filter="addOrUpdateForm" class="layui-form model-form">
+
+    <input name="id" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">项目名称</label>
+        <div class="layui-input-block">
+            <div id="refProjectNameId"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">合同状态</label>
+        <div class="layui-input-block">
+            <div id="dictContractStateId"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">合同类型</label>
+        <div class="layui-input-block">
+            <div id="dictContractTypeId"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">合同号</label>
+        <div class="layui-input-block">
+            <input name="contractNo" class="layui-input" placeholder="请输入合同号" lay-verType="tips"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">合同标题</label>
+        <div class="layui-input-block">
+            <input name="contractName" class="layui-input" placeholder="请输入合同标题" lay-verType="tips" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">签约日期</label>
+        <div class="layui-input-block">
+            <input type="text" name="signTime" id="signTimeId" placeholder="请选择签约日期" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">报告数量</label>
+        <div class="layui-input-block">
+            <input name="reportCount" type="number" class="layui-input" placeholder="请输入报告数量" lay-verType="tips" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">报告详细描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入报告详细描述" class="layui-textarea" name="reportDetail" lay-verify="required" required></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">约定书金额</label>
+        <div class="layui-input-block">
+            <input name="contractMoney" type="number" class="layui-input" placeholder="请输入约定书金额" lay-verType="tips" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">签约/承诺人</label>
+        <div class="layui-input-block">
+            <div id="signById"></div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">执业天数</label>
+        <div class="layui-input-block">
+            <input name="contractDays" type="number" class="layui-input" placeholder="请输入执业天数" lay-verType="tips" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">约定书详细描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入约定书详细描述" class="layui-textarea" name="contractDetails" lay-verify="required" required></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-required">备注</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入备注" class="layui-textarea" name="remark" lay-verify="required" required></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="formSubmitBtn" lay-submit>保存</button>
+    </div>
+</form>
+
+<script>
+    layui.use(['layer', 'form', 'admin', 'xnUtil', 'xmSelect', 'laydate'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var admin = layui.admin;
+        var xnUtil = layui.xnUtil;
+        var xmSelect = layui.xmSelect;
+        var laydate = layui.laydate;
+
+        var refProjectNameRadio = '';
+        var refProjectNameRadioData = xnUtil.getDictDataByDictTypeCode('common_status', null);
+        refProjectNameRadioData.forEach(function (item) {
+            refProjectNameRadio = refProjectNameRadio + '<input type="radio" name="refProjectName" value="'+item.code+'" title="'+item.name+'">'
+        })
+        $("#refProjectNameId").html(refProjectNameRadio)
+        form.render('radio');
+
+        var dictContractStateRenderIns = xmSelect.render({
+            el: '#dictContractStateId',
+            name: 'dictContractState',
+            data: xnUtil.getDictDataByDictTypeCode('consts_type', null),
+            layVerType: 'tips',
+            radio: true,
+            clickClose: true,
+            model: { icon:'hidden', label: { type: 'text' }},
+            prop: {
+                name: 'name',
+                value: 'code'
+            },
+            tips: '请选择合同状态'
+        }, {async: false});
+
+        var dictContractTypeRenderIns = xmSelect.render({
+            el: '#dictContractTypeId',
+            name: 'dictContractType',
+            data: xnUtil.getDictDataByDictTypeCode('common_status', null),
+            layVerify: 'required',
+            layVerType: 'tips',
+            radio: true,
+            clickClose: true,
+            model: { icon:'hidden', label: { type: 'text' }},
+            prop: {
+                name: 'name',
+                value: 'code'
+            },
+            tips: '请选择合同类型'
+        }, {async: false});
+
+        laydate.render({
+            elem: '#signTimeId'
+        });
+        var signByRadio = '';
+        var signByRadioData = xnUtil.getDictDataByDictTypeCode('common_status', null);
+        signByRadioData.forEach(function (item) {
+            signByRadio = signByRadio + '<input type="radio" name="signBy" value="'+item.code+'" title="'+item.name+'">'
+        })
+        $("#signById").html(signByRadio)
+        form.render('radio');
+
+
+        var editData = admin.getLayerData('#addOrUpdateForm').data;
+        if(editData !== null && editData !== undefined) {
+            form.val('addOrUpdateForm', editData);
+            // 下拉赋值
+            dictContractStateRenderIns.setValue([editData.dictContractState]);
+
+            // 下拉赋值
+            dictContractTypeRenderIns.setValue([editData.dictContractType]);
+
+        }
+
+        /**
+         * 表单提交事件
+         */
+        form.on('submit(formSubmitBtn)', function (data) {
+            layer.load(2);
+
+            var url = editData ? getProjectUrl() + 'pjContract/edit' : getProjectUrl() + 'pjContract/add';
+            admin.req(url, JSON.stringify(data.field), function(res){
+                layer.msg(res.message, {icon: 1, time: 1000}, function () {
+                    admin.putLayerData('formOk', true, '#addOrUpdateForm');
+                    admin.closeDialog('#addOrUpdateForm');
+                });
+            }, 'post');
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
