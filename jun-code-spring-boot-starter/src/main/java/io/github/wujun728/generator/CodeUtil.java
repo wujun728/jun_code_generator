@@ -29,6 +29,7 @@ import java.util.Map;
 @Slf4j
 public class CodeUtil {
 
+    static Map<String, Object> params = new HashMap<String, Object>();
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/db_test?useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC&useInformationSchema=true";
         String username = "root";
@@ -40,20 +41,25 @@ public class CodeUtil {
         genCodeFile(ds,"paas_component_tag","D:/test1122",CodeUtil.GROUP_MYBATIS_PLUG_NO1);
     }
 
+
     public static String authorName = "authorName";
     private static String AUTHOR_NAME = "wujun";
     public static String packageName = "packageName";
     public static String namePreRemove = "S_,B_,I_,DT_,TS_,M_,F_,PK_I_N,PK_I_S,PAAS1_";
     private static String PACKAGE_NAME = "io.github.wujun728.biz";
-    public static String MYBATIS_PLUG_SINGLE_VO_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Vo.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_CONTROLLER_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Controller.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_DTO_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Dto.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_EDIT_HTML = "/mybatis-plus-single-v3/edit.html.ftl";
-    public static String MYBATIS_PLUG_SINGLE_LIST_HTML = "/mybatis-plus-single-v3/list.html.ftl";
-    public static String MYBATIS_PLUG_SINGLE_ENTITY_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Entity.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_MAPPER_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Mapper.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_SERVICE_JAVA = "/mybatis-plus-single-v3/${classInfo.className}Service.java.ftl";
-    public static String MYBATIS_PLUG_SINGLE_SERVICE_IMPL_JAVA = "/mybatis-plus-single-v3/${classInfo.className}ServiceImpl.java.ftl";
+
+    public static String mybatis_plus_single_v3 = "/mybatis-plus-single-v5-paas";
+    public static String MYBATIS_PLUG_SINGLE_VO_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Vo.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_PARAM_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Param.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_RESP_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Resp.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_CONTROLLER_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Controller.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_DTO_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Dto.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_EDIT_HTML = mybatis_plus_single_v3+"/edit.html.ftl";
+    public static String MYBATIS_PLUG_SINGLE_LIST_HTML = mybatis_plus_single_v3+"/list.html.ftl";
+    public static String MYBATIS_PLUG_SINGLE_ENTITY_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Entity.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_MAPPER_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Mapper.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_SERVICE_JAVA = mybatis_plus_single_v3+"/${classInfo.className}Service.java.ftl";
+    public static String MYBATIS_PLUG_SINGLE_SERVICE_IMPL_JAVA = mybatis_plus_single_v3+"/${classInfo.className}ServiceImpl.java.ftl";
 
     public static String BEETLSQL_BEETLCONTROLLER = "/beetlsql/${classInfo.className}Controller.java.ftl";
     public static String BEETLSQL_BEETLENTITY = "/beetlsql/${classInfo.className}.java.ftl";
@@ -103,7 +109,7 @@ public class CodeUtil {
     public static String UTIL_XML = "/util/${classInfo.className}xml.xml.ftl";
 
 
-    public  static List<String> GROUP_MYBATIS_PLUG_NO1 = Lists.newArrayList(MYBATIS_PLUG_SINGLE_VO_JAVA,MYBATIS_PLUG_SINGLE_CONTROLLER_JAVA,MYBATIS_PLUG_SINGLE_DTO_JAVA,
+    public  static List<String> GROUP_MYBATIS_PLUG_NO1 = Lists.newArrayList(MYBATIS_PLUG_SINGLE_RESP_JAVA,MYBATIS_PLUG_SINGLE_PARAM_JAVA,MYBATIS_PLUG_SINGLE_VO_JAVA,MYBATIS_PLUG_SINGLE_CONTROLLER_JAVA,MYBATIS_PLUG_SINGLE_DTO_JAVA,
             MYBATIS_PLUG_SINGLE_ENTITY_JAVA, MYBATIS_PLUG_SINGLE_MAPPER_JAVA,MYBATIS_PLUG_SINGLE_SERVICE_JAVA,MYBATIS_PLUG_SINGLE_SERVICE_IMPL_JAVA,MYBATIS_PLUG_SINGLE_EDIT_HTML,
             MYBATIS_PLUG_SINGLE_LIST_HTML);
     public  static List<String> GROUP_BEETLSQL = Lists.newArrayList(BEETLSQL_BEETLMD,BEETLSQL_BEETLENTITY,BEETLSQL_BEETLCONTROLLER);
@@ -115,7 +121,6 @@ public class CodeUtil {
             MYBATIS_SERVICE,MYBATIS_SERVICE_IMPL);
     public  static List<String> GROUP_UI = Lists.newArrayList(UI_BOOTSTRAP_UI,UI_ELEMENT_UI,UI_LAYUI_EDIT,UI_LAYUI_LIST,UI_SWAGGER_UI);
     public  static List<String> GROUP_UTIL = Lists.newArrayList(UTIL_BEANUTIL,UTIL_JSON,UTIL_SQL,UTIL_SWAGGER_YML,UTIL_XML);
-    static Map<String, Object> params = new HashMap<String, Object>();
     public static Map<String, Object> customeConfig = new HashMap<String, Object>();
 
 
@@ -146,13 +151,15 @@ public class CodeUtil {
 
         try {
             ClassInfo classInfo = getClassInfo(dataSource,tableName);
-            params = new HashMap<>();
+            //params = new HashMap<>();
             params.put("classInfo", classInfo);
             params.put("ClassName", classInfo.getClassName());
             params.put(authorName, AUTHOR_NAME);
             params.put(packageName, PACKAGE_NAME);
             params.put("isAutoImport", true);
             params.put("isSwagger", true);
+            params.put("isComment", true);
+            params.put("isLombok", true);
             params.putAll(customeConfig);
             Map<String, String> result = new HashMap<String, String>();
             if(isCustom){

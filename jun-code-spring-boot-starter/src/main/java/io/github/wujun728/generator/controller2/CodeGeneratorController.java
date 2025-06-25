@@ -1,4 +1,4 @@
-package io.github.wujun728.generate.controller;
+package io.github.wujun728.generator.controller2;
 
 import freemarker.template.TemplateException;
 import io.github.wujun728.common.base.Result;
