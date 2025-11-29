@@ -71,6 +71,7 @@
 <!-- js部分 -->
 <script src="/assets/libs/layui/layui.js"></script>
 <script src="/assets/js/common.js"></script>
+
 <script>
     layui.use(['layer', 'table', 'formX', 'tableX', 'notice', 'xnUtil'], function () {
         var $ = layui.jquery;
@@ -89,7 +90,7 @@
         /* 渲染表格 */
         var insTb = tableX.render({
             elem: '#dataTable',
-            url: getProjectUrl() + 'sysCodeGenerateConfig/list?codeGenId=' + codeGenId ,
+            url: getProjectUrl() + 'tool/generate/list2.json?codeGenId=' + codeGenId ,
             parseData: function (res) {
                 //将其整体缓存
                 configDataList = res.data;
@@ -198,7 +199,7 @@
                     console.log(JSON.stringify(res))
                     if (res.success) {
                         layer.msg(res.message, {icon: 1, time: 1000}, function () {
-                            window.location.href = getProjectUrl() + 'codeGenerate/index';
+                            window.location.href = getProjectUrl() + 'tool/generate/index.html';
                         });
                     } else {
                         layer.msg(res.message, {icon: 2, time: 1000}, null);
@@ -206,7 +207,7 @@
                 }, 'post');
             }
             if (obj.event === 'goback') {
-                window.location.href = getProjectUrl() + 'code/generate/index.html';
+                window.location.href = getProjectUrl() + 'tool/generate/index.html';
             }
         });
 

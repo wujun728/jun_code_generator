@@ -124,6 +124,7 @@
         form.render('radio');
         // 渲染远程数据下拉
         var remoteDataRenderIns = {};
+        //admin.req(getProjectUrl() + 'tool/generate/InformationList.json', function(res){
         admin.req(getProjectUrl() + 'codeGenerate/InformationList', function(res){
             remoteDataRenderIns = xmSelect.render({
                 el: '#tableName',

@@ -42,6 +42,10 @@ export const constantRoutes = [
   {
     path: "/build",
     component: () => import("@/views/build/index.vue")
+  },
+  {
+    path: "/text",
+    component: () => import("@/views/text/index.vue")
   }
 ];
 
