@@ -16,6 +16,7 @@
 <!--        <module>jun-code-velocity</module>-->
         <module>jun-code-freemarker</module>
         <module>jun-code-spring-boot-starter</module>
+        <module>jun_codegenerator</module>
     </modules>
 
 	<dependencies>
