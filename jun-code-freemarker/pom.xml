@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.wujun728</groupId>
-	<artifactId>jun-code-freemarker2</artifactId>
+	<artifactId>jun-code-freemarker</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
@@ -16,7 +16,6 @@
 
 	<modules> 
 		<module>jun_code_generator_deep</module>
-        <module>jun-code-layui</module>
     </modules>
 
 	<dependencies>
