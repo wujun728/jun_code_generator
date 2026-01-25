@@ -1,8 +1,8 @@
 package com.xxl.codegenerator.core.test;
 
 
-import com.xxl.codegenerator.admin.core.CodeGeneratorTool;
-import com.xxl.codegenerator.admin.core.model.ClassInfo;
+import io.github.wujun728.admin.core.CodeGeneratorTool;
+import io.github.wujun728.admin.core.model.ClassInfo;
 import org.junit.Test;
 
 import java.io.BufferedReader;
