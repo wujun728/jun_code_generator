@@ -15,6 +15,7 @@
 	</properties>
 
 	<modules> 
+		<module>jun-code-spring-boot-starter</module>
 		<module>jun_code_generator_deep</module>
     </modules>
 

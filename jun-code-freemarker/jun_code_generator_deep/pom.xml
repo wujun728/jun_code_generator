@@ -53,11 +53,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -72,9 +67,14 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.2.19</version>
+            <artifactId>druid</artifactId>
+            <version>1.2.24</version>
         </dependency>
+        <!--<dependency>
+            <groupId>io.github.wujun728</groupId>
+            <artifactId>jun-db-activerecord</artifactId>
+            <version>1.0.22</version>
+        </dependency>-->
 
     </dependencies>
 

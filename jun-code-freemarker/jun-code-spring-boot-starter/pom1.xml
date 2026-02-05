@@ -19,8 +19,8 @@
     <dependencies>
         <dependency>
             <groupId>io.github.wujun728</groupId>
-            <artifactId>jun-common-core</artifactId>
-            <version>1.0.23</version>
+            <artifactId>jun-common-base</artifactId>
+            <version>1.0.25</version>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>

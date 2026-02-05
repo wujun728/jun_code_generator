@@ -15,6 +15,8 @@
 	<modules>  
 <!--        <module>jun-code-velocity</module>-->
         <module>jun-code-freemarker</module>
+        <module>springboot-mybatisplus-api-v2</module>
+        <module>springboot-mybatisplus-api</module>
     </modules>
 
 	<dependencies>
