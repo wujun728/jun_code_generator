@@ -15,7 +15,7 @@ public class CodeGenerator {
 
 
     //多个表逗号分隔
-    static String tableName = "user";
+    static String tableName = "biz_mail";
     //逻辑删除字段名, 假如表没有逻辑删除字段，请忽视
     static String logicDeleteFieldName = "del_flag";
 
@@ -27,7 +27,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("aitangbao");
+        gc.setAuthor("wujun");
         gc.setOpen(false);
         gc.setBaseColumnList(true);
         gc.setBaseResultMap(true);
@@ -37,11 +37,11 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/project?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
+        dsc.setUrl("jdbc:mysql://localhost:3307/db_test?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=UTC");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("mysqladmin");
         mpg.setDataSource(dsc);
 
         // 包配置
