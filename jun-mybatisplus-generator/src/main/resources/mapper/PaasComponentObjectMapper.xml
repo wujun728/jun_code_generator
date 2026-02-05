@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.trueland.scrm.paas.runtime.extender.standard.crm.generator.business.mapper.PaasComponentObjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="net.trueland.scrm.paas.runtime.extender.standard.crm.generator.business.entity.PaasComponentObject">
+        <id column="id" property="id" />
+        <result column="account_id" property="accountId" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="description" property="description" />
+        <result column="create_at" property="createAt" />
+        <result column="create_by" property="createBy" />
+        <result column="update_at" property="updateAt" />
+        <result column="update_by" property="updateBy" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+    </resultMap>
+    <select id="queryCodeByAccountId" resultType="java.lang.String">
+        select code from paas_component_object where is_delete = 0 and account_id = #{accountId};
+    </select>
+</mapper>
