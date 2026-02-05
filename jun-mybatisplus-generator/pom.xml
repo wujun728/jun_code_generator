@@ -70,6 +70,21 @@
             <version>8.0.28</version>
             <scope>compile</scope>
         </dependency>
+        <!-- 1. SLF4J 核心 API（若项目已通过其他依赖间接引入，可省略，避免重复） -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version> <!-- 稳定版，与 Logback 兼容 -->
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- 2. Logback 核心实现（包含 logback-core 和 logback-classic，后者依赖前者） -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version> <!-- 与 slf4j-api 1.7.x 兼容，稳定版 -->
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

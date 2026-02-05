@@ -8,12 +8,11 @@ import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import lombok.extern.slf4j.Slf4j;
 import net.trueland.scrm.common.model.exception.BuException;
-import net.trueland.scrm.paas.runtime.extender.standard.crm.generator.conf.GeneratorProperties;
-import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.*;
 
-import static net.trueland.scrm.paas.runtime.extender.standard.crm.generator.conf.GeneratorProperties.*;
+import static net.trueland.scrm.paas.runtime.extender.standard.crm.generator.GeneratorProperties.*;
 
 
 /**
@@ -29,9 +28,22 @@ public class CodeGenerator {
     /**
      * 全局配置
      */
-    protected static GlobalConfig.Builder globalConfig() {
+    /*protected static GlobalConfig.Builder globalConfig() {
         return new GlobalConfig.Builder();
+    }*/
+
+    protected static GlobalConfig.Builder globalConfig() {
+        String outputDir = PARENT_DIR + File.separator + "src" + File.separator + "main" + File.separator + "java";
+        String resourceOutputDir = PARENT_DIR + File.separator + "src" + File.separator + "main" + File.separator + "resources";
+
+        return new GlobalConfig.Builder()
+                .outputDir(outputDir)
+                .author("wujun")
+                .enableSwagger()
+                .disableOpenDir()
+                .commentDate("yyyy/MM/dd HH:mm");
     }
+
 
     private final DataSourceConfig.Builder dataSourceConfig = new DataSourceConfig
             .Builder(URL, USERNAME, PASSWORD)
@@ -87,6 +99,15 @@ public class CodeGenerator {
 
     protected void execute() {
         FastAutoGenerator generator = autoGenerator();
+
+        // 【关键改动2】打印生成文件地址（最小化改动，生成前遍历打印路径）
+        Map<OutputFile, String> generatePathMap = getPathInfo();
+        log.info("=============== 即将生成文件到以下目录（已开启覆盖） ===============");
+        for (Map.Entry<OutputFile, String> entry : generatePathMap.entrySet()) {
+            log.info("{} 文件输出目录：{}", entry.getKey().name().toUpperCase(), entry.getValue());
+        }
+        log.info("==============================================================");
+
         // 策略配置
         generator.strategyConfig(builder ->
                         // 配置表
@@ -95,7 +116,7 @@ public class CodeGenerator {
                                 // controller 层配置
                                 .controllerBuilder()
                                 .enableRestStyle()
-
+                                .enableFileOverride()
                                 .convertFileName(entityName -> convertEntityName(entityName) + "Controller")
                                 .build()
 
@@ -103,6 +124,7 @@ public class CodeGenerator {
                                 .mapperBuilder().enableMapperAnnotation()
                                 .enableBaseColumnList()
                                 .enableBaseResultMap()
+                                .enableFileOverride()
                                 .convertMapperFileName(entityName -> convertEntityName(entityName) + "Mapper")
                                 .convertXmlFileName(entityName -> convertEntityName(entityName) + "Mapper")
 
@@ -111,10 +133,12 @@ public class CodeGenerator {
                                 .enableLombok()
                                 .enableTableFieldAnnotation()
                                 .enableChainModel()
+                                .enableFileOverride()
                                 .convertFileName(entityName -> convertEntityName(entityName) + "Entity")
 
                                 // service 配置
                                 .serviceBuilder()
+                                .enableFileOverride()
                                 .convertServiceFileName(entityName -> "I" + convertEntityName(entityName) + "Service")
                                 .convertServiceImplFileName(entityName -> convertEntityName(entityName) + "ServiceImpl")
 

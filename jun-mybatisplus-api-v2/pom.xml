@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.company.project</groupId>
-    <artifactId>springboot-mybatisplus-api-v2</artifactId>
+    <artifactId>jun-mybatisplus-api-v2</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 

@@ -1,9 +1,8 @@
-package net.trueland.scrm.paas.runtime.extender.standard.crm.generator.conf;
+package net.trueland.scrm.paas.runtime.extender.standard.crm.generator;
 
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.trueland.scrm.common.model.exception.BuException;
-import net.trueland.scrm.paas.runtime.extender.standard.crm.generator.CodeGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
@@ -47,11 +46,11 @@ public class GeneratorProperties {
             log.error("获取【generator.properties】配置失败", e);
             throw new BuException(e);
         }
-        ACCOUNT_ID = getAccountId();
+        //ACCOUNT_ID = getAccountId();
     }
 
 
-    public static Long getAccountId() {
+    /*public static Long getAccountId() {
         try {
             // 直接从Spring中获取
             final String accountId = SpringUtil.getProperty("spring.cloud.nacos.discovery.metadata.accountId");
@@ -64,23 +63,9 @@ public class GeneratorProperties {
             log.warn("Spring容器未初始化，返回默认accountId", e);
             return 1L;
         }
-    }
+    }*/
 
-    /**
-     * 解析yaml文件
-     */
-    public static void parseYml(Map<String, Object> map, String keyPrefix, Map<String, Object> configMap) {
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            String fullKey = (keyPrefix.isEmpty() ? key : keyPrefix + "." + key);
-            if (value instanceof Map) {
-                parseYml((Map<String, Object>) value, fullKey, configMap);
-            } else {
-                configMap.put(fullKey, value);
-            }
-        }
-    }
+
 
     public static String URL;
     /**
