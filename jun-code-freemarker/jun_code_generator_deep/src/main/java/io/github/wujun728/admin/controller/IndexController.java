@@ -40,7 +40,6 @@ public class IndexController {
     public ReturnT<Map<String, String>> codeGenerate(String tableSql) {
 
         try {
-
             if (tableSql==null || tableSql.trim().length()==0) {
                 return new ReturnT<Map<String, String>>(ReturnT.FAIL_CODE, "表结构信息不可为空");
             }
@@ -51,6 +50,13 @@ public class IndexController {
             // code genarete
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("classInfo", classInfo);
+
+            params.put("packageController", "com.jun.plugin.biz.controller");
+            params.put("packageService", "com.jun.plugin.biz.service");
+            params.put("packageServiceImpl", "com.jun.plugin.biz.service.impl");
+            params.put("packageDao", "com.jun.plugin.biz.dao");
+            params.put("packageMybatisXML", "com.jun.plugin.biz.model");
+            params.put("packageModel", "com.jun.plugin.biz.model");
 
             // result
             Map<String, String> result = new HashMap<String, String>();

@@ -45,7 +45,8 @@ public class CodeUtil {
 //        genCode(ds,"pj_customer",CodeUtil.UI_LAYUI_EDIT2);
 //        genCodeFile(ds,"paas_holiday","D:/test1122",CodeUtil.GROUP_MYBATIS_PLUG_NO1);
 //        genCodeFile(ds,"paas_component_object_duplicate_check","D:/test1122",CodeUtil.GROUP_MYBATIS_PLUG_NO1);
-        genCodeFile(ds, "paas_component_object_duplicate_keyword", "D:/test1122", CodeUtil.GROUP_MYBATIS_PLUG_ZD1);
+        genCodeFile(ds, "paas_component_object_duplicate_keyword", "D:/test1122", CodeUtil.GROUP_MYBATIS_PLUG_NO1);
+//        genCodeFile(ds, "paas_component_object_duplicate_keyword", "D:/test1122", CodeUtil.GROUP_MYBATIS_PLUG_ZD1);
         //genCodeFile(ds,"paas_component_tag","D:/test1122",CodeUtil.GROUP_MYBATIS_PLUG_NO1);
     }
 

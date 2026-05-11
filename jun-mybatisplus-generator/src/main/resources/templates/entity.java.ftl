@@ -1,5 +1,5 @@
 package ${package.Entity};
-<#assign tablename = table.name?substring(0,table.name?length-8)>
+<#assign tablename = table.name?substring(0,table.name?length-0)>
 
 <#list table.importPackages as pkg>
 import ${pkg};

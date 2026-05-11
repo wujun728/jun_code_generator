@@ -90,10 +90,11 @@ public class CodeGenerator {
     }
 
     private String convertEntityName(String entityName) {
-        if (entityName.length() <= 14) {
+        /*if (entityName.length() <= 14) {
             return entityName;
         }
-        return entityName.substring(7, entityName.length() - 7);
+        return entityName.substring(7, entityName.length() - 7);*/
+        return entityName;
     }
 
 
