@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>代码生成 - SQL粘贴模式</title>
+    <link rel="stylesheet" href="/static/plugins/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/static/plugins/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="/static/plugins/codemirror/addon/hint/show-hint.css"/>
+    <style>
+        .code-generator-wrap { padding: 15px; }
+        .layui-card { margin-bottom: 10px; }
+        .config-area .layui-form-item { margin-bottom: 5px; }
+        .config-area .layui-form-label { width: 90px; padding: 6px 10px; }
+        .config-area .layui-input-inline { width: 150px; }
+        .config-area .layui-input { height: 28px; }
+        .config-area .layui-form-switch { margin-top: 6px; }
+        .template-btn-area { padding: 10px 0; }
+        .template-btn-area .layui-btn { margin: 2px; }
+        .template-group-label { display: inline-block; padding: 2px 8px; background: #FFB800; color: #fff; border-radius: 2px; margin: 2px; font-size: 12px; }
+        .CodeMirror { border: 1px solid #e6e6e6; height: auto; }
+        .mode-switch { float: right; }
+    </style>
+</head>
+<body>
+<div class="code-generator-wrap">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <b>代码生成平台 - SQL粘贴模式</b>
+            <a class="mode-switch layui-btn layui-btn-sm layui-btn-primary" href="/codeGenerate/index">切换到数据库选表模式</a>
+        </div>
+    </div>
+
+    <!-- 配置区域 -->
+    <div class="layui-card">
+        <div class="layui-card-header">配置选项</div>
+        <div class="layui-card-body config-area">
+            <form class="layui-form" lay-filter="configForm">
+                <div class="layui-row">
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="authorName" value="wujun728" class="layui-input"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">包名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="packageName" value="io.github.wujun728" class="layui-input"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">输入类型</label>
+                            <div class="layui-input-inline">
+                                <select name="dataType">
+                                    <option value="sql" selected>DDL SQL</option>
+                                    <option value="json">JSON</option>
+                                    <option value="insert-sql">INSERT SQL</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">命名类型</label>
+                            <div class="layui-input-inline">
+                                <select name="nameCaseType">
+                                    <option value="CamelCase" selected>驼峰</option>
+                                    <option value="UnderScoreCase">下划线</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">忽略前缀</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ignorePrefix" value="" placeholder="如: sys_" class="layui-input"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">TinyInt转换</label>
+                            <div class="layui-input-inline">
+                                <select name="tinyintTransType">
+                                    <option value="Integer" selected>Integer</option>
+                                    <option value="int">int</option>
+                                    <option value="boolean">boolean</option>
+                                    <option value="Boolean">Boolean</option>
+                                    <option value="String">String</option>
+                                    <option value="Short">Short</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时间类型</label>
+                            <div class="layui-input-inline">
+                                <select name="timeTransType">
+                                    <option value="Date" selected>Date</option>
+                                    <option value="LocalDate">LocalDate</option>
+                                    <option value="LocalDateTime">LocalDateTime</option>
+                                    <option value="Timestamp">Timestamp</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开关选项</label>
+                            <div class="layui-input-inline" style="width:260px;">
+                                <input type="checkbox" name="isLombok" lay-skin="switch" lay-text="Lombok|无" checked/>
+                                <input type="checkbox" name="isSwagger" lay-skin="switch" lay-text="Swagger|无"/>
+                                <input type="checkbox" name="isComment" lay-skin="switch" lay-text="注释|无" checked/>
+                                <input type="checkbox" name="isPackageType" lay-skin="switch" lay-text="包装|基本" checked/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SQL输入区域 -->
+    <div class="layui-card">
+        <div class="layui-card-header">
+            表结构信息
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="codeGenerateBtn">生成代码</button>
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" id="copyBtn">复制输出</button>
+        </div>
+        <div class="layui-card-body">
+            <textarea id="tableSql"></textarea>
+        </div>
+    </div>
+
+    <!-- 模板选择区域 -->
+    <div class="layui-card">
+        <div class="layui-card-header">模板选择</div>
+        <div class="layui-card-body template-btn-area" id="templateArea">
+            <span style="color:#999;">加载模板中...</span>
+        </div>
+    </div>
+
+    <!-- 代码输出区域 -->
+    <div class="layui-card">
+        <div class="layui-card-header">生成代码</div>
+        <div class="layui-card-body">
+            <div class="layui-tab layui-tab-brief" lay-filter="outputTab">
+                <ul class="layui-tab-title" id="outputTabTitle">
+                    <li class="layui-this">controller</li>
+                    <li>service</li>
+                    <li>service_impl</li>
+                    <li>dao</li>
+                    <li>model</li>
+                    <li>mybatis</li>
+                </ul>
+                <div class="layui-tab-content" id="outputTabContent">
+                    <div class="layui-tab-item layui-show"><textarea id="controller_ide"></textarea></div>
+                    <div class="layui-tab-item"><textarea id="service_ide"></textarea></div>
+                    <div class="layui-tab-item"><textarea id="service_impl_ide"></textarea></div>
+                    <div class="layui-tab-item"><textarea id="dao_ide"></textarea></div>
+                    <div class="layui-tab-item"><textarea id="model_ide"></textarea></div>
+                    <div class="layui-tab-item"><textarea id="mybatis_ide"></textarea></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/plugins/layui/layui.js"></script>
+<script src="/static/plugins/codemirror/lib/codemirror.js"></script>
+<script src="/static/plugins/codemirror/mode/sql/sql.js"></script>
+<script src="/static/plugins/codemirror/mode/clike/clike.js"></script>
+<script src="/static/plugins/codemirror/mode/xml/xml.js"></script>
+<script src="/static/plugins/codemirror/addon/display/placeholder.js"></script>
+<script src="/static/plugins/codemirror/addon/hint/show-hint.js"></script>
+<script src="/static/plugins/codemirror/addon/hint/anyword-hint.js"></script>
+<script src="/static/js/sqlPaste.js"></script>
+</body>
+</html>
