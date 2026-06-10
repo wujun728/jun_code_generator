@@ -7,3 +7,22 @@ D:\workspace_github\jun_code_generator\jun-code-freemarker
 D:\workspace_github\jun_code_generator\jun-code-freemarker\jun-code-spring-boot-starter
 
 D:\workspace_github\jun_code_generator\jun-code-freemarker\jun_code_freemarker_deep
+
+
+
+
+
+修复下面的问题：
+1、前端ftl页面与代码生成模板杂合在一起了，不好区分。 D:\workspace_github\jun_code_generator\jun-code-freemarker\jun_code_freemarker_deep\jun_code_freemarker_deep_admin\src\main\resources\templates
+2、升级为yaml文件。D:\workspace_github\jun_code_generator\jun-code-freemarker\jun_code_freemarker_deep\jun_code_freemarker_deep_admin\src\main\resources\application.properties
+
+D:\workspace_github\jun_code_generator\jun-code-freemarker\jun_code_freemarker_deep
+
+
+
+
+
+
+下面的这两个模块的功能严重重复，保留一个模块，即mybatisplus 能生成curd的代码即可，同时，合并模板可选模板。
+D:\workspace_github\jun_code_generator\jun-mybatisplus-generator\
+D:\workspace_github\jun_code_generator\jun-mybatisplus-generator_depp_mybatisplus\
