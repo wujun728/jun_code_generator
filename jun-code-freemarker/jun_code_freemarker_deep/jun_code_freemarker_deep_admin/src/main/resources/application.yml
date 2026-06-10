@@ -1,0 +1,31 @@
+# web
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+# actuator
+management:
+  server:
+    servlet:
+      context-path: /actuator
+  health:
+    mail:
+      enabled: false
+
+# resources
+spring:
+  mvc:
+    servlet:
+      load-on-startup: 0
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+  # freemarker
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+    charset: UTF-8
+    request-context-attribute: request
+    settings:
+      number_format: 0.##########
