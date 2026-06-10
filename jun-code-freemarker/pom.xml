@@ -15,7 +15,6 @@
 	</properties>
 
 	<modules>
-		<module>jun-code-spring-boot-starter</module>
 		<module>jun_code_freemarker_deep</module>
 	</modules>
 

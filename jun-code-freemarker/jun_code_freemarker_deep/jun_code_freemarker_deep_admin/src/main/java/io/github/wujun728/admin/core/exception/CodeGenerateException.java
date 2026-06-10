@@ -1,10 +1,14 @@
 package io.github.wujun728.admin.core.exception;
 
 /**
- * @author xuxueli 2018-05-02 21:10:28
+ * code generate exception
  */
 public class CodeGenerateException extends RuntimeException {
     private static final long serialVersionUID = 42L;
+
+    public CodeGenerateException() {
+        super();
+    }
 
     public CodeGenerateException(String msg) {
         super(msg);
@@ -16,6 +20,12 @@ public class CodeGenerateException extends RuntimeException {
 
     public CodeGenerateException(Throwable cause) {
         super(cause);
+    }
+
+    public CodeGenerateException(String message, Throwable cause,
+                                  boolean enableSuppression,
+                                  boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
 }

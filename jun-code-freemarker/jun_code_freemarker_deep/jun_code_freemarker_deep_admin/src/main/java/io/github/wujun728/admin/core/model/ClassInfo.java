@@ -1,50 +1,77 @@
 package io.github.wujun728.admin.core.model;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
  * class info
- *
- * @author xuxueli 2018-05-02 20:02:34
  */
+@Data
 public class ClassInfo {
 
+    private Long id;
     private String tableName;
+    private String originTableName;
     private String className;
-	private String classComment;
+    private String classComment;
+    private int pkSize;
+    private List<FieldInfo> fieldList;
+    private List<FieldInfo> pkfieldList;
 
-	private List<FieldInfo> fieldList;
+    /**
+     * 作者姓名
+     */
+    private String authorName;
 
-	public String getTableName() {
-		return tableName;
-	}
+    /**
+     * 功能名
+     */
+    private String functionName;
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+    /**
+     * 是否移除表前缀
+     */
+    private String tablePrefix;
 
-	public String getClassName() {
-		return className;
-	}
+    /**
+     * 生成方式
+     */
+    private String generateType;
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    /**
+     * 代码包名
+     */
+    private String packageName;
 
-	public String getClassComment() {
-		return classComment;
-	}
+    /**
+     * 生成时间（String类型的）
+     */
+    private String createTimeString;
 
-	public void setClassComment(String classComment) {
-		this.classComment = classComment;
-	}
+    /**
+     * 模块名
+     */
+    private String modularNane = "modular";
 
-	public List<FieldInfo> getFieldList() {
-		return fieldList;
-	}
+    /**
+     * 业务名
+     */
+    private String busName;
 
-	public void setFieldList(List<FieldInfo> fieldList) {
-		this.fieldList = fieldList;
-	}
+    /**
+     * 所属应用
+     */
+    private String appCode;
+
+    /**
+     * 菜单上级
+     */
+    private String menuPid;
+
+    /**
+     * 菜单上级父ids
+     */
+    private String menuPids = "";
 
 }
