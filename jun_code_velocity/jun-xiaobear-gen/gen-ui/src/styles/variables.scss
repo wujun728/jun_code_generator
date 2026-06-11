@@ -1,0 +1,278 @@
+// 小熊代码生成器 - 全局SCSS变量定义
+:root {
+  // 主色调 - 科技蓝色主题
+  --primary-color: #0066FF;     // 科技蓝 - 主要操作
+  --primary-hover: #0052CC;     // 深蓝 - 悬停状态
+  --primary-light: #4D94FF;     // 浅蓝 - 辅助元素
+  --primary-gradient: linear-gradient(135deg, #0066FF 0%, #4D94FF 100%);
+  
+  // 功能色 - 现代化搭配
+  --success-color: #00B96B;     // 翠绿 - 成功状态
+  --warning-color: #FF9500;     // 橙黄 - 警告信息
+  --danger-color: #FF4D4F;      // 红色 - 错误危险
+  --info-color: #1890FF;        // 灰蓝 - 信息提示
+  
+  // 背景色 - 统一色彩系统
+  --bg-primary: #FFFFFF;        // 卡片背景
+  --bg-secondary: #F8FAFC;      // 页面背景
+  --bg-tertiary: #F1F5F9;       // 区域背景
+  
+  // 文字色 - 层次分明
+  --text-primary: #1A202C;      // 标题、重要信息
+  --text-regular: #4A5568;      // 描述文字、标签
+  --text-secondary: #718096;    // 提示文字、时间
+  --text-placeholder: #A0AEC0;  // 占位符、禁用状态
+  
+  // 边框色 - 统一边框规范
+  --border-light: #E2E8F0;      // 标准边框
+  --border-base: #CBD5E1;       // 较深边框
+  --border-dark: #94A3B8;       // 深色边框
+  
+  // 间距 - 基于8px网格系统
+  --spacing-xs: 4px;    // 图标间距、小元素
+  --spacing-sm: 8px;    // 按钮内边距、小间距
+  --spacing-md: 16px;   // 标准组件间距
+  --spacing-lg: 24px;   // 卡片内边距、区域间距
+  --spacing-xl: 32px;   // 大区域间距
+  --spacing-2xl: 48px;  // 页面区域间距
+  --spacing-3xl: 64px;  // 特大区域间距
+  
+  // 圆角 - 统一圆角规范
+  --border-radius-small: 4px;   // 按钮、输入框
+  --border-radius-base: 8px;    // 卡片、面板
+  --border-radius-large: 12px;  // 主要容器
+  --border-radius-xl: 16px;     // 大型容器
+  --border-radius-full: 50%;    // 头像、图标背景
+  
+  // 阴影 - 层次分明的阴影系统
+  --shadow-light: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+  
+  // 过渡 - 统一动画规范
+  --transition-fast: 150ms ease-out;     // 按钮悬停、颜色变化
+  --transition-base: 300ms ease-out;     // 页面切换、组件显隐
+  --transition-slow: 500ms ease-in-out;  // 复杂动画、数据加载
+  
+  // Z-index
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-top: 9999;
+}
+
+// 深色主题 - 统一深色模式
+[data-theme="dark"] {
+  --bg-primary: #1E293B;    // 深色卡片背景
+  --bg-secondary: #0F172A;  // 深色页面背景
+  --bg-tertiary: #334155;   // 深色区域背景
+  --text-primary: #F8FAFC;  // 深色主文字
+  --text-regular: #E2E8F0;  // 深色常规文字
+  --text-secondary: #94A3B8;// 深色次要文字
+  --text-placeholder: #64748B; // 深色占位符
+  --border-light: #334155;  // 深色浅边框
+  --border-base: #475569;   // 深色标准边框
+  --border-dark: #64748B;   // 深色深边框
+}
+
+// 全局基础样式 - 现代化排版
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+}
+
+// 响应式断点
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// 常用工具类
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  
+  @include mobile {
+    padding: 0 var(--spacing-md);
+  }
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.flex { display: flex; }
+.flex-center { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+.flex-between { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+.grid { display: grid; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+// 动画工具类
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.animate-fadeIn { animation: fadeIn 0.6s ease; }
+.animate-fadeInUp { animation: fadeInUp 0.6s ease; }
+.animate-fadeInDown { animation: fadeInDown 0.6s ease; }
+.animate-slideInLeft { animation: slideInLeft 0.6s ease; }
+.animate-slideInRight { animation: slideInRight 0.6s ease; }
+.animate-bounce { animation: bounce 0.6s ease; }
+.animate-pulse { animation: pulse 2s infinite; }
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 4px;
+  
+  &:hover {
+    background: var(--primary-color);
+  }
+}
+
+// 选择文本样式
+::selection {
+  background: rgba(245, 112, 112, 0.2);
+  color: var(--text-primary);
+}
+
+// 无障碍访问优化
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// 高对比度模式
+@media (prefers-contrast: high) {
+  :root {
+    --border-light: #000000;
+    --border-base: #000000;
+    --text-secondary: #000000;
+  }
+}

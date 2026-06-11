@@ -1,0 +1,71 @@
+package ${packageName}.common;
+
+import java.util.List;
+
+/**
+ * 分页结果
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public class PageResult<T> {
+    
+    /** 总记录数 */
+    private long total;
+    
+    /** 数据列表 */
+    private List<T> rows;
+    
+    /** 当前页码 */
+    private long pageNum;
+    
+    /** 每页数量 */
+    private long pageSize;
+    
+    public PageResult() {}
+    
+    public PageResult(List<T> rows, long total) {
+        this.rows = rows;
+        this.total = total;
+    }
+    
+    public PageResult(List<T> rows, long total, long pageNum, long pageSize) {
+        this.rows = rows;
+        this.total = total;
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+    }
+    
+    // Getters and Setters
+    public long getTotal() {
+        return total;
+    }
+    
+    public void setTotal(long total) {
+        this.total = total;
+    }
+    
+    public List<T> getRows() {
+        return rows;
+    }
+    
+    public void setRows(List<T> rows) {
+        this.rows = rows;
+    }
+    
+    public long getPageNum() {
+        return pageNum;
+    }
+    
+    public void setPageNum(long pageNum) {
+        this.pageNum = pageNum;
+    }
+    
+    public long getPageSize() {
+        return pageSize;
+    }
+    
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+}

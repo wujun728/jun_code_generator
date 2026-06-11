@@ -1,0 +1,26 @@
+/* 简化的设计系统 */
+:root {
+  /* 主色系 */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+
+  /* 功能色系 */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* 中性色系 */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-500: #64748b;
+  --color-gray-700: #334155;
+  --color-gray-900: #0f172a;
+
+  /* 语义化颜色 */
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+}

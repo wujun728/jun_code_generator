@@ -1,0 +1,107 @@
+<template>
+  <div id="app">
+    <el-container class="layout-container">
+      <!-- 头部 -->
+      <el-header class="layout-header">
+        <div class="header-content">
+          <h1 class="logo">${projectComment}</h1>
+          <div class="header-actions">
+            <el-button type="primary" @click="logout">退出登录</el-button>
+          </div>
+        </div>
+      </el-header>
+      
+      <!-- 主体 -->
+      <el-container>
+        <!-- 侧边栏 -->
+        <el-aside width="200px" class="layout-aside">
+          <el-menu
+            :default-active="$route.path"
+            class="el-menu-vertical"
+            router
+            background-color="#304156"
+            text-color="#bfcbd9"
+            active-text-color="#409EFF"
+          >
+            <el-menu-item index="/dashboard">
+              <el-icon><House /></el-icon>
+              <span>首页</span>
+            </el-menu-item>
+            <!-- 动态菜单将在这里生成 -->
+          </el-menu>
+        </el-aside>
+        
+        <!-- 内容区域 -->
+        <el-main class="layout-main">
+          <router-view />
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App',
+  methods: {
+    logout() {
+      this.$confirm('确定要退出登录吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        localStorage.removeItem('token')
+        this.$message.success('退出成功')
+        location.reload()
+      })
+    }
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+.layout-container {
+  height: 100vh;
+}
+
+.layout-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.logo {
+  margin: 0;
+  color: #409EFF;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.layout-aside {
+  background-color: #304156;
+}
+
+.layout-main {
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.el-menu-vertical {
+  border-right: none;
+}
+</style>

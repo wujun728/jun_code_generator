@@ -1,0 +1,47 @@
+import request from '@/utils/request'
+
+// ${functionName}API
+export default {
+  // 查询${functionName}列表
+  getList(params) {
+    return request({
+      url: '/${moduleName}/${businessName}/list',
+      method: 'get',
+      params
+    })
+  },
+
+  // 查询${functionName}详情
+  getDetail(${pkColumn.javaField}) {
+    return request({
+      url: `/${moduleName}/${businessName}/${${pkColumn.javaField}}`,
+      method: 'get'
+    })
+  },
+
+  // 新增${functionName}
+  create(data) {
+    return request({
+      url: '/${moduleName}/${businessName}',
+      method: 'post',
+      data
+    })
+  },
+
+  // 修改${functionName}
+  update(data) {
+    return request({
+      url: '/${moduleName}/${businessName}',
+      method: 'put',
+      data
+    })
+  },
+
+  // 删除${functionName}
+  delete(${pkColumn.javaField}s) {
+    return request({
+      url: `/${moduleName}/${businessName}/${${pkColumn.javaField}s}`,
+      method: 'delete'
+    })
+  }
+}

@@ -1,0 +1,151 @@
+# ${projectComment} API文档
+
+## 接口概览
+
+本文档描述了${projectComment}项目的RESTful API接口。
+
+## 基础信息
+
+- **Base URL**: `http://localhost:${serverPort}/${artifactId}`
+- **版本**: ${version}
+- **认证方式**: JWT Token
+
+## 认证说明
+
+所有API请求都需要在请求头中包含JWT Token：
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+## 通用响应格式
+
+### 成功响应
+```json
+{
+  "code": 200,
+  "msg": "操作成功",
+  "data": {}
+}
+```
+
+### 错误响应
+```json
+{
+  "code": 500,
+  "msg": "错误信息",
+  "data": null
+}
+```
+
+## 状态码说明
+
+| 状态码 | 说明 |
+|--------|------|
+| 200 | 成功 |
+| 401 | 未授权 |
+| 403 | 禁止访问 |
+| 404 | 资源不存在 |
+| 500 | 服务器内部错误 |
+
+## 业务接口
+
+#foreach($table in $tables)
+### ${table.functionName}管理
+
+#### 1. 查询${table.functionName}列表
+
+**接口地址**: `GET /${table.moduleName}/${table.businessName}/list`
+
+**请求参数**:
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| pageNum | int | 否 | 页码，默认1 |
+| pageSize | int | 否 | 每页数量，默认10 |
+#foreach($column in $table.columns)
+#if($column.query)
+| ${column.javaField} | ${column.javaType} | 否 | ${column.columnComment} |
+#end
+#end
+
+**响应示例**:
+```json
+{
+  "code": 200,
+  "msg": "查询成功",
+  "rows": [
+    {
+#foreach($column in $table.columns)
+      "${column.javaField}": #if($column.javaType == "String")"示例值"#elseif($column.javaType == "Long" || $column.javaType == "Integer")1#elseif($column.javaType == "Date")"2023-01-01 00:00:00"#else"示例值"#end#if($foreach.hasNext),#end
+
+#end
+    }
+  ],
+  "total": 1
+}
+```
+
+#### 2. 获取${table.functionName}详情
+
+**接口地址**: `GET /${table.moduleName}/${table.businessName}/{${table.pkColumn.javaField}}`
+
+**路径参数**:
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| ${table.pkColumn.javaField} | ${table.pkColumn.javaType} | 是 | ${table.functionName}ID |
+
+#### 3. 新增${table.functionName}
+
+**接口地址**: `POST /${table.moduleName}/${table.businessName}`
+
+**请求体**:
+```json
+{
+#foreach($column in $table.columns)
+#if(!$column.pk && $column.insert)
+  "${column.javaField}": #if($column.javaType == "String")"示例值"#elseif($column.javaType == "Long" || $column.javaType == "Integer")1#elseif($column.javaType == "Date")"2023-01-01 00:00:00"#else"示例值"#end#if($foreach.hasNext),#end
+
+#end
+#end
+}
+```
+
+#### 4. 修改${table.functionName}
+
+**接口地址**: `PUT /${table.moduleName}/${table.businessName}`
+
+**请求体**:
+```json
+{
+#foreach($column in $table.columns)
+#if($column.edit)
+  "${column.javaField}": #if($column.javaType == "String")"示例值"#elseif($column.javaType == "Long" || $column.javaType == "Integer")1#elseif($column.javaType == "Date")"2023-01-01 00:00:00"#else"示例值"#end#if($foreach.hasNext),#end
+
+#end
+#end
+}
+```
+
+#### 5. 删除${table.functionName}
+
+**接口地址**: `DELETE /${table.moduleName}/${table.businessName}/{${table.pkColumn.javaField}s}`
+
+**路径参数**:
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| ${table.pkColumn.javaField}s | String | 是 | ${table.functionName}ID，多个用逗号分隔 |
+
+---
+
+#end
+
+## 错误处理
+
+当API调用出现错误时，会返回相应的错误码和错误信息。请根据错误码进行相应的处理。
+
+## 联系方式
+
+如有问题，请联系开发团队：
+- 作者：${author}
+- 项目：${projectComment}
+- 版本：${version}

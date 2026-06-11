@@ -1,0 +1,63 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import Layout from '@/layout/Layout.vue'
+
+const routes = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        meta: { title: '首页', icon: 'dashboard' }
+      }
+    ]
+  },
+#foreach($table in $tables)
+  {
+    path: '/${table.moduleName}',
+    component: Layout,
+    redirect: '/${table.moduleName}/${table.businessName}',
+    name: '${table.className}Module',
+    meta: { title: '${table.functionName}管理', icon: 'table' },
+    children: [
+      {
+        path: '${table.businessName}',
+        name: '${table.className}',
+        component: () => import('@/views/${table.moduleName}/${table.businessName}/index.vue'),
+        meta: { title: '${table.functionName}', icon: 'table' }
+      }
+    ]
+  },
+#end
+  {
+    path: '/404',
+    component: () => import('@/views/error/404.vue'),
+    hidden: true
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+    hidden: true
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  // 设置页面标题
+  if (to.meta.title) {
+    document.title = `${to.meta.title} - ${projectComment}`
+  }
+
+  // 这里可以添加登录验证逻辑
+  next()
+})
+
+export default router

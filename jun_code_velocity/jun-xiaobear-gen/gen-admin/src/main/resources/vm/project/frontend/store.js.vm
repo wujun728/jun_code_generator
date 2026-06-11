@@ -1,0 +1,72 @@
+import { createStore } from 'vuex'
+
+const store = createStore({
+  state: {
+    // 用户信息
+    user: {
+      token: localStorage.getItem('token') || '',
+      userInfo: {}
+    },
+    // 应用设置
+    settings: {
+      theme: 'light',
+      sidebarCollapsed: false
+    }
+  },
+  
+  mutations: {
+    SET_TOKEN(state, token) {
+      state.user.token = token
+      localStorage.setItem('token', token)
+    },
+    
+    CLEAR_TOKEN(state) {
+      state.user.token = ''
+      state.user.userInfo = {}
+      localStorage.removeItem('token')
+    },
+    
+    SET_USER_INFO(state, userInfo) {
+      state.user.userInfo = userInfo
+    },
+    
+    SET_THEME(state, theme) {
+      state.settings.theme = theme
+    },
+    
+    TOGGLE_SIDEBAR(state) {
+      state.settings.sidebarCollapsed = !state.settings.sidebarCollapsed
+    }
+  },
+  
+  actions: {
+    // 登录
+    login({ commit }, { username, password }) {
+      return new Promise((resolve, reject) => {
+        // 这里应该调用登录API
+        // 模拟登录成功
+        const token = 'mock-token-' + Date.now()
+        commit('SET_TOKEN', token)
+        commit('SET_USER_INFO', { username, id: 1 })
+        resolve()
+      })
+    },
+    
+    // 退出登录
+    logout({ commit }) {
+      return new Promise((resolve) => {
+        commit('CLEAR_TOKEN')
+        resolve()
+      })
+    }
+  },
+  
+  getters: {
+    isLoggedIn: state => !!state.user.token,
+    userInfo: state => state.user.userInfo,
+    theme: state => state.settings.theme,
+    sidebarCollapsed: state => state.settings.sidebarCollapsed
+  }
+})
+
+export default store

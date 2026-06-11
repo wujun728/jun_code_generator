@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javaxiaobear.mapper.DynamicDataSourceMapper">
+    
+    <resultMap type="DynamicDataSource" id="DynamicDataSourceResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="url"    column="url"    />
+        <result property="port"    column="port"    />
+        <result property="dbName"    column="db_name"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="driverClassName"    column="driver_class_name"    />
+        <result property="type"    column="type"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectDynamicDataSourceVo">
+        select id, name, url, port, db_name, username, password, driver_class_name, type, status, create_time, update_time from dynamic_data_source
+    </sql>
+
+    <select id="selectDynamicDataSourceList" parameterType="DynamicDataSource" resultMap="DynamicDataSourceResult">
+        <include refid="selectDynamicDataSourceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="dbName != null  and dbName != ''"> and db_name like concat('%', #{dbName}, '%')</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="driverClassName != null  and driverClassName != ''"> and driver_class_name like concat('%', #{driverClassName}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectDynamicDataSourceById" parameterType="Long" resultMap="DynamicDataSourceResult">
+        <include refid="selectDynamicDataSourceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDynamicDataSource" parameterType="DynamicDataSource" useGeneratedKeys="true" keyProperty="id">
+        insert into dynamic_data_source
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="port != null">port,</if>
+            <if test="dbName != null and dbName != ''">db_name,</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="driverClassName != null and driverClassName != ''">driver_class_name,</if>
+            <if test="type != null">type,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="port != null">#{port},</if>
+            <if test="dbName != null and dbName != ''">#{dbName},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="driverClassName != null and driverClassName != ''">#{driverClassName},</if>
+            <if test="type != null">#{type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDynamicDataSource" parameterType="DynamicDataSource">
+        update dynamic_data_source
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="dbName != null and dbName != ''">db_name = #{dbName},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="driverClassName != null and driverClassName != ''">driver_class_name = #{driverClassName},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDynamicDataSourceById" parameterType="Long">
+        delete from dynamic_data_source where id = #{id}
+    </delete>
+
+    <delete id="deleteDynamicDataSourceByIds" parameterType="String">
+        delete from dynamic_data_source where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
