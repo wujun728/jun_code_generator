@@ -4,8 +4,8 @@ spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
         username: root
-        password: hapek521!
-        url: jdbc:mysql://hupei.fun:39001/a_my-generator?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        password: mysqladmin
+        url: jdbc:mysql://localhost:3307/db_generator?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
 
 server:
     port: 8998
