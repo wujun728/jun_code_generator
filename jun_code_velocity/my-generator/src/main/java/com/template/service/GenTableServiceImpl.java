@@ -4,9 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -228,7 +230,7 @@ public class GenTableServiceImpl implements IGenTableService
     {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generatorCode(tableName, zip);
+        generatorCode(tableName, zip, new HashSet<>());
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
@@ -341,9 +343,10 @@ public class GenTableServiceImpl implements IGenTableService
     {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
+        Set<String> addedEntries = new HashSet<>();
         for (String tableName : tableNames)
         {
-            generatorCode(tableName, zip);
+            generatorCode(tableName, zip, addedEntries);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
@@ -352,7 +355,7 @@ public class GenTableServiceImpl implements IGenTableService
     /**
      * 查询表信息并生成代码
      */
-    private void generatorCode(String tableName, ZipOutputStream zip)
+    private void generatorCode(String tableName, ZipOutputStream zip, Set<String> addedEntries)
     {
         // 查询表信息
         GenTable table = genTableMapper.selectGenTableByName(tableName);
@@ -376,7 +379,13 @@ public class GenTableServiceImpl implements IGenTableService
             try
             {
                 // 添加到zip
-                zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
+                String entryName = VelocityUtils.getFileName(template, table);
+                if (addedEntries.contains(entryName))
+                {
+                    entryName = table.getTableName() + "/" + entryName;
+                }
+                addedEntries.add(entryName);
+                zip.putNextEntry(new ZipEntry(entryName));
                 IOUtils.write(sw.toString(), zip, Constants.UTF8);
                 IOUtils.closeQuietly(sw);
                 zip.flush();

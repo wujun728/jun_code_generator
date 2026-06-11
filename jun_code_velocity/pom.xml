@@ -16,7 +16,7 @@
 
 	<modules>
 		<module>my-generator</module>
-		<module>jun-code-generator6</module>
+		<module>jun-xiaobear-gen</module>
 	</modules>
 
 	<dependencies>
