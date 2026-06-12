@@ -16,6 +16,7 @@
         <module>jun-code-freemarker</module>
         <module>jun-mybatisplus-generator</module>
         <module>jun_code_velocity</module>
+        <module>jun_excel_generate_sql_script</module>
     </modules>
 
 	<dependencies>
