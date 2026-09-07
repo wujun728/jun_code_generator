@@ -1,0 +1,28 @@
+package ${packageName}.service.impl;
+
+    #foreach ($column in $columns)
+#if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+import com.javaxiaobear.common.utils.DateUtils;
+#break
+#end
+#end
+import org.springframework.stereotype.Service;
+#if($table.sub)
+import com.javaxiaobear.common.utils.StringUtils;
+import ${packageName}.domain.${subClassName};
+#end
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.domain.${ClassName};
+import ${packageName}.service.I${ClassName}Service;
+
+/**
+ * ${functionName}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${ClassName}ServiceImpl extends ServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service  {
+
+
+}

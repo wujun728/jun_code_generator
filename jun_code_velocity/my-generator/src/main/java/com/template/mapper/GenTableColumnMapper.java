@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.template.domain.GenTableColumn;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 业务字段 数据层
@@ -19,7 +20,7 @@ public interface GenTableColumnMapper
      * @param tableName 表名称
      * @return 列信息
      */
-    public List<GenTableColumn> selectDbTableColumnsByName(String tableName);
+    public List<GenTableColumn> selectDbTableColumnsByName(@Param("tableName") String tableName, @Param("dataBase") String dataBase);
 
     /**
      * 查询业务字段列表

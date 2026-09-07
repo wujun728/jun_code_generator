@@ -1,0 +1,24 @@
+package ${packageName};
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import tk.mybatis.spring.annotation.MapperScan;
+
+/**
+ * ${projectComment}启动程序
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@EnableTransactionManagement
+@MapperScan("${packageName}.mapper")
+public class ${className}Application {
+    
+    public static void main(String[] args) {
+        SpringApplication.run(${className}Application.class, args);
+        System.out.println("(♥◠‿◠)ﾉﾞ  ${projectComment}启动成功   ლ(´ڡ`ლ)ﾞ");
+    }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.template.mapper.SysDictTypeMapper">
+
+    <resultMap type="com.template.domain.SysDictType" id="SysDictTypeResult">
+        <id     property="dictId"   column="dict_id"   />
+        <result property="dictName" column="dict_name" />
+        <result property="dictType" column="dict_type" />
+        <result property="status"   column="status"    />
+    </resultMap>
+
+    <select id="selectDictTypeAll" resultMap="SysDictTypeResult">
+        select dict_id, dict_name, dict_type, status from sys_dict_type where status = '0' order by dict_id
+    </select>
+
+</mapper>

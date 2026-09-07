@@ -1,0 +1,214 @@
+<template>
+  <div class="app-wrapper">
+    <!-- 侧边栏 -->
+    <div class="sidebar-container" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+      <div class="sidebar-header">
+        <h2 class="app-title">{{ projectComment }}</h2>
+        <el-button 
+          type="text" 
+          @click="toggleSidebar"
+          class="collapse-btn"
+        >
+          <el-icon>
+            <Fold v-if="!sidebarCollapsed" />
+            <Expand v-else />
+          </el-icon>
+        </el-button>
+      </div>
+      
+      <Sidebar />
+    </div>
+    
+    <!-- 主内容区 -->
+    <div class="main-container">
+      <!-- 顶部导航栏 -->
+      <div class="navbar">
+        <div class="navbar-left">
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item 
+              v-for="item in breadcrumbs" 
+              :key="item.path"
+              :to="item.path"
+            >
+              {{ item.title }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+        
+        <div class="navbar-right">
+          <el-dropdown>
+            <span class="user-info">
+              <el-icon><User /></el-icon>
+              管理员
+              <el-icon><ArrowDown /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item divided>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </div>
+      
+      <!-- 页面内容 -->
+      <div class="app-main">
+        <router-view />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import Sidebar from './components/Sidebar.vue'
+import { 
+  Fold, 
+  Expand, 
+  User, 
+  ArrowDown 
+} from '@element-plus/icons-vue'
+
+const route = useRoute()
+const sidebarCollapsed = ref(false)
+
+// 面包屑导航
+const breadcrumbs = computed(() => {
+  const matched = route.matched.filter(item => item.meta && item.meta.title)
+  const breadcrumbList = []
+  
+  matched.forEach(item => {
+    breadcrumbList.push({
+      path: item.path,
+      title: item.meta.title
+    })
+  })
+  
+  return breadcrumbList
+})
+
+// 切换侧边栏
+const toggleSidebar = () => {
+  sidebarCollapsed.value = !sidebarCollapsed.value
+}
+
+// 监听路由变化，设置页面标题
+watch(
+  () => route.meta.title,
+  (title) => {
+    if (title) {
+      document.title = `${title} - ${projectComment}`
+    }
+  },
+  { immediate: true }
+)
+</script>
+
+<style scoped>
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.sidebar-container {
+  width: 250px;
+  background: #001529;
+  transition: width 0.3s;
+  overflow: hidden;
+}
+
+.sidebar-container.sidebar-collapsed {
+  width: 64px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.app-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapse-btn {
+  color: #fff !important;
+  padding: 4px;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  z-index: 999;
+}
+
+.navbar-left {
+  flex: 1;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #666;
+  font-size: 14px;
+}
+
+.user-info .el-icon {
+  margin: 0 4px;
+}
+
+.app-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f0f2f5;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100vh;
+  }
+  
+  .sidebar-container.sidebar-collapsed {
+    transform: translateX(-100%);
+  }
+  
+  .main-container {
+    margin-left: 0;
+  }
+}
+</style>

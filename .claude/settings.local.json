@@ -148,5 +148,8 @@
       "Bash(cp -r \"D:/workspace_github/jun_code_generator/jun-code-freemarker/jun_code_generator_deep/src/main/resources/templates/code-generator/mybatis-plus-single-v2\" \"D:/workspace_github/jun_code_generator/jun-code-freemarker/jun-code-spring-boot-starter/src/main/resources/templates/mybatis-plus-single-v2\")",
       "Bash(cp -r \"D:/workspace_github/jun_code_generator/jun-code-freemarker/jun_code_generator_deep/src/main/resources/templates/code-generator/mybatis-plus-single-zd\" \"D:/workspace_github/jun_code_generator/jun-code-freemarker/jun-code-spring-boot-starter/src/main/resources/templates/mybatis-plus-single-zd\")"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "mysql"
+  ]
 }

@@ -1,120 +1,96 @@
-# 若依代码生成器模块分析与整合建议
+# 任务计划：my-generator 模块功能迁移与增强
 
-## 一、各模块分析
- 
+## 一、背景分析
 
-### 2. jun_codegen_simple（com.ruoyi.generate）
-- **定位**：精简版代码生成器
-- **代码量**：17 个 Java 文件
-- **特点**：
-  - 纯代码生成功能，无冗余框架
-  - 支持单表(CRUD)、树表(Tree)、主子表(Sub)三种模式
-  - 模板：controller/domain/mapper/service/serviceImpl + Vue（含 detail/edit）+ v3 版本
-  - 依赖若依微服务父模块（MyBatis-Plus 3.4.2）
-- **评价**：干净简洁，但功能偏基础
- 
+### 两个模块对比
 
-### 4. jun-code-velocity/jun_codegenerator（com.template）
-- **定位**：独立版代码生成器（版本 a）
-- **代码量**：31 个 Java 文件
-- **特点**：
-  - 自带构建好的 Vue + Element UI 前端（static 目录下的打包产物）
-  - 模板：entity/mapper/service/controller + index.vue/index-tree.vue + v3
-  - Spring Boot 2.5.14 + Velocity 2.3 + PageHelper
-- **评价**：结构清晰，但被后续版本迭代
+| 特性 | my-generator | jun-xiaobear-gen |
+|------|-------------|------------------|
+| 基础包名 | `com.template` | `com.javaxiaobear` |
+| Java版本 | javax.* (Java EE) | jakarta.* (Jakarta EE) |
+| 代码生成 | 基础CRUD | 基础CRUD + 完整项目生成 |
+| 数据源 | 单一数据源 | 多数据源动态切换 |
+| 数据库文档导出 | 无 | Excel/Word/PDF/HTML |
+| SQL建表 | 无 | 支持SQL解析+建表 |
+| 审计日志 | 无 | 有 |
+| Excel导出 | 无 | 有 |
+| 前端框架 | 较旧(Element UI) | 较新(Element Plus) |
+| 字典下拉选择 | 已注释(未实现) | 已实现 |
+| 前端组件 | 基础组件 | Modern组件系列 |
 
-### 5. jun-code-velocity/jun-code-generator（com.hp，v1.0-SNAPSHOT）
-- **定位**：独立版代码生成器（版本 b）
-- **代码量**：31 个 Java 文件
-- **特点**：与 jun_codegenerator 结构几乎相同，仅包名改为 com.hp，groupId 改为 io.github.wujun728
-- **评价**：jun_codegenerator 的重复版本
-
-### 6. jun-code-velocity/jun-code-generator6（io.github.wujun728.generator，v1.0.20）
-- **定位**：独立版代码生成器（用户最新版）
-- **代码量**：30 个 Java 文件
-- **特点**：
-  - 与上述两个独立版结构相同，但包名为 io.github.wujun728.generator
-  - 版本号最高（1.0.20），是用户自己的迭代版本
-  - 同样内置构建好的 Vue 前端
-- **评价**：用户自有的最新迭代版本
-
-### 7. jun-code-velocity/ruoyi-gen-mybatis-plus（com.ruoyi.generate）
-- **定位**：MyBatis-Plus 版代码生成器
-- **代码量**：17 个 Java 文件
-- **特点**：
-  - 与 jun_codegen_simple 功能相似，但依赖 MyBatis-Plus Generator 3.3.2
-  - 模板含 detail/edit Vue 页面
-  - 作为 jun-code-velocity 的子模块存在
-- **评价**：与 jun_codegen_simple 重复
-
-### 8. jun-xiaobear-gen（com.javaxiaobear，v2.0-SNAPSHOT）
-- **定位**：功能最丰富的增强版
-- **代码量**：48 个 Java 文件
-- **特点**：
-  - **动态数据源**：DatabaseSourceConfig + DynamicDataSourceRouter
-  - **多后端支持**：MyBatis 和 MyBatis-Plus 两套模板
-  - **多前端支持**：Element UI (Vue2/Vue3)、Ant Design Vue、纯 HTML
-  - **完整项目生成**：可生成整个 Spring Boot + Vue 项目脚手架（含 pom.xml、配置、Docker、nginx 等）
-  - **数据库字典导出**：database-export-core 集成
-  - **API 文档生成**：ApiSpecGenerator
-  - **定时任务**：Quartz 定期清理表
-  - **OpenAPI/Swagger** 集成
-  - Spring Boot 2.7.18 + MyBatis 2.3.1 + Velocity 2.0
-- **评价**：功能最全面，技术栈最新
-
-### 9. my-generator（com.template）
-- **定位**：独立版代码生成器（版本 c）
-- **代码量**：30 个 Java 文件
-- **特点**：与 jun_codegenerator 完全相同的结构，同样自带 generator-web 前端
-- **评价**：jun_codegenerator 的完全重复版本
+### 迁移结论
+保留 `my-generator` 模块，将 `jun-xiaobear-gen` 的以下功能迁移进来。
 
 ---
 
-## 二、模块关系总结
+## 二、实施计划
 
-```
-代码生成器演进关系：
+### 步骤1：后端 - 包名统一与基础结构调整
+- 将 `com.template` 包名改为 `com.jun.generator`
+- 统一为 javax.* 体系（与现有 my-generator 保持一致）
+- 引入缺失的依赖（druid、db-export、easypoi 等）
 
-code-generator (最臃肿：完整若依框架)
-  ├── jun_code_thymeleaf (code-generator 的包名变体，重复)
-  
-jun_codegen_simple (精简版：纯生成功能)
-  ├── ruoyi-gen-mybatis-plus (精简版 + MyBatis-Plus，重复)
+### 步骤2：后端 - 迁移多数据源管理功能
+- 迁移 `DynamicDataSource` 实体类
+- 迁移 `DynamicDataSourceMapper`
+- 迁移 `IDynamicDataSourceService` 及实现
+- 迁移 `DynamicDataSourceController`
+- 迁移 `DatabaseSourceConfig` 多数据源配置
+- 迁移 `DataSourceSwitcher` 数据源切换工具
 
-jun_codegenerator (独立版 a，com.template)
-  ├── jun-code-generator (独立版 b，com.hp，重复)
-  ├── jun-code-generator6 (独立版 c，io.github.wujun728，用户最新版)
-  └── my-generator (独立版 d，com.template，完全重复)
+### 步骤3：后端 - 迁移完整项目生成器
+- 迁移 `CompleteProjectGenerator`（一键生成完整前后端项目）
+- 迁移 `ApiSpecGenerator`
+- 迁移相关 Velocity 模板文件
 
-jun-xiaobear-gen (功能最丰富，独立演进)
-```
+### 步骤4：后端 - 迁移数据库文档导出
+- 迁移 `DatabaseDictionaryExportController`
+- 迁移 `FileDownloadUtils`
+- 引入 db-export 依赖
 
-核心发现：9 个模块中有 6 个是重复或高度相似的变体。
+### 步骤5：后端 - 迁移其他增强功能
+- 迁移 `createNewTable` SQL建表功能
+- 迁移 `exportToExcel` Excel导出
+- 迁移 `AuditLogUtil` 审计日志
+- 迁移 `GlobalExceptionHandler` 全局异常处理
+- 迁移 `CorsConfig` 跨域配置
+- 迁移 `RegularCleaningTables` 定时清理
+
+### 步骤6：后端 - 新增字典下拉选择功能
+- 在 `GenTableColumn` 中已有 `dictType` 字段
+- 新增字典查询接口（查询系统字典列表）
+- 在 Controller 中新增字典选项查询端点
+- 确保字段信息编辑时可以选择字典类型
+
+### 步骤7：前端 - 迁移增强功能
+- 迁移多数据源管理页面
+- 迁移数据库文档导出页面
+- 迁移完整项目生成页面
+- 迁移 Modern 组件系列（ModernButton, ModernCard, ModernTable, StatCard, ThemeSwitcher 等）
+- 迁移前端工具函数（performance, error-handler, tech-stack 等）
+
+### 步骤8：前端 - 完善字典下拉选择功能
+- 在 `editTable.vue` 中启用字典类型下拉选择
+- 新增字典 API 调用
+- 确保字典类型列始终可见（移除 `v-if="info.isRuoYi === '1'"` 条件）
+
+### 步骤9：清理与验证
+- 确认所有文件编译通过
+- 确认功能完整性
+- 更新 pom.xml 依赖
 
 ---
 
-## 三、整合建议
+## 三、待确认问题
 
-### 保留（3 个模块）：
-
-| 模块 | 保留理由 |
-|------|---------|
-| **jun-xiaobear-gen** | 功能最丰富、技术栈最新，含完整项目生成/多框架支持/动态数据源/数据库导出/API文档生成，作为主版本 |
-| **jun-code-generator6** | 用户自有最新迭代版本（io.github.wujun728），包名规范，作为独立精简版保留 |
-| **jun_codegen_simple** | 最干净的精简参考实现，代码量少、结构清晰，作为学习和参考版本 |
-
-### 删除（6 个模块）：
-
-| 模块 | 删除理由 |
-|------|---------|
-
+1. **包名**：是否使用 `com.jun.generator` 作为新包名？还是保留 `com.template`？
+2. **前端框架**：是否将前端升级为 Element Plus（Vue 3）？还是保留 Element UI（Vue 2）？
+3. **数据库**：这两套代码连接的数据库表结构是否一致（`gen_table`、`gen_table_column`）？需要确认迁移后表结构兼容。
 
 ---
 
-## 四、后续整合方向（建议）
+## 四、建议默认方案
 
-1. **以 jun-xiaobear-gen 为主版本**，吸收 jun-code-generator6 中用户自定义的模板优化
-2. **将 jun-code-generator6 的 Vue 前端（generator-web）**与 jun-xiaobear-gen 的 gen-ui 合并
-3. **统一包名**为 `io.github.wujun728.generator`
-4. **统一配置**：将 generator.yml 配置方式统一
-5. **模板合并**：将各版本中独有的模板（如 detail.vue、edit.vue）补充到主版本
+1. 包名改为 `com.jun.generator`（体现项目归属）
+2. 前端保留 Element UI（Vue 2），但将 jun-xiaobear-gen 的 Modern 组件迁移过来
+3. 数据库表结构以 my-generator 现有表结构为准，补充新增字段

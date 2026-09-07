@@ -1,0 +1,185 @@
+<template>
+  <div class="dashboard">
+    <el-row :gutter="20">
+      <el-col :span="24">
+        <el-card class="welcome-card">
+          <div class="welcome-content">
+            <h1>欢迎使用 ${projectComment}</h1>
+            <p>这是一个基于 Spring Boot + Vue 3 的现代化Web应用程序</p>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20" style="margin-top: 20px;">
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <el-icon color="#409EFF"><User /></el-icon>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">1,234</div>
+              <div class="stat-label">用户总数</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <el-icon color="#67C23A"><Document /></el-icon>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">5,678</div>
+              <div class="stat-label">数据总量</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <el-icon color="#E6A23C"><View /></el-icon>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">9,012</div>
+              <div class="stat-label">访问量</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="6">
+        <el-card class="stat-card">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <el-icon color="#F56C6C"><TrendCharts /></el-icon>
+            </div>
+            <div class="stat-content">
+              <div class="stat-number">3,456</div>
+              <div class="stat-label">今日新增</div>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20" style="margin-top: 20px;">
+      <el-col :span="12">
+        <el-card>
+          <template #header>
+            <span>快速操作</span>
+          </template>
+          <div class="quick-actions">
+            <el-button type="primary" icon="Plus">新增数据</el-button>
+            <el-button type="success" icon="Edit">编辑数据</el-button>
+            <el-button type="warning" icon="Search">查询数据</el-button>
+            <el-button type="danger" icon="Delete">删除数据</el-button>
+          </div>
+        </el-card>
+      </el-col>
+      
+      <el-col :span="12">
+        <el-card>
+          <template #header>
+            <span>系统信息</span>
+          </template>
+          <div class="system-info">
+            <p><strong>项目名称：</strong>${projectComment}</p>
+            <p><strong>版本号：</strong>${version}</p>
+            <p><strong>作者：</strong>${author}</p>
+            <p><strong>技术栈：</strong>Spring Boot + Vue 3 + Element Plus</p>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Dashboard',
+  data() {
+    return {
+      // 可以在这里添加数据
+    }
+  },
+  mounted() {
+    // 组件挂载后的逻辑
+  }
+}
+</script>
+
+<style scoped>
+.dashboard {
+  padding: 20px;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.welcome-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.welcome-content h1 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+.welcome-content p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.stat-card {
+  height: 120px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.stat-icon {
+  font-size: 40px;
+  margin-right: 20px;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #303133;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #909399;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.system-info p {
+  margin: 10px 0;
+  color: #606266;
+}
+</style>

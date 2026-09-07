@@ -60,6 +60,7 @@ public class VelocityUtils
         velocityContext.put("columns", genTable.getColumns());
         velocityContext.put("table", genTable);
         velocityContext.put("dicts", getDicts(genTable));
+        velocityContext.put("isRuoYi", "0".equals(genTable.getIsRuoYi()));
         setMenuVelocityContext(velocityContext, genTable);
         if (GenConstants.TPL_TREE.equals(tplCategory))
         {
@@ -121,35 +122,163 @@ public class VelocityUtils
     }
 
     /**
-     * 获取模板信息
+     * 获取模板信息（兼容旧版本）
      *
      * @return 模板列表
      */
     public static List<String> getTemplateList(String tplCategory)
     {
+        return getTemplateList(tplCategory, null, null);
+    }
+
+    /**
+     *  获取模板信息
+     * @param tplCategory 生成模板类型
+     * @param backEnd 后端框架
+     * @param frontEnd 前端框架
+     * @return 模板列表
+     */
+    public static List<String> getTemplateList(String tplCategory, String backEnd, String frontEnd)
+    {
+        List<String> templates = null;
+        if (StringUtils.isEmpty(backEnd)){
+            backEnd = GenConstants.BACK_END_MYBATIS;
+        }
+        if (StringUtils.isEmpty(frontEnd)){
+            frontEnd = GenConstants.FRONT_END_ELEMENT_UI_VUE2;
+        }
+        if (GenConstants.BACK_END_MYBATIS.equals(backEnd)){
+            templates = getMybatisTemplate();
+        }else if (GenConstants.BACK_END_MYBATIS_PLUS.equals(backEnd)){
+            templates = getMybatisPlusTemplate();
+        }
+        if (GenConstants.FRONT_END_ELEMENT_UI_VUE2.equals(frontEnd)) {
+            getElementUiWithVue2Template(templates, tplCategory);
+        }
+        else if(GenConstants.FRONT_END_ANT_DEIGN_V.equals(frontEnd))
+        {
+            getAntDvTemplate(templates,tplCategory);
+        }
+        else if(GenConstants.FRONT_END_HTML.equals(frontEnd)){
+            getHtmlTemplate(templates, tplCategory);
+        }
+        else if(GenConstants.FRONT_END_ELEMENT_UI_VUE3.equals(frontEnd)){
+            getElementUiWithVue3Template(templates, tplCategory);
+        }
+        templates.add("vm/common/sql/sql.vm");
+        return templates;
+    }
+
+    /**
+     * 获取mybatis模板
+     * @return 模板列表
+     */
+    public static List<String> getMybatisTemplate(){
         List<String> templates = new ArrayList<String>();
-        templates.add("vm/java/entity.java.vm");
-        templates.add("vm/java/mapper.java.vm");
-        templates.add("vm/java/service.java.vm");
-        templates.add("vm/java/serviceImpl.java.vm");
-        templates.add("vm/java/controller.java.vm");
-        templates.add("vm/xml/mapper.xml.vm");
-        templates.add("vm/sql/sql.vm");
-        templates.add("vm/js/api.js.vm");
+        templates.add("vm/java/mybatis/java/domain.java.vm");
+        templates.add("vm/java/mybatis/java/mapper.java.vm");
+        templates.add("vm/java/mybatis/java/service.java.vm");
+        templates.add("vm/java/mybatis/java/serviceImpl.java.vm");
+        templates.add("vm/java/mybatis/java/controller.java.vm");
+        templates.add("vm/java/mybatis/xml/mapper.xml.vm");
+        return templates;
+    }
+
+    /**
+     * 获取mybatis-plus模板
+     * @return 模板列表
+     */
+    public static List<String> getMybatisPlusTemplate(){
+        List<String> templates = new ArrayList<String>();
+        templates.add("vm/java/mybatisPlus/java/domain.java.vm");
+        templates.add("vm/java/mybatisPlus/java/mapper.java.vm");
+        templates.add("vm/java/mybatisPlus/java/service.java.vm");
+        templates.add("vm/java/mybatisPlus/java/serviceImpl.java.vm");
+        templates.add("vm/java/mybatisPlus/java/controller.java.vm");
+        templates.add("vm/java/mybatisPlus/xml/mapper.xml.vm");
+        return templates;
+    }
+
+    /**
+     * 获取element-ui vue2模板
+     */
+    public static void getElementUiWithVue2Template(List<String> templates, String tplCategory){
+        templates.add("vm/common/js/api.js.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
+            templates.add("vm/ui/element-ui/vue/index.vue.vm");
         }
         else if (GenConstants.TPL_TREE.equals(tplCategory))
         {
-            templates.add("vm/vue/index-tree.vue.vm");
+            templates.add("vm/ui/element-ui/vue/index-tree.vue.vm");
         }
         else if (GenConstants.TPL_SUB.equals(tplCategory))
         {
-            templates.add("vm/vue/index.vue.vm");
-            templates.add("vm/java/sub-entity.java.vm");
+            templates.add("vm/ui/element-ui/vue/index.vue.vm");
+            templates.add("vm/java/mybatis/java/sub-domain.java.vm");
         }
-        return templates;
+    }
+
+    /**
+     * 获取element-ui vue3模板
+     */
+    public static void getElementUiWithVue3Template(List<String> templates, String tplCategory){
+        templates.add("vm/common/js/api.js.vm");
+        if (GenConstants.TPL_CRUD.equals(tplCategory))
+        {
+            templates.add("vm/ui/element-ui/vue3/index.vue.vm");
+        }
+        else if (GenConstants.TPL_TREE.equals(tplCategory))
+        {
+            templates.add("vm/ui/element-ui/vue3/index-tree.vue.vm");
+        }
+        else if (GenConstants.TPL_SUB.equals(tplCategory))
+        {
+            templates.add("vm/ui/element-ui/vue3/index.vue.vm");
+            templates.add("vm/java/mybatis/java/sub-domain.java.vm");
+        }
+    }
+
+    /**
+     * 获取antDv模板
+     */
+    public static void getAntDvTemplate(List<String> templates, String tplCategory){
+        templates.add("vm/common/js/api.js.vm");
+        if (GenConstants.TPL_CRUD.equals(tplCategory) || GenConstants.TPL_TREE.equals(tplCategory))
+        {
+            templates.add("vm/ui/antdv/index.vue.vm");
+            templates.add("vm/ui/antdv/modules/CreateForm.vue.vm");
+        }
+        else if (GenConstants.TPL_SUB.equals(tplCategory))
+        {
+            templates.add("vm/ui/antdv/index.vue.vm");
+            templates.add("vm/ui/antdv/modules/CreateForm.vue.vm");
+            templates.add("vm/ui/antdv/modules/SubTable.vue.vm");
+            templates.add("vm/ui/antdv/modules/CreateSubForm.vue.vm");
+            templates.add("vm/java/mybatis/java/sub-domain.java.vm");
+        }
+    }
+
+    /**
+     * 获取html模板
+     */
+    public static void getHtmlTemplate(List<String> templates, String tplCategory){
+        if (GenConstants.TPL_CRUD.equals(tplCategory))
+        {
+            templates.add("vm/html/list.html.vm");
+        }
+        else if (GenConstants.TPL_TREE.equals(tplCategory))
+        {
+            templates.add("vm/html/tree.html.vm");
+            templates.add("vm/html/list-tree.html.vm");
+        }
+        else if (GenConstants.TPL_SUB.equals(tplCategory))
+        {
+            templates.add("vm/html/list.html.vm");
+            templates.add("vm/java/mybatis/java/sub-domain.java.vm");
+        }
+        templates.add("vm/html/add.html.vm");
+        templates.add("vm/html/edit.html.vm");
     }
 
     /**

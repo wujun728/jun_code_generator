@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: ${projectName}-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${datasourcePassword}
+      MYSQL_DATABASE: ${projectName}
+      MYSQL_USER: ${datasourceUsername}
+      MYSQL_PASSWORD: ${datasourcePassword}
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - app-network
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: ${projectName}-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app-network
+
+  # 后端应用
+  backend:
+    build:
+      context: ./${projectName}-backend
+      dockerfile: Dockerfile
+    container_name: ${projectName}-backend
+    restart: unless-stopped
+    ports:
+      - "${serverPort}:${serverPort}"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${projectName}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+      SPRING_DATASOURCE_USERNAME: ${datasourceUsername}
+      SPRING_DATASOURCE_PASSWORD: ${datasourcePassword}
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - backend_logs:/app/logs
+      - backend_upload:/app/uploadPath
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${serverPort}/${artifactId}/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 前端应用
+  frontend:
+    build:
+      context: ./${projectName}-frontend
+      dockerfile: Dockerfile
+    container_name: ${projectName}-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  backend_logs:
+    driver: local
+  backend_upload:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

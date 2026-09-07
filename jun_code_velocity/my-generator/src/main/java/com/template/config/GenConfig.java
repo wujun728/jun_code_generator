@@ -1,5 +1,6 @@
 package com.template.config;
 
+import com.template.util.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
@@ -26,6 +27,9 @@ public class GenConfig
 
     /** 表前缀(类名不会包含表前缀) */
     public static String tablePrefix;
+
+    /** 代码生成数据表 */
+    public static String dataBase;
 
     public static String getAuthor()
     {
@@ -69,5 +73,16 @@ public class GenConfig
     public void setTablePrefix(String tablePrefix)
     {
         GenConfig.tablePrefix = tablePrefix;
+    }
+
+    public static String getDataBase() {
+        if (StringUtils.isEmpty(dataBase)){
+            dataBase = "(select database())";
+        }
+        return dataBase;
+    }
+    @Value("${dataBase}")
+    public void setDataBase(String dataBase) {
+        GenConfig.dataBase = dataBase;
     }
 }

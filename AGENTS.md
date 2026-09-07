@@ -2,27 +2,27 @@
 
 ## Repo Overview
 
-This is a **collection of Java code generators** (not a single app). Each sub-module is an independent code generator using different template engines (Velocity, Freemarker) to produce CRUD boilerplate from database table metadata. Based on/forked from RuoYi-Vue and XXL-DEEP.
+This is a **collection of independent Java code generators** (not a single app). Each sub-module uses different template engines (Velocity, Freemarker) to produce CRUD boilerplate from database table metadata. Based on/forked from RuoYi-Vue and XXL-DEEP.
 
-**CLAUDE.md `Project Overview` section describes a different project (SCRM PaaS) -- ignore it for this repo.** The local rules about Chinese communication, `./docs` directory, and `@author Wujun` still apply.
+**CLAUDE.md describes a different project (SCRM PaaS) — ignore it for this repo.** However, the following CLAUDE.md rules still apply:
+- 全程使用**简体中文**沟通
+- 代码注释中若 `author` 字段为空，统一填写 `@author Wujun`
 
 ## Build Commands
 
 ```bash
-# Root build (3 aggregated modules only)
+# Root build
 mvn clean install -DskipTests
 
 # Individual modules (each is independent)
 mvn clean install -DskipTests -pl jun_code_velocity/my-generator -am
 mvn clean install -DskipTests -pl jun_code_velocity/jun-xiaobear-gen/gen-admin -am
 mvn clean install -DskipTests -pl jun-code-freemarker/jun_code_freemarker_deep/jun_code_freemarker_deep_admin -am
-
-# jun_excel_generate_sql_script is NOT in root pom.xml <modules> -- build separately
-cd jun_excel_generate_sql_script
-mvn clean package
+mvn clean install -DskipTests -pl jun-mybatisplus-generator -am
+mvn clean install -DskipTests -pl jun_excel_generate_sql_script -am
 ```
 
-**Encoding**: Source files are UTF-8 but root pom defaults to no source encoding. Always pass `-Dproject.build.sourceEncoding=UTF-8` or the GBK encoding errors on Chinese comments will break the build.
+Java 8, Maven, Spring Boot 2.x. All sub-module POMs already set `<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`.
 
 ## Running Services
 
@@ -32,37 +32,40 @@ mvn clean package
 | `my-generator` | `mvn spring-boot:run` | 8888 |
 | `gen-admin` (jun-xiaobear-gen) | `mvn spring-boot:run` | 8081 |
 | `gen-ui` (Vue 3 frontend) | `npm run dev` | dev server |
-| `jun-mybatisplus-generator` | CLI `main()` -- NOT a Spring Boot app | N/A |
-| `jun_excel_generate_sql_script` | `java -jar target/*.jar` -- NOT a Spring Boot app | N/A |
+| `jun-mybatisplus-generator` | CLI `main()` — NOT a Spring Boot app | N/A |
+| `jun_excel_generate_sql_script` | `java -jar target/*.jar` — NOT a Spring Boot app | N/A |
 
-All Spring Boot generators require **MySQL at `localhost:3307`** (non-standard port, likely Docker). DB init SQL must be run first:
+All Spring Boot generators require **MySQL at `localhost:3307`** (non-standard port). DB init SQL must be run first:
 - `jun_code_velocity/jun-xiaobear-gen/sql/xiaobear-gen.sql`
 - `jun_code_velocity/my-generator/a_my-generator.sql`
 
 ## Testing
 
 Only two modules have tests:
-- `jun-mybatisplus-generator`: **JUnit 5** -- `mvn test` (requires MySQL at `localhost:3307/db_test`)
+- `jun-mybatisplus-generator`: **JUnit 5** — `mvn test` (requires MySQL at `localhost:3307/db_test`, user `root`/`mysqladmin`)
 - `jun_code_freemarker_deep_admin`: **JUnit 4** via `spring-boot-starter-test`
 - All other modules: **no tests exist**
 
-The `CrudGeneratorTest` uses Java `assert` statements (not JUnit assertions), requiring `-ea` JVM flag.
+The `CrudGeneratorTest` uses Java `assert` statements alongside JUnit 5 annotations — requires `-ea` JVM flag:
+```bash
+mvn test -pl jun-mybatisplus-generator -am -Dtest=CrudGeneratorTest -DargLine=-ea
+```
 
-## Module Map
+## Module Layout
 
 ```
-jun_code_generator/                          # Root POM aggregator
-├── jun-code-freemarker/                     # Freemarker-based generators
+jun_code_generator/                          # Root POM aggregator (io.github.wujun728)
+├── jun-code-freemarker/
 │   └── jun_code_freemarker_deep/
-│       └── jun_code_freemarker_deep_admin/  # Spring Boot app, port 8080, 27+ template categories
-├── jun-mybatisplus-generator/               # CLI tool, MyBatis-Plus 3.5.x codegen
-├── jun_code_velocity/                       # Velocity-based generators
-│   ├── my-generator/                        # Spring Boot app, port 8888 (RuoYi-style, stripped down)
+│       └── jun_code_freemarker_deep_admin/  # Freemarker, Spring Boot :8080, 27+ template categories
+├── jun-mybatisplus-generator/               # CLI tool, MyBatis-Plus 3.5.3 codegen, generator.properties driven
+├── jun_code_velocity/
+│   ├── my-generator/                        # Velocity, Spring Boot :8888 (RuoYi-style, stripped down)
 │   │   └── generator-web/                   # Pre-built Vue 2 + Element UI frontend
 │   └── jun-xiaobear-gen/                    # PRIMARY module (most feature-complete)
-│       ├── gen-admin/                       # Spring Boot app, port 8081, 90+ templates
+│       ├── gen-admin/                       # Velocity, Spring Boot :8081, 90+ templates
 │       └── gen-ui/                          # Vue 3 + Element Plus frontend (npm)
-├── jun_excel_generate_sql_script/           # Standalone CLI: Excel → SQL + code (orphaned, not in root pom)
+├── jun_excel_generate_sql_script/           # Standalone CLI: Excel → SQL + code
 └── doc1/                                    # Reference projects (gitignored, not part of build)
 ```
 
@@ -70,9 +73,9 @@ jun_code_generator/                          # Root POM aggregator
 
 - **Inconsistent groupIds**: Root=`io.github.wujun728`, my-generator=`com.template`, gen-admin=`org.xiaobear`, freemarker=`com.xuxueli`. Do not assume a single groupId.
 - **Template file naming**: Freemarker templates use `${variable}` in filenames (e.g. `${classInfo.className}Controller.java.ftl`). Velocity templates use static names with `.vm` extension.
-- **Three template engines**: Velocity (`.vm`), Freemarker (`.ftl`), and some modules use both. Check which engine a module uses before modifying templates.
-- **`gen-admin` uses raw MyBatis** (not MyBatis-Plus), but generates code targeting both MyBatis and MyBatis-Plus.
-- **`jun_code_freemarker_deep_admin`** depends on external libs `io.github.wujun728:jun-db-activerecord` and `jun-common-base` not in this repo.
+- **Template engines**: Velocity (`.vm`), Freemarker (`.ftl`). Check which engine a module uses before modifying templates.
+- **gen-admin uses raw MyBatis** (not MyBatis-Plus), but generates code targeting both MyBatis and MyBatis-Plus.
+- **jun_code_freemarker_deep_admin** depends on external JARs `io.github.wujun728:jun-db-activerecord` and `jun-common-base` not in this repo — `mvn install` on this module will fail unless those are available (e.g. from Maven Central or your local cache). Build with `-DskipTests` + `-Dmaven.compiler.failOnError=false` as a workaround, or install the missing JARs first.
 
 ## Zip Entry Duplicate Fix
 
@@ -80,5 +83,5 @@ When batch-downloading generated code, tables sharing the same `businessName` pr
 
 ## Frontend
 
-- `gen-ui/` (Vue 3): Requires Node.js >= 20. Run `npm install && npm run dev`.
+- `gen-ui/` (Vue 3): Requires Node.js >= 20. `npm install && npm run dev` in that directory.
 - `generator-web/` (Vue 2): Pre-built static assets already in the source tree. Rebuild only when modifying: `npm run build` in that directory.

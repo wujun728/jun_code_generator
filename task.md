@@ -26,3 +26,10 @@ D:\workspace_github\jun_code_generator\jun-code-freemarker\jun_code_freemarker_d
 下面的这两个模块的功能严重重复，保留一个模块，即mybatisplus 能生成curd的代码即可，同时，合并模板可选模板。
 D:\workspace_github\jun_code_generator\jun-mybatisplus-generator\
 D:\workspace_github\jun_code_generator\jun-mybatisplus-generator_depp_mybatisplus\
+
+
+
+
+下面的这两个模块的功能先比较一下，保留一个模块，个人偏向于my-generator模块，需要将jun-xiaobear-gen模块的功能迁移到my-generator模块里面来，同时新增字段信息里面的下拉字典选择的功能。
+D:\workspace_github\jun_code_generator\jun_code_velocity\my-generator\
+D:\workspace_github\jun_code_generator\jun_code_velocity\jun-xiaobear-gen\

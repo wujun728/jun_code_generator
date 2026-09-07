@@ -1,0 +1,37 @@
+package ${packageName}.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * OpenAPI配置
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Configuration
+public class OpenAPIConfig {
+
+    /**
+     * 创建API文档配置
+     */
+    @Bean
+    public OpenAPI createOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("${projectComment}API文档")
+                        .description("${projectComment}RESTful API接口文档")
+                        .version("${version}")
+                        .contact(new Contact()
+                                .name("${author}")
+                                .url("")
+                                .email(""))
+                        .license(new License()
+                                .name("MIT")
+                                .url("https://opensource.org/licenses/MIT")));
+    }
+}

@@ -2,6 +2,7 @@ package com.template.service;
 
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import com.template.domain.GenTable;
 
 /**
@@ -49,6 +50,14 @@ public interface IGenTableService
      * @return 业务信息
      */
     public GenTable selectGenTableById(Long id);
+
+    /**
+     * 根据表ID数组查询业务信息
+     *
+     * @param tableIds 表ID数组
+     * @return 业务信息集合
+     */
+    public List<GenTable> selectGenTableByIds(String[] tableIds);
 
     /**
      * 修改业务
@@ -118,4 +127,24 @@ public interface IGenTableService
      * @param genTable 业务信息
      */
     public void validateEdit(GenTable genTable);
+
+    /**
+     * 根据sql创建表
+     *
+     * @param sql
+     * @return
+     */
+    public boolean createNewTable(String sql);
+
+    /**
+     * 导出数据字典
+     * @param response
+     * @param tableIds
+     */
+    void exportToExcel(HttpServletResponse response, Long[] tableIds);
+
+    /**
+     * 新增业务
+     */
+    public void insertGenTable(GenTable genTable);
 }

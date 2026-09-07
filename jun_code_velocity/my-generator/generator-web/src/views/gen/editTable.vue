@@ -5,7 +5,6 @@
         <basic-info-form ref="basicInfo" :info="info" />
       </el-tab-pane>
       <el-tab-pane label="字段信息" name="columnInfo">
-        <!-- :max-height="tableHeight" -->
         <el-table ref="dragTable" :data="columns" row-key="columnId">
           <el-table-column label="序号" type="index" min-width="5%" class-name="allowDrag" />
           <el-table-column label="字段列名" prop="columnName" min-width="10%" :show-overflow-tooltip="true" />
@@ -114,58 +113,52 @@
 </template>
 
 <script>
-import { getGenTable, updateGenTable } from "@/api/gen";
-// import { optionselect as getDictOptionselect } from "@/api/dict/type";
-// import { listMenu as getMenuTreeselect } from "@/api/menu";
+import { getGenTable, updateGenTable, dictTypeList } from "@/api/gen";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
 import Sortable from 'sortablejs'
 
 export default {
   name: "GenEdit",
-  components: {
-    basicInfoForm,
-    genInfoForm
-  },
+  components: { basicInfoForm, genInfoForm },
   data() {
     return {
-      // 选中选项卡的 name
       activeName: "columnInfo",
-      // 表格的高度
       tableHeight: document.documentElement.scrollHeight - 245 + "px",
-      // 表信息
       tables: [],
-      // 表列信息
       columns: [],
-      // 字典信息
       dictOptions: [],
-      // 菜单信息
       menus: [],
-      // 表详细信息
-      info: {}
+      info: {},
+      sortableInstance: null
     };
   },
   created() {
-    const tableId = this.$route.params && this.$route.params.tableId;
+    const tableId = this.$route.query && this.$route.query.tableId;
     if (tableId) {
-      // 获取表详细信息
       getGenTable(tableId).then(res => {
-        this.columns = res.data.rows;
-        this.info = res.data.info;
-        this.tables = res.data.tables;
+        if (res.data) {
+          this.columns = res.data.rows || [];
+          this.info = res.data.info || {};
+          this.tables = res.data.tables || [];
+          if (!this.columns || this.columns.length === 0) {
+            this.$modal.msgWarning('该表没有字段信息，请检查表结构');
+          } else {
+            this.$nextTick(() => { this.initSortable(); });
+          }
+        }
+      }).catch(() => {
+        this.$modal.msgError('获取表详细信息失败');
       });
-      /** 查询字典下拉列表 */
-      // getDictOptionselect().then(response => {
-      //   this.dictOptions = response.data;
-      // });
-      /** 查询菜单下拉列表 */
-      // getMenuTreeselect().then(response => {
-      //   this.menus = this.handleTree(response.data, "menuId");
-      // });
+      // 查询字典下拉列表
+      dictTypeList().then(response => {
+        this.dictOptions = response.data || [];
+      }).catch(() => {});
+    } else {
+      this.$modal.msgError('缺少表ID参数');
     }
   },
   methods: {
-    /** 提交按钮 */
     submitForm() {
       const basicForm = this.$refs.basicInfo.$refs.basicInfoForm;
       const genForm = this.$refs.genInfo.$refs.genInfoForm;
@@ -193,30 +186,54 @@ export default {
     },
     getFormPromise(form) {
       return new Promise(resolve => {
-        form.validate(res => {
-          resolve(res);
-        });
+        form.validate(res => { resolve(res); });
       });
     },
-    /** 关闭按钮 */
     close() {
-      // const obj = { path: "/gen", query: { t: Date.now(), pageNum: this.$route.query.pageNum } };
-      // this.$tab.closeOpenPage(obj);
-      this.$router.push('/');
+      const pageNum = this.$route.query.pageNum || 1;
+      const pageSize = this.$route.query.pageSize || 50;
+      this.$router.push({
+        path: "/",
+        query: { t: Date.now(), pageNum: pageNum, pageSize: pageSize }
+      });
+    },
+    initSortable() {
+      if (!this.$refs.dragTable) {
+        setTimeout(() => { this.initSortable(); }, 100);
+        return;
+      }
+      const tableEl = this.$refs.dragTable.$el;
+      if (!tableEl) return;
+      const tbodyEl = tableEl.querySelector(".el-table__body-wrapper > table > tbody");
+      if (!tbodyEl) return;
+      if (this.sortableInstance) {
+        this.sortableInstance.destroy();
+      }
+      this.sortableInstance = Sortable.create(tbodyEl, {
+        handle: ".allowDrag",
+        animation: 150,
+        onEnd: evt => {
+          const targetRow = this.columns.splice(evt.oldIndex, 1)[0];
+          this.columns.splice(evt.newIndex, 0, targetRow);
+          for (let index in this.columns) {
+            this.columns[index].sort = parseInt(index) + 1;
+          }
+        }
+      });
     }
   },
   mounted() {
-    const el = this.$refs.dragTable.$el.querySelectorAll(".el-table__body-wrapper > table > tbody")[0];
-    const sortable = Sortable.create(el, {
-      handle: ".allowDrag",
-      onEnd: evt => {
-        const targetRow = this.columns.splice(evt.oldIndex, 1)[0];
-        this.columns.splice(evt.newIndex, 0, targetRow);
-        for (let index in this.columns) {
-          this.columns[index].sort = parseInt(index) + 1;
-        }
-      }
-    });
+    this.$nextTick(() => { this.initSortable(); });
+  },
+  beforeDestroy() {
+    if (this.sortableInstance) {
+      this.sortableInstance.destroy();
+      this.sortableInstance = null;
+    }
   }
 };
 </script>
+
+<style scoped>
+:deep(.el-table) .allowDrag { cursor: move; }
+</style>

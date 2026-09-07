@@ -1,0 +1,148 @@
+<template>
+  <div class="sidebar">
+    <el-menu
+      :default-active="activeMenu"
+      :collapse="isCollapse"
+      :unique-opened="true"
+      background-color="#001529"
+      text-color="#fff"
+      active-text-color="#1890ff"
+      router
+    >
+      <!-- 首页 -->
+      <el-menu-item index="/dashboard">
+        <el-icon><House /></el-icon>
+        <template #title>首页</template>
+      </el-menu-item>
+      
+      <!-- 业务模块 -->
+#foreach($table in $tables)
+      <el-sub-menu index="${table.moduleName}">
+        <template #title>
+          <el-icon><Grid /></el-icon>
+          <span>${table.functionName}管理</span>
+        </template>
+        <el-menu-item index="/${table.moduleName}/${table.businessName}">
+          <el-icon><Document /></el-icon>
+          <template #title>${table.functionName}</template>
+        </el-menu-item>
+      </el-sub-menu>
+#end
+      
+      <!-- 系统管理 -->
+      <el-sub-menu index="system">
+        <template #title>
+          <el-icon><Setting /></el-icon>
+          <span>系统管理</span>
+        </template>
+        <el-menu-item index="/system/user">
+          <el-icon><User /></el-icon>
+          <template #title>用户管理</template>
+        </el-menu-item>
+        <el-menu-item index="/system/role">
+          <el-icon><UserFilled /></el-icon>
+          <template #title>角色管理</template>
+        </el-menu-item>
+        <el-menu-item index="/system/menu">
+          <el-icon><Menu /></el-icon>
+          <template #title>菜单管理</template>
+        </el-menu-item>
+      </el-sub-menu>
+    </el-menu>
+  </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { 
+  House, 
+  Grid, 
+  Document, 
+  Setting, 
+  User, 
+  UserFilled, 
+  Menu 
+} from '@element-plus/icons-vue'
+
+const route = useRoute()
+
+// 从父组件接收props
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false
+  }
+})
+
+// 当前激活的菜单
+const activeMenu = computed(() => {
+  const { path } = route
+  return path
+})
+</script>
+
+<style scoped>
+.sidebar {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #001529;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #1890ff;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #40a9ff;
+}
+
+/* 菜单样式优化 */
+:deep(.el-menu) {
+  border-right: none;
+}
+
+:deep(.el-menu-item) {
+  height: 48px;
+  line-height: 48px;
+}
+
+:deep(.el-sub-menu .el-menu-item) {
+  height: 44px;
+  line-height: 44px;
+  padding-left: 60px !important;
+}
+
+:deep(.el-menu-item:hover) {
+  background-color: #1890ff !important;
+}
+
+:deep(.el-menu-item.is-active) {
+  background-color: #1890ff !important;
+}
+
+:deep(.el-sub-menu__title:hover) {
+  background-color: #1f1f1f !important;
+}
+
+/* 折叠状态下的样式 */
+:deep(.el-menu--collapse) {
+  width: 64px;
+}
+
+:deep(.el-menu--collapse .el-menu-item) {
+  text-align: center;
+}
+
+:deep(.el-menu--collapse .el-sub-menu) {
+  text-align: center;
+}
+</style>

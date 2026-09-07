@@ -36,7 +36,7 @@ export const constantRoutes = [
     component: () => import("@/views/gen/index.vue")
   },
   {
-    path: "/gen-edit/index/:tableId",
+    path: "/gen-edit",
     component: () => import("@/views/gen/editTable.vue")
   },
   {
@@ -46,6 +46,14 @@ export const constantRoutes = [
   {
     path: "/text",
     component: () => import("@/views/text/index.vue")
+  },
+  {
+    path: "/datasource",
+    component: () => import("@/views/gen/dataSource/index.vue")
+  },
+  {
+    path: "/export",
+    component: () => import("@/views/gen/export/index.vue")
   }
 ];
 

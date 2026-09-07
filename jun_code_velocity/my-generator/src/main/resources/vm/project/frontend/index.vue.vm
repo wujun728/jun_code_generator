@@ -1,0 +1,295 @@
+<template>
+  <div class="app-container">
+    <el-card class="box-card">
+      <!-- 查询条件 -->
+      <div class="filter-container">
+        <el-form :inline="true" :model="queryParams" class="demo-form-inline">
+#foreach($column in $columns)
+#if($column.query)
+          <el-form-item label="${column.columnComment}">
+#if($column.htmlType == "input")
+            <el-input
+              v-model="queryParams.${column.javaField}"
+              placeholder="请输入${column.columnComment}"
+              clearable
+              size="small"
+              style="width: 200px"
+            />
+#elseif($column.htmlType == "select")
+            <el-select
+              v-model="queryParams.${column.javaField}"
+              placeholder="请选择${column.columnComment}"
+              clearable
+              size="small"
+              style="width: 200px"
+            >
+              <el-option label="选项1" value="1" />
+              <el-option label="选项2" value="2" />
+            </el-select>
+#elseif($column.htmlType == "datetime")
+            <el-date-picker
+              v-model="queryParams.${column.javaField}"
+              type="date"
+              placeholder="选择${column.columnComment}"
+              size="small"
+              style="width: 200px"
+            />
+#end
+          </el-form-item>
+#end
+#end
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="table-header">
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="small"
+          @click="handleAdd"
+        >新增</el-button>
+        <el-button
+          type="success"
+          icon="el-icon-edit"
+          size="small"
+          :disabled="single"
+          @click="handleUpdate"
+        >修改</el-button>
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          size="small"
+          :disabled="multiple"
+          @click="handleDelete"
+        >删除</el-button>
+      </div>
+
+      <!-- 数据表格 -->
+      <el-table
+        v-loading="loading"
+        :data="dataList"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center" />
+#foreach($column in $columns)
+#if($column.list)
+        <el-table-column label="${column.columnComment}" align="center" prop="${column.javaField}" />
+#end
+#end
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template #default="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
+            >修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页 -->
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </el-card>
+
+    <!-- 添加或修改对话框 -->
+    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+#foreach($column in $columns)
+#if($column.insert && !$column.pk)
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+#if($column.htmlType == "input")
+          <el-input v-model="form.${column.javaField}" placeholder="请输入${column.columnComment}" />
+#elseif($column.htmlType == "textarea")
+          <el-input v-model="form.${column.javaField}" type="textarea" placeholder="请输入${column.columnComment}" />
+#elseif($column.htmlType == "select")
+          <el-select v-model="form.${column.javaField}" placeholder="请选择${column.columnComment}">
+            <el-option label="选项1" value="1" />
+            <el-option label="选项2" value="2" />
+          </el-select>
+#elseif($column.htmlType == "datetime")
+          <el-date-picker
+            v-model="form.${column.javaField}"
+            type="datetime"
+            placeholder="选择${column.columnComment}"
+          />
+#end
+        </el-form-item>
+#end
+#end
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import ${businessName}Api from '@/api/${businessName}'
+import Pagination from '@/components/Pagination'
+
+export default {
+  name: '${ClassName}',
+  components: {
+    Pagination
+  },
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 显示搜索条件
+      showSearch: true,
+      // 总条数
+      total: 0,
+      // ${functionName}表格数据
+      dataList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+#foreach($column in $columns)
+#if($column.query)
+        ${column.javaField}: null,
+#end
+#end
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+#foreach($column in $columns)
+#if($column.required)
+        ${column.javaField}: [
+          { required: true, message: "${column.columnComment}不能为空", trigger: "blur" }
+        ],
+#end
+#end
+      }
+    };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    /** 查询${functionName}列表 */
+    getList() {
+      this.loading = true;
+      var self = this;
+      ${businessName}Api.getList(this.queryParams).then(function(response) {
+        self.dataList = response.data.rows;
+        self.total = response.data.total;
+        self.loading = false;
+      });
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+#foreach($column in $columns)
+#if($column.insert)
+        ${column.javaField}: null,
+#end
+#end
+      };
+      this.resetForm("form");
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(function(item) { return item.${pkColumn.javaField}; })
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "添加${functionName}";
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      const ${pkColumn.javaField} = row.${pkColumn.javaField} || this.ids
+      var self = this;
+      ${businessName}Api.getDetail(${pkColumn.javaField}).then(function(response) {
+        self.form = response.data;
+        self.open = true;
+        self.title = "修改${functionName}";
+      });
+    },
+    /** 提交按钮 */
+    submitForm() {
+      var self = this;
+      this.$refs.form.validate(function(valid) {
+        if (valid) {
+          if (self.form.${pkColumn.javaField} != null) {
+            ${businessName}Api.update(self.form).then(function(response) {
+              self.$modal.msgSuccess("修改成功");
+              self.open = false;
+              self.getList();
+            });
+          } else {
+            ${businessName}Api.create(self.form).then(function(response) {
+              self.$modal.msgSuccess("新增成功");
+              self.open = false;
+              self.getList();
+            });
+          }
+        }
+      });
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ${pkColumn.javaField}s = row.${pkColumn.javaField} || this.ids;
+      this.$modal.confirm('是否确认删除${functionName}编号为"' + ${pkColumn.javaField}s + '"的数据项？').then(function() {
+        return ${businessName}Api.delete(${pkColumn.javaField}s);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
+    }
+  }
+};
+</script>

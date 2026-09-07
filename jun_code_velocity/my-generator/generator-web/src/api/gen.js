@@ -8,6 +8,7 @@ export function listTable(query) {
     params: query
   });
 }
+
 // 查询db数据库列表
 export function listDbTable(query) {
   return request({
@@ -43,6 +44,15 @@ export function importTable(data) {
   });
 }
 
+// 新增生成表
+export function addGenTable(data) {
+  return request({
+    url: "/gen/add",
+    method: "post",
+    data: data
+  });
+}
+
 // 预览生成代码
 export function previewTable(tableId) {
   return request({
@@ -72,5 +82,60 @@ export function synchDb(tableName) {
   return request({
     url: "/gen/synchDb/" + tableName,
     method: "get"
+  });
+}
+
+// 查询字典类型列表
+export function dictTypeList() {
+  return request({
+    url: "/gen/dict/list",
+    method: "get"
+  });
+}
+
+// SQL脚本创建表
+export function createNewTable(data) {
+  return request({
+    url: "/gen/create",
+    method: "post",
+    data: data
+  });
+}
+
+// 生成完整项目
+export function generateCompleteProject(data) {
+  return request({
+    url: "/gen/generateCompleteProject",
+    method: "post",
+    data: data,
+    responseType: 'blob'
+  });
+}
+
+// 导出数据库文档
+export function exportDatabase(data) {
+  return request({
+    url: "/gen/export",
+    method: "post",
+    params: data,
+    responseType: 'blob'
+  });
+}
+
+// 预览数据库表列表（用于数据库文档导出）
+export function previewTables(params) {
+  return request({
+    url: "/gen/preview/tables",
+    method: "get",
+    params: params
+  });
+}
+
+// 数据库文档导出（返回文件信息）
+export function exportDatabaseDoc(data) {
+  return request({
+    url: "/gen/export",
+    method: "post",
+    params: data
   });
 }

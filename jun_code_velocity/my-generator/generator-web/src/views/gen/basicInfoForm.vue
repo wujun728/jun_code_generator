@@ -1,60 +1,67 @@
 <template>
-  <el-form ref="basicInfoForm" :model="info" :rules="rules" label-width="150px">
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="表名称" prop="tableName">
-          <el-input placeholder="请输入仓库名称" v-model="info.tableName" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="表描述" prop="tableComment">
-          <el-input placeholder="请输入" v-model="info.tableComment" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="实体类名称" prop="className">
-          <el-input placeholder="请输入" v-model="info.className" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="作者" prop="functionAuthor">
-          <el-input placeholder="请输入" v-model="info.functionAuthor" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="24">
-        <el-form-item label="备注" prop="remark">
-          <el-input type="textarea" :rows="3" v-model="info.remark"></el-input>
-        </el-form-item>
-      </el-col>
-    </el-row>
+  <el-form ref="basicInfoForm" :model="info" :rules="rules" label-width="150px" class="single-column-form">
+    <div class="form-section">
+      <h4 class="section-title">
+        <i class="el-icon-document"></i> 表基本信息
+      </h4>
+      <el-form-item label="表名称" prop="tableName">
+        <el-input placeholder="请输入表名称" v-model="info.tableName" />
+      </el-form-item>
+      <el-form-item label="表描述" prop="tableComment">
+        <el-input placeholder="请输入表描述" v-model="info.tableComment" />
+      </el-form-item>
+    </div>
+
+    <div class="form-section">
+      <h4 class="section-title">
+        <i class="el-icon-edit"></i> 代码生成信息
+      </h4>
+      <el-form-item label="实体类名称" prop="className">
+        <el-input placeholder="请输入实体类名称" v-model="info.className" />
+      </el-form-item>
+      <el-form-item label="作者" prop="functionAuthor">
+        <el-input placeholder="请输入作者姓名" v-model="info.functionAuthor" />
+      </el-form-item>
+    </div>
+
+    <div class="form-section">
+      <h4 class="section-title">
+        <i class="el-icon-tickets"></i> 其他信息
+      </h4>
+      <el-form-item label="备注" prop="remark">
+        <el-input type="textarea" :rows="3" placeholder="请输入备注信息" v-model="info.remark"></el-input>
+      </el-form-item>
+    </div>
   </el-form>
 </template>
 
 <script>
 export default {
+  name: "BasicInfoForm",
   props: {
-    info: {
-      type: Object,
-      default: null
-    }
+    info: { type: Object, default: null }
   },
   data() {
     return {
       rules: {
-        tableName: [
-          { required: true, message: "请输入表名称", trigger: "blur" }
-        ],
-        tableComment: [
-          { required: true, message: "请输入表描述", trigger: "blur" }
-        ],
-        className: [
-          { required: true, message: "请输入实体类名称", trigger: "blur" }
-        ],
-        functionAuthor: [
-          { required: true, message: "请输入作者", trigger: "blur" }
-        ]
+        tableName: [{ required: true, message: "请输入表名称", trigger: "blur" }],
+        tableComment: [{ required: true, message: "请输入表描述", trigger: "blur" }],
+        className: [{ required: true, message: "请输入实体类名称", trigger: "blur" }],
+        functionAuthor: [{ required: true, message: "请输入作者", trigger: "blur" }]
       }
     };
   }
 };
 </script>
+
+<style scoped>
+.single-column-form .form-section { margin-bottom: 32px; }
+.single-column-form .form-section:last-child { margin-bottom: 0; }
+.section-title {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 20px 0; padding: 0 0 12px 0;
+  font-size: 16px; font-weight: 600; color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+}
+.section-title i { font-size: 18px; color: #3b82f6; }
+</style>

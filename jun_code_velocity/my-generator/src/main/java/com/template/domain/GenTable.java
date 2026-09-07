@@ -68,6 +68,21 @@ public class GenTable extends BaseEntity
     /** 生成路径（不填默认项目路径） */
     private String genPath;
 
+    /** 后端框架 */
+    private String backEnd;
+
+    /** 前端框架 */
+    private String frontEnd;
+
+    /** 是否若依 */
+    private String isRuoYi;
+
+    /** 数据库名 */
+    private String dataBase;
+
+    /** 数据源选择ID */
+    private Long selectId;
+
     /** 主键信息 */
     private GenTableColumn pkColumn;
 
@@ -235,6 +250,17 @@ public class GenTable extends BaseEntity
     {
         this.genPath = genPath;
     }
+
+    public String getBackEnd() { return backEnd; }
+    public void setBackEnd(String backEnd) { this.backEnd = backEnd; }
+    public String getFrontEnd() { return frontEnd; }
+    public void setFrontEnd(String frontEnd) { this.frontEnd = frontEnd; }
+    public String getIsRuoYi() { return isRuoYi; }
+    public void setIsRuoYi(String isRuoYi) { this.isRuoYi = isRuoYi; }
+    public String getDataBase() { return dataBase; }
+    public void setDataBase(String dataBase) { this.dataBase = dataBase; }
+    public Long getSelectId() { return selectId; }
+    public void setSelectId(Long selectId) { this.selectId = selectId; }
 
     public GenTableColumn getPkColumn()
     {

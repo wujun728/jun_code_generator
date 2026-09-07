@@ -114,4 +114,19 @@ public class GenConstants
 
     /** 需要 */
     public static final String REQUIRE = "1";
+
+    /** 后端框架 mybatis */
+    public static final String BACK_END_MYBATIS = "0";
+
+    /** 后端框架 mybatis-plus */
+    public static final String BACK_END_MYBATIS_PLUS = "1";
+
+    /** 前端框架 element-ui vue2 */
+    public static final String FRONT_END_ELEMENT_UI_VUE2 = "0";
+    /** 前端框架 ant-design-vue */
+    public static final String FRONT_END_ANT_DEIGN_V = "1";
+    /** 前端框架 html */
+    public static final String FRONT_END_HTML = "2";
+    /** 前端框架 element-ui vue3 */
+    public static final String FRONT_END_ELEMENT_UI_VUE3 = "3";
 }

@@ -19,6 +19,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="functionAuthor" column="function_author"   />
 		<result property="genType"        column="gen_type"          />
 		<result property="genPath"        column="gen_path"          />
+		<result property="backEnd"        column="back_end"          />
+		<result property="frontEnd"       column="front_end"         />
+		<result property="isRuoYi"        column="is_ruo_yi"         />
 		<result property="options"        column="options"           />
 		<result property="createBy"       column="create_by"         />
 		<result property="createTime"     column="create_time"       />
@@ -54,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
 	<sql id="selectGenTableVo">
-        select table_id, table_name, table_comment, sub_table_name, sub_table_fk_name, class_name, tpl_category, package_name, module_name, business_name, function_name, function_author, gen_type, gen_path, options, create_by, create_time, update_by, update_time, remark from gen_table
+        select table_id, table_name, table_comment, sub_table_name, sub_table_fk_name, class_name, tpl_category, package_name, module_name, business_name, function_name, function_author, gen_type, gen_path, back_end, front_end, is_ruo_yi, options, create_by, create_time, update_by, update_time, remark from gen_table
     </sql>
 
     <select id="selectGenTableList" parameterType="com.template.domain.GenTable" resultMap="GenTableResult">
@@ -73,13 +76,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 			</if>
 		</where>
+		order by create_time DESC
 	</select>
 
 	<select id="selectDbTableList" parameterType="com.template.domain.GenTable" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from information_schema.tables
-		where table_schema = (select database())
+		where table_schema = #{dataBase}
 		AND table_name NOT LIKE 'qrtz_%' AND table_name NOT LIKE 'gen_%'
-		AND table_name NOT IN (select table_name from gen_table)
 		<if test="tableName != null and tableName != ''">
 			AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
 		</if>
@@ -92,12 +95,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 			AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 		</if>
-        order by create_time desc
+        order by create_time ASC
 	</select>
 
 	<select id="selectDbTableListByNames" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from information_schema.tables
-		where table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
+		where table_name NOT LIKE 'gen_%' and table_schema = #{dataBase}
 		and table_name in
 	    <foreach collection="array" item="name" open="(" separator="," close=")">
  			#{name}
@@ -106,12 +109,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectTableByName" parameterType="String" resultMap="GenTableResult">
 		select table_name, table_comment, create_time, update_time from information_schema.tables
-		where table_comment <![CDATA[ <> ]]> '' and table_schema = (select database())
+		where table_comment <![CDATA[ <> ]]> '' and table_schema = #{dataBase}
 		and table_name = #{tableName}
 	</select>
 
 	<select id="selectGenTableById" parameterType="Long" resultMap="GenTableResult">
-	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
+	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.back_end, t.front_end, t.is_ruo_yi, t.options, t.remark,
 			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
@@ -119,15 +122,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectGenTableByName" parameterType="String" resultMap="GenTableResult">
-	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.options, t.remark,
+	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.back_end, t.front_end, t.is_ruo_yi, t.options, t.remark,
 			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
 		where t.table_name = #{tableName} order by c.sort
 	</select>
 
+	<select id="selectGenTableByIds" resultMap="GenTableResult">
+	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.gen_type, t.gen_path, t.back_end, t.front_end, t.is_ruo_yi, t.options, t.remark,
+			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
+		FROM gen_table t
+			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
+		where t.table_id in
+		<foreach collection="array" item="tableId" open="(" separator="," close=")">
+			#{tableId}
+		</foreach>
+		order by c.sort
+	</select>
+
 	<select id="selectGenTableAll" parameterType="String" resultMap="GenTableResult">
-	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.options, t.remark,
+	    SELECT t.table_id, t.table_name, t.table_comment, t.sub_table_name, t.sub_table_fk_name, t.class_name, t.tpl_category, t.package_name, t.module_name, t.business_name, t.function_name, t.function_author, t.back_end, t.front_end, t.is_ruo_yi, t.options, t.remark,
 			   c.column_id, c.column_name, c.column_comment, c.column_type, c.java_type, c.java_field, c.is_pk, c.is_increment, c.is_required, c.is_insert, c.is_edit, c.is_list, c.is_query, c.query_type, c.html_type, c.dict_type, c.sort
 		FROM gen_table t
 			 LEFT JOIN gen_table_column c ON t.table_id = c.table_id
@@ -147,9 +162,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="functionAuthor != null and functionAuthor != ''">function_author,</if>
 			<if test="genType != null and genType != ''">gen_type,</if>
 			<if test="genPath != null and genPath != ''">gen_path,</if>
+			<if test="backEnd != null and backEnd != ''">back_end,</if>
+			<if test="frontEnd != null and frontEnd != ''">front_end,</if>
+			<if test="isRuoYi != null and isRuoYi != ''">is_ruo_yi,</if>
 			<if test="remark != null and remark != ''">remark,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
-			create_time
+			create_time,update_time
          )values(
 			<if test="tableName != null">#{tableName},</if>
 			<if test="tableComment != null and tableComment != ''">#{tableComment},</if>
@@ -162,11 +180,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="functionAuthor != null and functionAuthor != ''">#{functionAuthor},</if>
 			<if test="genType != null and genType != ''">#{genType},</if>
 			<if test="genPath != null and genPath != ''">#{genPath},</if>
+			<if test="backEnd != null and backEnd != ''">#{backEnd},</if>
+			<if test="frontEnd != null and frontEnd != ''">#{frontEnd},</if>
+			<if test="isRuoYi != null and isRuoYi != ''">#{isRuoYi},</if>
 			<if test="remark != null and remark != ''">#{remark},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
-			sysdate()
+			sysdate(),sysdate()
          )
     </insert>
+
+	<update id="createNewTable">
+		${sql}
+	</update>
 
     <update id="updateGenTable" parameterType="com.template.domain.GenTable">
         update gen_table
@@ -185,6 +210,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="businessName != null and businessName != ''">business_name = #{businessName},</if>
             <if test="functionName != null and functionName != ''">function_name = #{functionName},</if>
             <if test="options != null and options != ''">options = #{options},</if>
+			<if test="backEnd != null and backEnd != ''">back_end = #{backEnd},</if>
+			<if test="frontEnd != null and frontEnd != ''">front_end = #{frontEnd},</if>
+			<if test="isRuoYi != null and isRuoYi != ''">is_ruo_yi = #{isRuoYi},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
             <if test="remark != null">remark = #{remark},</if>
             update_time = sysdate()
